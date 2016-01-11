@@ -9,7 +9,7 @@ var carSchema = new mongoose.Schema({
 		required: true
 	},
 	model: {
-		type: mongoose.model.Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId,
 		ref: 'CarModel',
 		required: true
 	},
@@ -26,7 +26,40 @@ var carSchema = new mongoose.Schema({
 		type: String,
 		enum: ['Poor', 'Good', 'Excellent']
 		required: true
-	}
+	},
+    mileage: {
+        type: Number,
+    },
+    photos: {
+        type: [String]
+    },
+    categoryIds: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Category'
+        }]
+    },
+    horsePower: {
+        type: Number
+    },
+    acceleration: {
+        type: Number
+    },
+    kickassFactor: {
+        type: Number
+    },
+    location: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Address'
+    },
+    price: {
+        type: Number
+    },
+    count: {
+        type: Number,
+        default: 0
+    }
+
 })
 
-
+mongoose.model('Car', carSchema)
