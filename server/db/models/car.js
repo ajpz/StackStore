@@ -19,12 +19,12 @@ var carSchema = new mongoose.Schema({
 	},
 	color: {
 		type: String,
-		enum: ['Black', 'White', 'Red']
+		enum: ['Black', 'White', 'Red'],
 		required: true
 	},
 	condition: {
 		type: String,
-		enum: ['Poor', 'Good', 'Excellent']
+		enum: ['Poor', 'Good', 'Excellent'],
 		required: true
 	},
     mileage: {
