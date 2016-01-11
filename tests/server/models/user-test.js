@@ -25,6 +25,21 @@ describe('User model', function () {
         expect(User).to.be.a('function');
     });
 
+    it('should make a user document in the database', function(done) {
+        User.create({
+            email : "bobDole@gmail.com",
+            password : "dolemite",
+            /* need to add in preferences, shipping/billing, wishlist, order_ids, review_ids*/
+            isAdmin : true,
+            photos : ["https://www.fillmurray.com/460/300", "https://www.fillmurray.com/460/400"]
+        })
+        .then(function(user) {
+            expect(user.email).to.equal("bobDole@gmail.com")
+            expect(user.isAdmin).to.equal(true)
+            expect(user.photos.length).to.equal(2)
+        });
+    });
+
     describe('password encryption', function () {
 
         describe('generateSalt method', function () {
