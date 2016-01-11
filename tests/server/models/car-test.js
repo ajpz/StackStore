@@ -24,4 +24,22 @@ describe('Car model', function () {
     it('should exist', function () {
         expect(Car).to.be.a('function');
     });
+
+    it('should make a car document in the database', function (done) {
+        Car.create({
+            make: "Ford",
+            year: 1948,
+            color: "Black",
+            condition: "Poor",
+            mileage: 100400,
+        })
+        .then(function(car) {
+            expect(car.make).to.equal("Ford");
+            expect(car.year).to.equal(1948);
+            expect(car.color).to.equal("Black");
+            expect(car.condition).to.equal("Poor");
+            expect(car.mileage).to.equal(100400);
+            done();
+        });
+    });
 });
