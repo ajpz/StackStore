@@ -3,5 +3,7 @@
 // anywhere the User model needs to be used.
 require('./user');
 require('./car');
+require('./makeAndModel');
 require('./address');
 require('./category');
+
