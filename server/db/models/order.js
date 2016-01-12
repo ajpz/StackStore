@@ -6,7 +6,7 @@ var _ = require('lodash');
 var orderSchema = new mongoose.Schema({
     status: {
         type: String,
-        enum: ['inShoppingCart, orderPlaced, Delivered'],
+        enum: ['inShoppingCart', 'orderPlaced', 'Delivered'],
         required: true
     },
     userId: {

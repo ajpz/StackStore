@@ -28,18 +28,13 @@ describe('Order model', function () {
     it('should make an order document in the database', function (done) {
         Order.create({
             status: "inShoppingCart",
-            userId: 1013,
-            carId: 1234,
-            orderDate: 789,
             amount: 5
         })
         .then(function(order) {
-            expect(order.make).to.equal("inShoppingCart");
-            expect(order.userId).to.equal(1013);
-            expect(order.carId).to.equal(1234);
-            expect(order.orderDate).to.equal(789);
+            expect(order.status).to.equal("inShoppingCart");
             expect(order.amount).to.equal(5);
             done();
-        });
+        })
+        // .then(null, console.error.bind(console));
     });
 });
