@@ -5,7 +5,6 @@ require('./user');
 require('./car');
 require('./makeAndModel');
 require('./address');
+require('./order');
 require('./review');
 require('./category');
-
-
