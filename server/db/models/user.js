@@ -5,7 +5,7 @@ var _ = require('lodash');
 
 var schema = new mongoose.Schema({
     email: {
-        type: String
+        type: String,
     },
     password: {
         type: String
@@ -24,7 +24,34 @@ var schema = new mongoose.Schema({
     },
     google: {
         id: String
-    }
+    },
+    shippingAddress: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Address'
+    },
+    billingAddress: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Address'
+    },
+    photos: {
+        type: [String]
+    },
+    categories: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category'
+    }],
+    orders: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Order'
+    }],
+    isAdmin: {
+        type: Boolean,
+        default: false
+    },
+    reviews:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Review"
+    }]
 });
 
 // method to remove sensitive information from user objects before sending them out

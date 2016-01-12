@@ -11,7 +11,6 @@ var carSchema = new mongoose.Schema({
 	model: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'CarModel',
-		required: true
 	},
 	year: {
 		type: Number,
@@ -33,12 +32,10 @@ var carSchema = new mongoose.Schema({
     photos: {
         type: [String]
     },
-    categoryIds: {
-        type: [{
+    categoryIds: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Category'
-        }]
-    },
+    }],
     horsePower: {
         type: Number
     },

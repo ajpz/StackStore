@@ -4,4 +4,6 @@
 require('./user');
 require('./car');
 require('./makeAndModel');
+require('./address');
+require('./category');
 
