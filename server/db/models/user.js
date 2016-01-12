@@ -38,15 +38,12 @@ var schema = new mongoose.Schema({
         ref: 'Address'
     },
     photos: {
-        type: [String]
+        type: [String],
+        default: '<default_image_url>'
     },
     categories: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category'
-    }],
-    orders: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Order'
     }],
     isAdmin: {
         type: Boolean,

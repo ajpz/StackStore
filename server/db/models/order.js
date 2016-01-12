@@ -18,8 +18,7 @@ var orderSchema = new mongoose.Schema({
         ref: 'Car'
     },
     orderDate: {
-        type : Date,
-        default: Date.now
+        type : Date
     },
     amount: {
         type: Number,
