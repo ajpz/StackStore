@@ -45,7 +45,7 @@ var seedCategories = function() {
         }
     ]
 
-    return Categories.createAsync(categories);
+    return Category.createAsync(categories);
 }
 
 var seedMakeAndModel = function() {
@@ -60,20 +60,21 @@ var seedMakeAndModel = function() {
             model: ['Aerosport', 'C28']
         }
     ]
+    return MakeAndModel.createAsync(makesAndModels);
 }
 
-var seedCars = function() {
+var seedCars = function(makes, categories) {
 
     var cars = [
         {
-            make: make1, // ID to MakeANdModel
+            make: makes[0]._id, // ID to MakeAndModel
             model: 'Mustang',
             year: 1967,
             color: 'Red',
             condition: 'Excellent',
             mileage: 86000,
             // photos: ,
-            categoryIds: [category1],
+            categoryIds: [categories[0]._id],
             horsePower: 200,
             acceleration: 5.2,
             kickassFactor: 5,
@@ -81,14 +82,14 @@ var seedCars = function() {
             count: 1,
         },
         {
-            make: make2,
+            make: makes[1]._id,
             model: 'Aerosport',
             year: 1934,
             color: 'Black',
             condition: 'Good',
             mileage: 30000,
             // photos: ,
-            categoryIds: [category2],
+            categoryIds: [categories[1]]._id,
             horsePower: 400,
             acceleration: 12,
             kickAssFactor: 4,
@@ -124,30 +125,30 @@ var seedAddress = function() {
     return Address.createAsync(addresses);
 }
 
-var seedUsers = function() {
+var seedUsers = function(addresses, categories) {
 
     var users = [
         {
             email: 'admin@gmail.com',
             password: 'admin',
             google: 'googleAdmin',
-            shippingAddress: address1 ,
-            billingAddress: address2,
+            shippingAddress: addresses[0]._id,
+            billingAddress: addresses[1]._id,
             // photos: ,
-            categories: category1,
-            isAdmin: true,
-            reviews: [reviews2]
+            categories: categories[0]._id,
+            isAdmin: true
+            // reviews: [reviews2]
         },
         {
             email: 'user@gmail.com',
             password: 'user',
             google: 'googleUser',
-            shippingAddress: address2,
-            billingAddress: address1,
+            shippingAddress: addresses[1]._id,
+            billingAddress: addresses[0]._id,
             // photos: ,
-            categories: category2,
-            isAdmin: false,
-            reviews: [reviews1]
+            categories: categories[1]._id,
+            isAdmin: false
+            // reviews: [reviews1]
         },
         {
             email: 'testing@fsa.com',
@@ -162,64 +163,89 @@ var seedUsers = function() {
     return User.createAsync(users);
 }
 
-var seedOrders = function() {
+var seedOrders = function(users, cars) {
 
     var orders = [
         {
             status: 'Created',
-            userId: user1,
-            carId: car1,
+            userId: users[0]._id,
+            carId: cars[0]._id,
             amount: 93000
         },
         {
             status: 'Processing',
-            userId: user2,
-            carId: car2,
+            userId: users[1]._id,
+            carId: cars[1]._id,
             orderDate: new Date(2015, 11, 23),
             amount: 93000
         }
     ]
+    return Order.createAsync(orders);
 }
 
-var seedReviews = function() {
+var seedReviews = function(users, cars) {
 
     var reviews = [
         {
-            car: car1,
-            // user: user1,
+            car: cars[0]._id,
+            user: users[0]._id,
             comment: 'This thing is a classic fantastic!',
             rating: 5
         },
         {
-            car: car2,
-            // user: user2,
+            car: cars[1]._id,
+            user: users[1]._id,
             comment: "Wow. Can't say that enough. I mean, wow!",
             rating: 5
         }
     ]
+
+    return Review.createAsync(reviews);
 }
 
 
 function seed () {
-    return seedCategories();
+    var easySeeds = [seedCategories(), seedMakeAndModel(), seedAddress()];
+
+    return Promise.all(easySeeds);
+
     // var docs = generateAll();
     // return Promise.map(docs, function (doc) {
     //     return doc.save();
     // });
 }
 
-var db;
+
+var dbClosure;
 
     connectToDb.then(function(db){
-        console.log(db);
-        console.log(Object.keys(db));
         db.drop = Promise.promisify(db.db.dropDatabase.bind(db.db));
+        dbClosure = db;
     })
     .then(function () {
-        db.drop()
+        dbClosure.drop()
     .then(function(){
         return seed();
-    }).then(function () {
+    })
+    .then(function(easySeeds){
+
+        var categories = easySeeds[0];
+        var makes = easySeeds[1];
+        var models = easySeeds[1];
+        var addresses = easySeeds[2];
+        var hardSeeds = [seedUsers(addresses, categories), seedCars(makes, categories)];
+
+        return Promise.all(hardSeeds);
+    })
+    .then(function(hardSeeds) {
+
+        var users = hardSeeds[0];
+        var cars = hardSeeds[1];
+        var hardestSeeds = [seedOrders(users, cars), seedReviews(users, cars)]
+
+        return Promise.all(hardestSeeds);
+    })
+    .then(function () {
         console.log(chalk.green('Seed successful!'));
         process.kill(0);
     }).catch(function (err) {

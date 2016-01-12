@@ -35,7 +35,7 @@ var schema = new mongoose.Schema({
     },
     photos: {
         type: [String],
-        default: '<fill_in_default_photo_url>'
+        default: '<default_image_url>'
     },
     categories: [{
         type: mongoose.Schema.Types.ObjectId,
