@@ -4,4 +4,4 @@
 require('./user');
 require('./car');
 require('./address');
-
+require('./category');
