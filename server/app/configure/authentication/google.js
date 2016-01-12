@@ -19,13 +19,16 @@ module.exports = function (app) {
 
         UserModel.findOne({ 'google.id': profile.id }).exec()
             .then(function (user) {
-
+                console.log(profile);
                 if (user) {
                     return user;
                 } else {
                     return UserModel.create({
+                        //make consistent with user model
+                        email: profile.emails[0].value,
+                        photos : [profile._json.picture],
                         google: {
-                            id: profile.id
+                            id: profile.id,
                         }
                     });
                 }
@@ -49,7 +52,9 @@ module.exports = function (app) {
     }));
 
     app.get('/auth/google/callback',
-        passport.authenticate('google', { failureRedirect: '/login' }),
+        passport.authenticate('google', {
+            failureRedirect: '/login'
+        }),
         function (req, res) {
             res.redirect('/');
         });
