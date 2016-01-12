@@ -34,9 +34,10 @@ describe('User model', function () {
             photos : ["https://www.fillmurray.com/460/300", "https://www.fillmurray.com/460/400"]
         })
         .then(function(user) {
-            expect(user.email).to.equal("bobDole@gmail.com")
-            expect(user.isAdmin).to.equal(true)
-            expect(user.photos.length).to.equal(2)
+            expect(user.email).to.equal("bobDole@gmail.com");
+            expect(user.isAdmin).to.equal(true);
+            expect(user.photos.length).to.equal(2);
+            done();
         });
     });
 
