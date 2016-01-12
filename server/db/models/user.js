@@ -25,7 +25,10 @@ var schema = new mongoose.Schema({
         id: String
     },
     google: {
-        id: String
+        id: String,
+        token: String,
+        email: String,
+        name: String
     },
     shippingAddress: {
         type: mongoose.Schema.Types.ObjectId,
