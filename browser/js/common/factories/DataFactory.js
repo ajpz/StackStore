@@ -63,7 +63,26 @@ app.factory('DataFactory', function($http) {
             .then(extractData);
         },
         // users...
-
+        fetchUsers() {
+            return $http.get('/api/users/')
+            .then(extractData)
+        },
+        fetchUser(userId) {
+            return $http.get('/api/users/' + userId.toString())
+            .then(extractData);
+        },
+        addUser(car) {
+            return $http.post('/api/users/', car)
+            .then(extractData);
+        },
+        updateUser(userId, update) {
+            return $http.put('/api/users/' + userId.toString(), update)
+            .then(extractData);
+        },
+        deleteUser(userId) {
+            return $http.delete('/api/users/' + userId.toString())
+            .then(extractData);
+        },
 
 
     };
