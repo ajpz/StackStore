@@ -13,4 +13,4 @@ var categorySchema = new mongoose.Schema({
     }]
 })
 
-mongoose.model('Category', categorySchema)
+module.exports = mongoose.model('Category', categorySchema)
