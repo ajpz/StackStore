@@ -1,7 +1,7 @@
 navbar {
 
   display: block;
-  background: white;
+  background: black;
   border-bottom: 1px solid black;
   box-shadow: 1px 1px 14px -3px black;
 
@@ -18,8 +18,9 @@ navbar {
   }
 
   a {
-    color: black;
-    font-size: 16px;
+    color: #f30046;
+    font-size: 24px;
+    font-family: Century Gothic, sans-serif;
   }
 
   .nav > li > a {
@@ -39,10 +40,15 @@ navbar {
 
   .login-button {
     float: right;
-    border: 1px solid black;
+    border: none;
     margin-top: 10px;
+    color: #A30909;
     background: none;
     outline: none !important;
+    font-family: Century Gothic, sans-serif;
+    &:hover {
+     color: #0D8686;
+    }
   }
 
   .welcome {
