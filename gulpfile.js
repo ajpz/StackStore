@@ -60,7 +60,7 @@ gulp.task('testServerJS', function () {
 
 gulp.task('testSpecific', function () {
     require('babel/register');
-    return gulp.src('./tests/server/routes/orders-test.js', {
+    return gulp.src('./tests/server/routes/categories-test.js', {
         read: false
     }).pipe(mocha({ reporter: 'spec' }));
 });
