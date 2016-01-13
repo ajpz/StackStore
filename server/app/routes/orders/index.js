@@ -29,11 +29,7 @@ router.route('/:orderId')
         .then(null, next);
     })
     .put(function (req, res, next) {
-        Order.fundById(req.params.orderId).exec()
-        .then(function(order) {
-
-
-        })
+        Order.findOneAndUpdate({_id:req.params.orderId},req.body, {new:true}).exec()
         .then(function(order) {
             res.status(200).json(order);
         })
