@@ -3,11 +3,11 @@
 var mongoose = require('mongoose');
 
 var carSchema = new mongoose.Schema({
-	make: [{
+	make: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'MakeAndModel',
 		required: true
-	}],
+	},
 	model: {
 		type: String
 	},

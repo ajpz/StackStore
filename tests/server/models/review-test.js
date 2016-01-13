@@ -12,6 +12,7 @@ require('../../../server/db/models');
 var Review = mongoose.model('Review');
 var Car = mongoose.model('Car');
 var User = mongoose.model('User');
+var MakeAndModel = mongoose.model('MakeAndModel');
 
 describe('Review model', function () {
 
@@ -29,14 +30,22 @@ describe('Review model', function () {
     });
 
     it('should make a review document in the database', function (done) {
-        var car = Car.create({
-            make: "Ford",
-            year: 1948,
-            color: "Black",
-            condition: "Poor",
-            mileage: 100400,
-        }),
-        user = User.create({
+
+        var car = MakeAndModel.create({
+            make: 'Ford',
+            model: ['Fiesta']
+        })
+        .then(function(mAndm) {
+            return Car.create({
+                make: mAndm._id,
+                year: 1948,
+                color: "Black",
+                condition: "Poor",
+                mileage: 100400,
+            })
+        });
+
+        var user = User.create({
             email : "bobDole@gmail.com",
             password : "dolemite",
             isAdmin : true,
