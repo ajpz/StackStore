@@ -3,6 +3,7 @@ app.factory('DataFactory', function($http) {
     var extractData = res => res.data;
 
     return {
+        // cars....
         fetchCars() {
             return $http.get('/api/cars/')
             .then(extractData)
@@ -23,13 +24,47 @@ app.factory('DataFactory', function($http) {
             return $http.delete('/api/cars/' + carId.toString())
             .then(extractData);
         },
-        fetchCategory() {
+        // categories...
+        fetchCategories() {
             return $http.get('/api/categories')
             .then(extractData)
         },
-        addCategory(){
+        addCategory(category){
             return $http.post('api/categories', category)
             .then(extractData)
-        }
+        },
+        updatedCategory(categoryId, update){
+            return $http.poast('api/categories' + categoryId.toString(), update)
+            .then(extractData);
+        },
+        deleteCategory(categoryId) {
+            return $http.delete('/api/cars/' + categoryId.toString())
+            .then(extractData);
+        },
+        // orders...
+        fetchOrders() {
+            return $http.get('/api/orders/')
+            .then(extractData)
+        },
+        fetchOrder(orderId) {
+            return $http.get('/api/orders/' + orderId.toString())
+            .then(extractData)
+        },
+        addOrder(order) {
+            return $http.post('/api/orders/', order)
+            .then(extractData)
+        },
+        updateOrder(orderId, update) {
+            return $http.put('/api/orders/' + orderId.toString(), update)
+            .then(extractData)
+        },
+        deleteOrder(orderId) {
+            return $http.delete('/api/cars/' + orderId.toString())
+            .then(extractData);
+        },
+        // users...
+
+
+
     };
 });
