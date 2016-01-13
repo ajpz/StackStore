@@ -9,6 +9,7 @@ var mongoose = require('mongoose');
 require('../../../server/db/models');
 
 var Car = mongoose.model('Car');
+var MakeAndModel = mongoose.model('MakeAndModel');
 
 describe('Car model', function () {
 
@@ -26,15 +27,21 @@ describe('Car model', function () {
     });
 
     it('should make a car document in the database', function (done) {
-        Car.create({
-            make: "Ford",
-            year: 1948,
-            color: "Black",
-            condition: "Poor",
-            mileage: 100400,
+        MakeAndModel.create({
+            make: 'Ford',
+            model: ['Fiesta']
+        })
+        .then(function(mAndm) {
+            return Car.create({
+                make: mAndm._id,
+                year: 1948,
+                color: "Black",
+                condition: "Poor",
+                mileage: 100400,
+            })
         })
         .then(function(car) {
-            expect(car.make).to.equal("Ford");
+            // expect(car.make).to.equal("Ford");
             expect(car.year).to.equal(1948);
             expect(car.color).to.equal("Black");
             expect(car.condition).to.equal("Poor");
