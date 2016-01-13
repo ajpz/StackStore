@@ -71,7 +71,7 @@ app.factory('DataFactory', function($http) {
             return $http.get('/api/users/' + userId.toString())
             .then(extractData);
         },
-        addUser(car) {
+        addUser(userId) {
             return $http.post('/api/users/', car)
             .then(extractData);
         },
