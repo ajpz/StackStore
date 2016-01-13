@@ -9,9 +9,11 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('AboutController', function ($scope, FullstackPics) {
+app.controller('AboutController', function ($scope, FullstackPics, DataFactory) {
 
-    // Images of beautiful Fullstack people.
     $scope.images = _.shuffle(FullstackPics);
-
+    DataFactory.fetchCategories()
+        .then(categories => {
+            $scope.categories = categories;
+        });
 });
