@@ -27,17 +27,15 @@ describe('Address model', function () {
 
     it('should make a address document in the database', function (done) {
         Address.create({
-            streetNumber: 5,
-            street: "Hanover",
-            unit: "25th floor",
+            street1: "5 Hanover",
+            street2: "25th floor",
             city: "New York",
             state: "NY",
             zip: 10038
         })
         .then(function(address) {
-            expect(address.streetNumber).to.equal(5);
-            expect(address.street).to.equal("Hanover");
-            expect(address.unit).to.equal("25th floor");
+            expect(address.street1).to.equal("5 Hanover");
+            expect(address.street2).to.equal("25th floor");
             expect(address.city).to.equal("New York");
             expect(address.state).to.equal("NY");
             expect(address.zip).to.equal(10038);

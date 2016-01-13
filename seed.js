@@ -105,17 +105,15 @@ var seedAddress = function() {
 
     var addresses = [
         {
-            streetNumber: 5,
-            street: 'Hanover Street',
-            unit: '25th Floor',
+            street1: '5 Hanover Street',
+            street2: '25th Floor',
             city: 'New York',
             state: 'NY',
             zip: 10038
         },
         {
-            streetNumber: 85,
-            street: 'Broad Street',
-            unit: '21st Floor',
+            street1: '85 Broad Street',
+            street2: '21st Floor',
             city: 'New York',
             state: 'NY',
             zip: 10037
