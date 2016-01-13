@@ -3,11 +3,11 @@
 var mongoose = require('mongoose');
 
 var carSchema = new mongoose.Schema({
-	make: [{
+	make: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'MakeAndModel',
 		required: true
-	}],
+	},
 	model: {
 		type: String
 	},
@@ -58,4 +58,4 @@ var carSchema = new mongoose.Schema({
 
 })
 
-mongoose.model('Car', carSchema)
+module.exports = mongoose.model('Car', carSchema)
