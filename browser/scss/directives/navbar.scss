@@ -12,13 +12,17 @@ navbar {
   }
 
   fullstack-logo {
-    margin-top: 5px;
-    margin-right: 20px;
+    margin-top: -10px;
+    margin-right: 100px;
+    margin-bottom: -10px;
     width: 40px;
+    font-size: 20px;
+    font-family: Copperplate;
+    color: #696060
   }
 
   a {
-    color: #f30046;
+    color: #CC0E10;
     font-size: 24px;
     font-family: Century Gothic, sans-serif;
   }
@@ -27,7 +31,7 @@ navbar {
     cursor: pointer;
     transition: color 0.2s;
     &.active {
-      color: darken(#f31214, 10%);
+      color: darken(#CC0E10, 10%);
     }
     &:hover {
       background: none;
@@ -42,7 +46,7 @@ navbar {
     float: right;
     border: none;
     margin-top: 10px;
-    color: #A30909;
+    color: #CC0E10;
     background: none;
     outline: none !important;
     font-family: Century Gothic, sans-serif;
