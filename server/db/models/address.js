@@ -27,4 +27,4 @@ var addressSchema = new mongoose.Schema({
 
 //create pre-hook to populate location coordinates
 
-mongoose.model('Address', addressSchema);
+module.exports = mongoose.model('Address', addressSchema);

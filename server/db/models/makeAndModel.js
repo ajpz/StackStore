@@ -9,4 +9,4 @@ var schema = new mongoose.Schema({
     }
 })
 
-mongoose.model('MakeAndModel', schema);
+module.exports = mongoose.model('MakeAndModel', schema);
