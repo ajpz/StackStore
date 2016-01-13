@@ -6,6 +6,7 @@ var _ = require('lodash');
 var schema = new mongoose.Schema({
     email: {
         type: String,
+        unique: true,
     },
     password: {
         type: String
@@ -23,7 +24,10 @@ var schema = new mongoose.Schema({
         id: String
     },
     google: {
-        id: String
+        id: String,
+        token: String,
+        email: String,
+        name: String
     },
     shippingAddress: {
         type: mongoose.Schema.Types.ObjectId,
@@ -34,15 +38,12 @@ var schema = new mongoose.Schema({
         ref: 'Address'
     },
     photos: {
-        type: [String]
+        type: [String],
+        default: '<default_image_url>'
     },
     categories: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category'
-    }],
-    orders: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Order'
     }],
     isAdmin: {
         type: Boolean,

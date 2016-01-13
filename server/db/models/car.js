@@ -3,14 +3,13 @@
 var mongoose = require('mongoose');
 
 var carSchema = new mongoose.Schema({
-	make: {
-		type: String,
-		enum: ['Ford', 'Toyota', 'Edsel'],
-		required: true
-	},
-	model: {
+	make: [{
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'CarModel',
+		ref: 'MakeAndModel',
+		required: true
+	}],
+	model: {
+		type: String
 	},
 	year: {
 		type: Number,
