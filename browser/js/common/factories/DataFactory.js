@@ -1,27 +1,35 @@
-app.factory('CarFactory', function($http) {
+app.factory('DataFactory', function($http) {
 
     var extractData = res => res.data;
 
     return {
-        fetchCars: function() {
+        fetchCars() {
             return $http.get('/api/cars/')
             .then(extractData)
         },
-        fetchCar: function(carId) {
+        fetchCar(carId) {
             return $http.get('/api/cars/' + carId.toString())
             .then(extractData);
         },
-        addCar: function(car) {
+        addCar(car) {
             return $http.post('/api/cars/', car)
             .then(extractData);
         },
-        updateCar: function(carId, update) {
+        updateCar(carId, update) {
             return $http.put('/api/cars/' + carId.toString(), update)
             .then(extractData);
         },
-        deleteCar: function(carId) {
+        deleteCar(carId) {
             return $http.delete('/api/cars/' + carId.toString())
             .then(extractData);
+        },
+        fetchCategory() {
+            return $http.get('/api/categories')
+            .then(extractData)
+        },
+        addCategory(){
+            return $http.post('api/categories', category)
+            .then(extractData)
         }
-    }
-})
+    };
+});
