@@ -29,12 +29,16 @@ app.factory('DataFactory', function($http) {
             return $http.get('/api/categories')
             .then(extractData)
         },
+        fetchCategory(categoryId) {
+            return $http.get('/api/categories' + categoryId)
+            .then(extractData)
+        },
         addCategory(category){
             return $http.post('api/categories', category)
             .then(extractData)
         },
-        updatedCategory(categoryId, update){
-            return $http.poast('api/categories' + categoryId.toString(), update)
+        updateCategory(categoryId, update){
+            return $http.put('api/categories' + categoryId.toString(), update)
             .then(extractData);
         },
         deleteCategory(categoryId) {
