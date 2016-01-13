@@ -14,6 +14,7 @@ var db;
 describe('Categories Route', function() {
     before('Establish DB connection', function(done){
         if(!mongoose.connection.db) mongoose.connect(dbURI, done);
+        done();
     });
 
     beforeEach('Seed sample data', function(done) {
