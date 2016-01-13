@@ -24,6 +24,7 @@ router.route('/:orderId')
     .get(function (req, res, next) {
         Order.findById(req.params.orderId).exec()
         .then(function(order) {
+            if(!order) return res.status(404).end();
             res.status(200).json(order);
         })
         .then(null, next);
