@@ -14,6 +14,7 @@ app.directive('homeSidebar', function(DataFactory) {
             };
             $scope.showCategories = false;
             $scope.toggle = function() {
+                console.log($scope.showCategories)
                 if ($scope.showCategories === false) {
                     $scope.showCategories = true
                 } else {
