@@ -3,13 +3,10 @@
 var mongoose = require('mongoose');
 
 var addressSchema = new mongoose.Schema({
-  streetNumber: {
-    type: Number
-  },
-  street: {
+  street1: {
     type: String
   },
-  unit: {
+  street2: {
     type: String
   },
   city: {
@@ -19,8 +16,7 @@ var addressSchema = new mongoose.Schema({
     type: String
   },
   zip: {
-    type: Number,
-    require: true
+    type: Number
   },
   location: [Number]
 });
