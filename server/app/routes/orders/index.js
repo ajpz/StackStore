@@ -5,7 +5,8 @@ module.exports = router;
 
 router.route('/')
     .get(function (req, res, next) {
-        Order.find({}).exec()
+        var query = req.query || {};
+        Order.find(query).exec()
         .then(function (orders){
             res.send(orders)
         })
