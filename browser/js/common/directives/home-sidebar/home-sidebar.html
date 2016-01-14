@@ -12,8 +12,23 @@
 
             <!-- /input-group -->
         </li>
-        <li ng-repeat="category in categories">
-            <a href="#">{{ category.name }}</a>
+        <li id="categories">
+            <a href="">Categories</a>
+            <ul id="subcategories" ng-show="showCategories">
+                <li ng-repeat="category in categories">
+                    <a href="">{{category.name}}</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <p>Make</p>
+        </li>
+        <li>
+            <p>Year</p>
+            <input type="range" min="1900" max="2016">
+        </li>
+        <li>
+            <p>Color</p>
         </li>
     </ul>
 </div>

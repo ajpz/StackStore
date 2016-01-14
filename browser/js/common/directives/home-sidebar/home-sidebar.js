@@ -7,10 +7,16 @@ app.directive('homeSidebar', function(DataFactory) {
         },
         templateUrl : 'js/common/directives/home-sidebar/home-sidebar.html',
         link: function(scope, el, attrs) {
-            // DataFactory.fetchCategories()
-            //     .then(categories => {
-            //         scope.categories = categories;
-            //     });
+
+            var categories = el[0].querySelector('#categories');
+            angular.element(categories).on("click", function (e) {
+               e.preventDefault();
+               if (scope.showCategories === true) {
+                    scope.showCategories = false;
+               } else {
+                    scope.showCategories = true;
+               }
+            });
         },
     }
 });
