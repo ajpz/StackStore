@@ -12,10 +12,11 @@ var clearDB = require('mocha-mongoose')(dbURI);
 var supertest = require('supertest');
 var app = require('../../../server/app');
 var db;
+var makeId;
 
 describe('Cars Route', function() {
     before('Establish DB connection', function(done){
-        if(!mongoose.connection.db) mongoose.connect(dbURI, done);
+        if(!mongoose.connection.db) return mongoose.connect(dbURI, done);
         done()
     });
 
@@ -25,6 +26,7 @@ describe('Cars Route', function() {
             model: 'Mustang'
         })
         .then(function(mAndm) {
+            makeId = mAndm._id;
             return Car.create({
                 make: mAndm._id,
                 model: 'Mustang',
@@ -41,7 +43,8 @@ describe('Cars Route', function() {
         })
         .then(function() {
             done();
-        });
+        })
+        .then(null, done);
     });
 
     afterEach('Clear test database', function(done) {
@@ -65,9 +68,67 @@ describe('Cars Route', function() {
             guestAgent.get('/api/cars/').expect(200)
             .end(function(err, response) {
                 if(err) return done(err);
-                expect(response.body).to.be.an('array')
+                expect(response.body.length).to.equal(1)
                 done()
             });
         });
     });
+
+    describe('Cars have full CRUD capabilities', function() {
+        var guestAgent;
+        var newCar;
+        var carId;
+
+        before('Get id for the "make" seeded above', function(done) {
+            MakeAndModel.find({}).exec()
+            .then(function(MM){
+                newCar = {
+                    make: makeId,
+                    model: 'Mustang',
+                    year: 1970,
+                    color: 'Black',
+                    condition: 'Poor',
+                    mileage: 1000,
+                    horsePower: 500,
+                    acceleration: 4.2,
+                    kickassFactor: 1,
+                    price: 50000,
+                    count: 1
+                };
+                done();
+            }).then(null, done);
+        });
+
+        beforeEach('Create guest agent', function() {
+            guestAgent = supertest.agent(app);
+        });
+
+        it('POST should make a new car', function(done) {
+            guestAgent.post('/api/cars')
+            .send(newCar)
+            .expect(201)
+            .end(function(err, res) {
+                if(err) return done(err);
+                expect(res.body.condition).to.equal('Poor')
+                Car.findOne({'condition': 'Poor'}).exec()
+                .then(function(car) {
+                    carId = car._id;
+                    expect(car.year).to.equal(1970);
+                    done();
+                })
+            })
+        })
+
+        it('GET should return the car that was made', function(done) {
+            console.log('\n\n\n carId: ', carId)
+            guestAgent.get('/api/cars/')
+            .expect(200)
+            .end(function(err, response) {
+                console.log("HEREL: ", response.body)
+                if(err) return done(err);
+                // expect(response.body.year).to.equal(1970);
+                done();
+            })
+        })
+    })
 })
