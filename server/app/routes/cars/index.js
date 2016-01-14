@@ -1,43 +1,42 @@
+'use strict';
 var router = require('express').Router();
-var mongoose = require('mongoose')
-var Car = mongoose.model('Car')
+var Car = require("mongoose").model('Car');
 module.exports = router;
 
-
 router.route('/')
-    .get(function(req, res, next) {
+    .get(function (req, res, next) {
         Car.find({}).exec()
-        .then(function(cars){
-            res.status(200).send(cars)
-        }).then(null, next)
+        .then(function (cars){
+            res.send(cars)
+        })
+        .then(null, next)
     })
     .post(function(req, res, next) {
-        Car.create(req.body)
-        .then(function(car){
+        Car.create(req.body).exec()
+        .then(function (car){
             res.status(201).send(car)
-        }).then(null, next)
-    })
+        })
+        .then(null, next)
+    });
 
 router.route('/:carId')
-    .get(function(req, res, next){
-        Car.findOne({_id:req.params.carId}).exec()
-        .then(function(car){
-            if(!car) return res.status(404).end()
-            res.status(200).send(car)
+    .get(function (req, res, next){
+        Car.findById(req.params.carId).exec()
+        .then(function (car){
+            if(!car) return res.status(404).end();
+            res.send(car)
         }).then(null, next)
     })
-    .put(function(req, res, next) {
-        Car.findOneAndUpdate({_id:req.params.carId}, req.body, {new: true, runValidators: true})
+    .put(function (req, res, next) {
+        Car.findByIdAndUpdate(req.params.carId, req.body, {new: true, runValidators: true})
         .exec()
-        .then(function(updatedCar){
+        .then(function (updatedCar){
             res.status(200).send(updatedCar)
         }).then(null, next)
     })
-    .delete(function(req, res, next) {
-        Car.remove({_id: req.params.carId}).exec()
-        .then(function(car){
+    .delete(function (req, res, next) {
+        Car.findByIdAndRemove(req.params.carId).exec()
+        .then(function (car){
             res.status(204).end()
         }).then(null, next)
-    })
-
-
+    });
