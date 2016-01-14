@@ -1,23 +1,30 @@
 app.directive('homeSidebar', function(DataFactory) {
 
     return {
-        restrict : 'E',
+        restrict: 'E',
         scope: {
             categories: '='
         },
-        templateUrl : 'js/common/directives/home-sidebar/home-sidebar.html',
+        templateUrl: 'js/common/directives/home-sidebar/home-sidebar.html',
         link: function(scope, el, attrs) {
-
-            var categories = el[0].querySelector('#categories');
-            angular.element(categories).on("click", function (e) {
-               e.preventDefault();
-               if (scope.showCategories === true) {
-                    scope.showCategories = false;
-               } else {
-                    scope.showCategories = true;
-               }
-            });
         },
+        controller: function($scope, DataFactory) {
+            $scope.changeCategory = function(categoryName) {
+                console.log(categoryName);
+            };
+            $scope.showCategories = false;
+            $scope.toggle = function() {
+                if ($scope.showCategories === false) {
+                    $scope.showCategories = true
+                } else {
+                    $scope.showCategories = false;
+                }
+            };
+            DataFactory.fetchCategories()
+                .then(function(categories) {
+                    $scope.categories = categories;
+                });
+        }
     }
 });
 // MAKE TWO SIDEBARS.....

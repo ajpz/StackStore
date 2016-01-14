@@ -9,17 +9,16 @@
                                 </button>
                             </span>
             </div>
-
             <!-- /input-group -->
         </li>
-        <li id="categories">
+        <li id="categories" ng-click="toggle()">
             <a href="">Categories</a>
-            <ul id="subcategories" ng-show="showCategories">
-                <li ng-repeat="category in categories">
-                    <a href="">{{category.name}}</a>
-                </li>
-            </ul>
         </li>
+        <ul id="subcategories" ng-show="showCategories">
+            <li ng-repeat="category in categories">
+                <a id="categoryName" ng-click="changeCategory(category.name)">{{category.name}}</a>
+            </li>
+        </ul>
         <li>
             <p>Make</p>
         </li>
