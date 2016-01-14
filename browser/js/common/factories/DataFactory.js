@@ -50,6 +50,10 @@ app.factory('DataFactory', function($http) {
             return $http.get('/api/orders/')
             .then(extractData)
         },
+        fetchOrdersForUser(userId) {
+            return $http.get('/api/orders/', { user: userId })
+            .then(extractData)
+        },
         fetchOrder(orderId) {
             return $http.get(`/api/orders/${orderId}`)
             .then(extractData)
@@ -75,7 +79,7 @@ app.factory('DataFactory', function($http) {
             return $http.get(`/api/users/${userId}`)
             .then(extractData);
         },
-        addUser(userId) {
+        addUser(user) {
             return $http.post('/api/users/', user)
             .then(extractData);
         },
