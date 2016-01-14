@@ -21,7 +21,7 @@ router.route('/')
 
 router.route('/:userId')
     .get(function (req, res, next){
-        Used.findById(req.params.userId).exec()
+        User.findById(req.params.userId).exec()
         .then(function (user){
             if(!user) return res.status(404).end();
             res.send(user)
