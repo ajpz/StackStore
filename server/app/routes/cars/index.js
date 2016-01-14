@@ -20,8 +20,10 @@ router.route('/')
 
 router.route('/:carId')
     .get(function(req, res, next){
+        console.log('ROUTE HIT with : ', req.params.carId)
         Car.findOne({_id:req.params.carId}).exec()
         .then(function(car){
+            console.log('\n\n\nFOUND THE CAR: ', car)
             if(!car) return res.status(404).end()
             res.status(200).send(car)
         }).then(null, next)
