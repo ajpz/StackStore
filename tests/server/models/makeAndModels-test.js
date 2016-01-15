@@ -8,9 +8,9 @@ var mongoose = require('mongoose');
 // Require in all models.
 require('../../../server/db/models');
 
-var MakeAndModel = mongoose.model('MakeAndModel');
+var MakeAndModels = mongoose.model('MakeAndModels');
 
-describe('MakeAndModel model', function () {
+describe('MakeAndModels model', function () {
 
     beforeEach('Establish DB connection', function (done) {
         if (mongoose.connection.db) return done();
@@ -22,6 +22,6 @@ describe('MakeAndModel model', function () {
     });
 
     it('should exist', function () {
-        expect(MakeAndModel).to.be.a('function');
+        expect(MakeAndModels).to.be.a('function');
     });
 });

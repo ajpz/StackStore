@@ -11,7 +11,7 @@ router.route('/')
         })
         .then(null, next)
     })
-    .post(function(req, res, next) {
+    .post(function (req, res, next) {
         Car.create(req.body).exec()
         .then(function (car){
             res.status(201).send(car)

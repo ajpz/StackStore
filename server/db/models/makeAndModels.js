@@ -4,9 +4,9 @@ var schema = new mongoose.Schema({
     make: {
         type: String
     },
-    model: {
+    models: {
         type: [String]
     }
 })
 
-module.exports = mongoose.model('MakeAndModel', schema);
+module.exports = mongoose.model('MakeAndModels', schema);

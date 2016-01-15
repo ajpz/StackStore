@@ -6,13 +6,13 @@ module.exports = router;
 router.route('/')
     .get(function (req, res, next) {
         var query = req.query || {};
-        Order.find(query).exec()
+        Order.find(query).populate('car').exec()
         .then(function (orders){
             res.send(orders)
         })
         .then(null, next)
     })
-    .post(function(req, res, next) {
+    .post(function (req, res, next) {
         Order.create(req.body).exec()
         .then(function (order){
             res.status(201).send(order)

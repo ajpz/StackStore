@@ -11,7 +11,7 @@ router.route('/')
         })
         .then(null, next)
     })
-    .post(function(req, res, next) {
+    .post(function (req, res, next) {
         Category.create(req.body).exec()
         .then(function (category){
             res.status(201).send(category)
