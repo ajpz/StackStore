@@ -18,7 +18,7 @@ var orderSchema = new mongoose.Schema({
         ref: 'Car'
     }],
     date: {
-        type : Date
+        type: Date
     },
     amount: {
         type: Number,
@@ -26,4 +26,4 @@ var orderSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Order',orderSchema);
+module.exports = mongoose.model('Order', orderSchema);

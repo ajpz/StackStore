@@ -4,7 +4,7 @@ var schema = new mongoose.Schema({
     make: {
         type: String
     },
-    model: {
+    models: {
         type: [String]
     }
 })
