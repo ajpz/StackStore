@@ -1,26 +1,40 @@
-app.factory('Selection', function($rootScope) {
+app.factory('Selection', $rootScope => {
     return {
-        init : function(config) { //
-            this.makes = config.makes;
-            this.cars = config.cars;
-            this.reset();
-        },
-        reset : function() {
-            this.display = this.cars
-            $rootScope.$broadcast('categorySelected');
-        },
         cars : null,
         makes : null,
+        currentMake : null,
         display : [],
-        category : function(categoryId) {
-            this.display = this.cars.filter(function(car) {
+        init(config) { //
+            if (config.preferences) {
+                //do something
+            } else {
+                this.cars = config.cars;
+                this.reset();
+            }
+        },
+        reset() {
+            this.display = this.cars;
+            this.currentMake = null;
+            $rootScope.$broadcast('refreshSelection');
+        },
+        filterOnCategory(categoryId) {
+            this.display = this.cars.filter(car => {
                 return car.categories.indexOf(categoryId) > -1;
             });
-            $rootScope.$broadcast('categorySelected');
+            $rootScope.$broadcast('refreshSelection');
         },
-
-        make : {
-
+        filterOnMake(make) {
+            this.currentMake = JSON.parse(make);
+            this.display = this.cars.filter(car => {
+                return car.make === this.currentMake._id;
+            });
+            $rootScope.$broadcast('refreshSelection');
+        },
+        filterOnModel(model) {
+            this.display = this.cars.filter(car => {
+                return car.make === this.currentMake._id && car.model === model;
+            });
+            $rootScope.$broadcast('refreshSelection');
         }
     }
 });

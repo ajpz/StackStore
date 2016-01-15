@@ -14,19 +14,10 @@ app.config(function ($stateProvider) {
 app.controller('HomeCtrl', function($scope, cars, DataFactory, Selection) {
     Selection.init({
         cars: cars,
-        makes : [
-            {
-                make: "toyota",
-                models: ["corolla", "prius"]
-            },
-            {
-                make: "ford",
-                models: ["mustang", "focus"]
-            }
-        ]
+        preferences : false
     });
     $scope.cars = Selection.display;
-    $scope.$on('categorySelected', function() {
+    $scope.$on('refreshSelection', function() {
         $scope.cars = Selection.display;
     });
 })

@@ -19,13 +19,36 @@
                 <a id="categoryName" ng-click="changeCategory(category)">{{category.name}}</a>
             </li>
         </ul>
-        <li>
-            <p>Make</p>
+        <li id="showMakes" ng-click="toggleMake()">
+            <a href="">Make</a>
         </li>
-        <li>
-            <p>Year</p>
-            <input type="range" min="1900" max="2016">
+        <ul id="makes" ng-show="showMakes">
+            <li>
+                <select ng-model="select.make" name="make" id="make-select">
+                    <option ng-repeat="make in makes" value="{{make}}">
+                        {{make.make}}
+                    </option>
+                </select>
+                <button ng-click="selectMake()">Select</button>
+            </li>
+            <li id="models">
+                <select ng-model="select.model" name="model" id="model">
+                    <option ng-repeat="model in models" value="{{model}}">{{model}}</option>
+                </select>
+                <button ng-click="selectModel()">Select</button>
+            </li>
+        </ul>
+        <li id="showYear" ng-click="toggleYear()">
+            <a href="">Year</a>
         </li>
+        <ul ng-show="showYear">
+            <li>
+                <label for="yearMin">Minimum</label>
+                <input type="text" ng-model="year.min">
+                <label for="yearMax">Maximum</label>
+                <input type="text" ng-model="year.max">
+            </li>
+        </ul>
         <li>
             <p>Color</p>
         </li>
