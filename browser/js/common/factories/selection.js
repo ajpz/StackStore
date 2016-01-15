@@ -38,7 +38,8 @@ app.factory('Selection', $rootScope => {
         },
         filterOnYear(start, end) {
             this.display = this.cars.filter(car => {
-                return start <= car.year <= end;
+                if (end < start) return end <= car.year <= start;
+                return start <= car.year && car.year <= end;
             });
             $rootScope.$broadcast('refreshSelection');
         }

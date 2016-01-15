@@ -12,6 +12,11 @@ app.directive('homeSidebar', DataFactory => {
                 makes : false
             };
 
+            $scope.year = {
+                min : 1920,
+                max : 2016
+            };
+
             $scope.toggle = menuOption => {
                 Selection.reset();
                 if ($scope.show[menuOption]) {
@@ -22,7 +27,7 @@ app.directive('homeSidebar', DataFactory => {
                 }
             }
 
-            $scope.changeCategory = category => {
+            $scope.selectCategory = category => {
                 Selection.filterOnCategory(category._id)
             };
 
@@ -34,6 +39,13 @@ app.directive('homeSidebar', DataFactory => {
             $scope.selectModel = () => {
                 Selection.filterOnModel($scope.select.model);
             };
+
+            $scope.selectYear = () => {
+                console.log($scope.year.min)
+                console.log($scope.year.max)
+
+                Selection.filterOnYear($scope.year.min, $scope.year.max)
+            }
 
             DataFactory.fetchCategories()
                 .then(categories => {

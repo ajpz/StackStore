@@ -16,7 +16,7 @@
         </li>
         <ul id="subcategories" ng-show="show.categories">
             <li ng-repeat="category in categories">
-                <a id="categoryName" ng-click="changeCategory(category)">{{category.name}}</a>
+                <a id="categoryName" ng-click="selectCategory(category)">{{category.name}}</a>
             </li>
         </ul>
         <li id="showMakes" ng-click="toggle('makes')">
