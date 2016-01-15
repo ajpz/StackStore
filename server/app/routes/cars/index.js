@@ -24,7 +24,6 @@ router.route('/:carId')
         Car.findById(req.params.carId).exec()
         .then(function (car){
             if(!car) return res.status(404).end();
-            Car.populate('reviews')
             res.send(car)
         }).then(null, next)
     })
