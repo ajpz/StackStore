@@ -11,7 +11,7 @@ router.route('/')
         })
         .then(null, next)
     })
-    .post(function(req, res, next) {
+    .post(function (req, res, next) {
         User.create(req.body).exec()
         .then(function (user){
             res.status(201).send(user)

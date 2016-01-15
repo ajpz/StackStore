@@ -3,28 +3,28 @@
 var mongoose = require('mongoose');
 
 var carSchema = new mongoose.Schema({
-	make: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'MakeAndModel',
-		required: true
-	},
-	model: {
-		type: String
-	},
-	year: {
-		type: Number,
-		required: true
-	},
-	color: {
-		type: String,
-		enum: ['Black', 'White', 'Red'],
-		required: true
-	},
-	condition: {
-		type: String,
-		enum: ['Poor', 'Good', 'Excellent'],
-		required: true
-	},
+    make: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'MakeAndModels',
+        required: true
+    },
+    model: {
+        type: String
+    },
+    year: {
+        type: Number,
+        required: true
+    },
+    color: {
+        type: String,
+        enum: ['Black', 'White', 'Silver', 'Grey', 'Red', 'Blue'],
+        required: true
+    },
+    condition: {
+        type: String,
+        enum: ['Poor', 'Good', 'Excellent'],
+        required: true
+    },
     mileage: {
         type: Number,
     },
@@ -32,8 +32,8 @@ var carSchema = new mongoose.Schema({
         type: [String]
     },
     categories: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Category'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category'
     }],
     horsePower: {
         type: Number

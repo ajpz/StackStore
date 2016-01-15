@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');
 require('../../../server/db/models');
 var Order = mongoose.model('Order');
-var MakeAndModel = mongoose.model('MakeAndModel');
+var MakeAndModels = mongoose.model('MakeAndModels');
 var User = mongoose.model('User');
 var Car = mongoose.model('Car');
 
@@ -24,7 +24,7 @@ describe('Order Route', function() {
 
     beforeEach('Seed sample data', function(done) {
         var carId;
-        MakeAndModel.create({
+        MakeAndModels.create({
             make: 'Ford',
             model: 'Mustang'
         })
