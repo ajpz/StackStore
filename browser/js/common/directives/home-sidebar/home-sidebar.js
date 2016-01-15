@@ -2,15 +2,13 @@ app.directive('homeSidebar', function(DataFactory) {
 
     return {
         restrict: 'E',
-        scope: {
-            categories: '='
-        },
         templateUrl: 'js/common/directives/home-sidebar/home-sidebar.html',
         link: function(scope, el, attrs) {
         },
-        controller: function($scope, DataFactory) {
+        controller: function($scope, DataFactory, Selection) {
             $scope.changeCategory = function(categoryName) {
-                console.log(categoryName);
+                Selection.category = "categories";
+                Selection.searchTerm = categoryName;
             };
             $scope.showCategories = false;
             $scope.toggle = function() {

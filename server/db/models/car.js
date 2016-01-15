@@ -31,7 +31,7 @@ var carSchema = new mongoose.Schema({
     photos: {
         type: [String]
     },
-    categoryIds: [{
+    categories: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Category'
     }],
