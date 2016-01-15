@@ -6,10 +6,23 @@ app.directive('homeSidebar', DataFactory => {
         link(scope, el, attrs) {},
         controller($scope, DataFactory, Selection) {
 
+            DataFactory.fetchCategories()
+                .then(categories => {
+                    $scope.categories = categories;
+                });
+
+            DataFactory.fetchMakesAndModels()
+                .then(makes => {
+                    $scope.makes = makes;
+                });
+
+            $scope.colors = ['Black', 'White', 'Silver', 'Grey', 'Red', 'Blue'];
+
             $scope.show = {
                 categories : false,
                 year : false,
-                makes : false
+                makes : false,
+                color: false,
             };
 
             $scope.year = {
@@ -28,7 +41,7 @@ app.directive('homeSidebar', DataFactory => {
             }
 
             $scope.selectCategory = category => {
-                Selection.filterOnCategory(category._id)
+                Selection.filterOnCategory(category._id);
             };
 
             $scope.selectMake = () => {
@@ -41,21 +54,13 @@ app.directive('homeSidebar', DataFactory => {
             };
 
             $scope.selectYear = () => {
-                console.log($scope.year.min)
-                console.log($scope.year.max)
+                Selection.filterOnYear($scope.year.min, $scope.year.max);
+            },
 
-                Selection.filterOnYear($scope.year.min, $scope.year.max)
+            $scope.selectColor = () => {
+                Selection.filterOnColor($scope.select.color);
             }
 
-            DataFactory.fetchCategories()
-                .then(categories => {
-                    $scope.categories = categories;
-                });
-
-            DataFactory.fetchMakesAndModels()
-                .then(makes => {
-                    $scope.makes = makes;
-                });
         }
     }
 });

@@ -1,12 +1,13 @@
 app.factory('Selection', $rootScope => {
     return {
-        cars : null,
-        makes : null,
-        currentMake : null,
-        display : [],
+        cars: null,
+        makes: null,
+        currentMake: null,
+        currentModel: null,
+        display: [],
         init(config) { //
             if (config.preferences) {
-                //do something
+                //do something if user preferences
             } else {
                 this.cars = config.cars;
                 this.reset();
@@ -42,6 +43,19 @@ app.factory('Selection', $rootScope => {
                 return start <= car.year && car.year <= end;
             });
             $rootScope.$broadcast('refreshSelection');
+        },
+        filterOnColor(color) {
+            if (this.currentMake) {
+                this.display = this.display.filter(car => {
+                    return car.color.toLowerCase() === color.toLowerCase();
+                });
+            } else {
+                this.display = this.cars.filter(car => {
+                    return car.color.toLowerCase() === color.toLowerCase();
+                });
+            }
+            $rootScope.$broadcast('refreshSelection');
+
         }
     }
 });

@@ -48,11 +48,25 @@
                 <label for="yearMax">End</label>
                 <input type="number" ng-model="year.max">
             </li>
-            <li><button ng-click="selectYear()">Select</button></li>
+            <li>
+                <button ng-click="selectYear()">Select</button>
+            </li>
         </ul>
-        <li>
-            <p>Color</p>
+        <li id="showColor" ng-click="toggle('color')">
+            <a href="">Color</a>
         </li>
+        <ul ng-show="show.color">
+            <li>
+                <select ng-model="select.color" name="color" id="color-select">
+                    <option ng-repeat="color in colors" value="{{color}}">
+                        {{color}}
+                    </option>
+                </select>
+            </li>
+            <li>
+                <button ng-click="selectColor()">Select</button>
+            </li>
+        </ul>
     </ul>
 </div>
 <!-- /.navbar-collapse -->
