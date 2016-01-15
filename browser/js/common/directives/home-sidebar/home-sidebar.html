@@ -11,18 +11,18 @@
             </div>
             <!-- /input-group -->
         </li>
-        <li id="categories" ng-click="toggleCategory()">
+        <li id="categories" ng-click="toggle('categories')">
             <a href="">Categories</a>
         </li>
-        <ul id="subcategories" ng-show="showCategories">
+        <ul id="subcategories" ng-show="show.categories">
             <li ng-repeat="category in categories">
                 <a id="categoryName" ng-click="changeCategory(category)">{{category.name}}</a>
             </li>
         </ul>
-        <li id="showMakes" ng-click="toggleMake()">
+        <li id="showMakes" ng-click="toggle('makes')">
             <a href="">Make</a>
         </li>
-        <ul id="makes" ng-show="showMakes">
+        <ul id="makes" ng-show="show.makes">
             <li>
                 <select ng-model="select.make" name="make" id="make-select">
                     <option ng-repeat="make in makes" value="{{make}}">
@@ -38,15 +38,15 @@
                 <button ng-click="selectModel()">Select</button>
             </li>
         </ul>
-        <li id="showYear" ng-click="toggleYear()">
+        <li id="showYear" ng-click="toggle('year')">
             <a href="">Year</a>
         </li>
-        <ul ng-show="showYear">
+        <ul ng-show="show.year">
             <li>
-                <label for="yearMin">Minimum</label>
-                <input type="text" ng-model="year.min">
-                <label for="yearMax">Maximum</label>
-                <input type="text" ng-model="year.max">
+                <label for="yearMin">Start</label>
+                <input type="number" ng-model="year.min">
+                <label for="yearMax">End</label>
+                <input type="number" ng-model="year.max">
             </li>
         </ul>
         <li>
