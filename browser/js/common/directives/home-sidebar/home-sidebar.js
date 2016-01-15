@@ -6,13 +6,11 @@ app.directive('homeSidebar', function(DataFactory) {
         link: function(scope, el, attrs) {
         },
         controller: function($scope, DataFactory, Selection) {
-            $scope.changeCategory = function(categoryName) {
-                Selection.category = "categories";
-                Selection.searchTerm = categoryName;
+            $scope.changeCategory = function(category) {
+                Selection.category(category._id)
             };
             $scope.showCategories = false;
             $scope.toggle = function() {
-                console.log($scope.showCategories)
                 if ($scope.showCategories === false) {
                     $scope.showCategories = true
                 } else {
