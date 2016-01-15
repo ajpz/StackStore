@@ -50,6 +50,10 @@ app.factory('DataFactory', function($http) {
             return $http.get('/api/orders/')
             .then(extractData)
         },
+        fetchOrdersForUser(userId) {
+            return $http.get('/api/orders/', { user: userId })
+            .then(extractData)
+        },
         fetchOrder(orderId) {
             return $http.get(`/api/orders/${orderId}`)
             .then(extractData)
@@ -75,7 +79,7 @@ app.factory('DataFactory', function($http) {
             return $http.get(`/api/users/${userId}`)
             .then(extractData);
         },
-        addUser(userId) {
+        addUser(user) {
             return $http.post('/api/users/', user)
             .then(extractData);
         },
@@ -86,6 +90,25 @@ app.factory('DataFactory', function($http) {
         deleteUser(userId) {
             return $http.delete(`/api/users/${userId}`)
             .then(extractData);
-        }
+        },
+        // reviews...
+        // query --> {name: <car/user>, id: <carId/userId> }
+        fetchReviews(queryObj) {
+            var queryString = queryObj.name + queryObj.id;
+            return $http.get('/api/reviews' + '?' + queryString)
+            .then(extractData)
+        },
+        addReview(review) {
+            return $http.post('/api/reviews', review)
+            .then(extractData);
+        },
+        updateCar(reviewId, update) {
+            return $http.put(`/api/reviews/${reviewId}`, update)
+            .then(extractData);
+        },
+        deleteCar(reviewId) {
+            return $http.delete(`/api/reviews/${reviewId}`)
+            .then(extractData);
+        },
     };
 });

@@ -166,15 +166,15 @@ var seedOrders = function(users, cars) {
     var orders = [
         {
             status: 'Created',
-            userId: users[0]._id,
-            carId: cars[0]._id,
+            user: users[0]._id,
+            car: cars[0]._id,
             amount: 93000
         },
         {
             status: 'Processing',
-            userId: users[1]._id,
-            carId: cars[1]._id,
-            orderDate: new Date(2015, 11, 23),
+            user: users[1]._id,
+            car: cars[1]._id,
+            date: new Date(2015, 11, 23),
             amount: 93000
         }
     ]

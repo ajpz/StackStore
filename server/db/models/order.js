@@ -9,15 +9,15 @@ var orderSchema = new mongoose.Schema({
         enum: ['inShoppingCart', 'Created', 'Processing', 'Cancelled', 'Completed'],
         required: true
     },
-    userId: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    carId: [{
+    car: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Car'
     }],
-    orderDate: {
+    date: {
         type : Date
     },
     amount: {
