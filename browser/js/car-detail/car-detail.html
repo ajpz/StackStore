@@ -23,8 +23,11 @@
                     </div>
                 </div>
                 <p> This will be the Car Description!!! </p>
-                <button class="btn-danger btn"> Add To Cart </button>
+                <button class="btn-danger btn" ng-click="addToCart(car)"> Add To Cart </button>
                 <button class="btn-danger btn"> Find Similar </button>
+            </div>
+            <div class="col-xs-12" ng-show="cart">
+                <h3>Your cart: {{cart.car}}</h3>
             </div>
         </div>
     </div>

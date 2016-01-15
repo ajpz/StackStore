@@ -7,10 +7,21 @@ app.config(function($stateProvider) {
 
 })
 
-app.controller('CarCtrl', function($scope, $stateParams, DataFactory) {
+app.controller('CarCtrl', function($scope, $stateParams, $state, DataFactory, CartFactory) {
+
+    $scope.cart;
+
     DataFactory.fetchCar($stateParams.carId)
     .then(function(car){
         $scope.car = car;
     })
+
+    $scope.addToCart = function(car) {
+      CartFactory.addToCart(car)
+      .then(function(cart) {
+        $scope.cart = cart;
+        // $state.go('car');
+      })
+    }
 
 })
