@@ -2,6 +2,7 @@ app.factory('Selection', function($rootScope) {
     return {
         reset : function() {
             this.display = this.cars
+            $rootScope.$broadcast('categorySelected');
         },
         cars : null,
         display : [],

@@ -10,7 +10,8 @@ app.directive('homeSidebar', function(DataFactory) {
                 Selection.category(category._id)
             };
             $scope.showCategories = false;
-            $scope.toggle = function() {
+            $scope.toggleCategory = function() {
+                Selection.reset();
                 if ($scope.showCategories === false) {
                     $scope.showCategories = true
                 } else {
