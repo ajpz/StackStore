@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var carSchema = new mongoose.Schema({
 	make: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'MakeAndModel',
+		ref: 'MakeAndModels',
 		required: true
 	},
 	model: {
@@ -17,7 +17,7 @@ var carSchema = new mongoose.Schema({
 	},
 	color: {
 		type: String,
-		enum: ['Black', 'White', 'Red'],
+		enum: ['Black', 'White', 'Silver', 'Grey', 'Red', 'Blue'],
 		required: true
 	},
 	condition: {

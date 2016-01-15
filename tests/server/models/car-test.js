@@ -9,7 +9,7 @@ var mongoose = require('mongoose');
 require('../../../server/db/models');
 
 var Car = mongoose.model('Car');
-var MakeAndModel = mongoose.model('MakeAndModel');
+var MakeAndModels = mongoose.model('MakeAndModels');
 
 describe('Car model', function () {
 
@@ -27,7 +27,7 @@ describe('Car model', function () {
     });
 
     it('should make a car document in the database', function (done) {
-        MakeAndModel.create({
+        MakeAndModels.create({
             make: 'Ford',
             model: ['Fiesta']
         })
