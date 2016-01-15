@@ -39,20 +39,11 @@ app.directive('homeSidebar', DataFactory => {
                 .then(categories => {
                     $scope.categories = categories;
                 });
-            //TODO UNCOMMENT WHEN ROUTE IS UP
-            // DataFactory.fetchMakesAndModels()
-            //     .then(makes => {
-            //         $scope.makes = makes;
-            //     });
-            $scope.makes = [{
-                make: "toyota",
-                models: ["corolla", "prius"]
-            }, {
-                make: "ford",
-                models: ["Mustang", "focus"],
-                _id: "56985b576ceafdce3729cd44"
-            }]
 
+            DataFactory.fetchMakesAndModels()
+                .then(makes => {
+                    $scope.makes = makes;
+                });
         }
     }
 });

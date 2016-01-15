@@ -110,5 +110,10 @@ app.factory('DataFactory', function($http) {
             return $http.delete(`/api/reviews/${reviewId}`)
             .then(extractData);
         },
+        //makesAndModels
+        fetchMakesAndModels() {
+            return $http.get('/api/makes')
+            .then(extractData);
+        }
     };
 });
