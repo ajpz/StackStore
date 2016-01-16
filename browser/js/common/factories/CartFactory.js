@@ -15,19 +15,24 @@ app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVE
         if(cartToSave._id) {
             return DataFactory.updateOrder(cartToSave._id, cartToSave);
         } else {
-            return DataFactory.addOrder(cartToSave);
+            return DataFactory.addOrder(cartToSave)
+            .then(function(savedCart) {
+                shoppingCart = savedCart;
+                return shoppingCart;
+            })
         }
     };
 
-    var refreshShoppingCart = function(user){
-        //gets user, gets shopping cart from db, merges local and db carts
-        //saves merged cart to db
+    var refreshShoppingCart = function(){
+
         AuthService.getLoggedInUser()
         .then(function(user) {
+            //gets user's db cart, ie. where orderStatus === 'Created'
             shoppingCart.user = user._id;
             return DataFactory.fetchOrdersForUser(user._id, 'Created')
         })
         .then(function(databaseCartArr) {
+            //merges local cart into db cart
             var dbCart = databaseCartArr[0];
             if(dbCart) {
                 dbCart.car = dbCart.car.concat(shoppingCart.car);
@@ -36,6 +41,7 @@ app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVE
             return saveShoppingCartToDb(shoppingCart);
         })
         .then(function(databaseCart) {
+            //saves merged cart to db
             shoppingCart = databaseCart;
             localStorage.removeItem('visitingUserCart');
             $rootScope.$broadcast('LoadCart', shoppingCart);
@@ -50,6 +56,16 @@ app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVE
         $rootScope.$broadcast('LoadCart', shoppingCart);
     }
 
+    var updateLocalOrDbStorage = function(shoppingCart) {
+        if(AuthService.isAuthenticated()) {
+            return $q.when(saveShoppingCartToDb(shoppingCart))
+        } else {
+            localStorage.setItem('visitingUserCart', JSON.stringify(shoppingCart));
+            return $q.when(shoppingCart);
+        }
+    };
+
+
     $rootScope.$on(AUTH_EVENTS.loginSuccess, refreshShoppingCart);
     $rootScope.$on(AUTH_EVENTS.logoutSuccess, destroyShoppingCart);
 
@@ -59,20 +75,17 @@ app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVE
         },
         addToCart: function(car){
             shoppingCart.car.push(car._id);
-
-            if(AuthService.isAuthenticated()) {
-                return $q.when(saveShoppingCartToDb(shoppingCart))
-                .then(function(savedOrder){
-                    return shoppingCart = savedOrder;
-                })
-
-            } else {
-                localStorage.setItem('visitingUserCart', JSON.stringify(shoppingCart));
-                return $q.when(shoppingCart);
-            }
+            return updateLocalOrDbStorage(shoppingCart);
         },
-        updateCart: function(){},
-        deleteCart: function(){}
+        updateCart: function(carId){
+            var indexToRemove = shoppingCart.car.indexOf(carId);
+            shoppingCart.car.splice(indexToRemove, 1);
+            return updateLocalOrDbStorage(shoppingCart);
+        },
+        deleteCart: function(){
+            if(shoppingCart.user) return $q.when(localStorage.removeItem('visitingUserCart'));
+            else return DataFactory.deleteOrder(shoppingCart._id);
+        }
     }
 });
 
