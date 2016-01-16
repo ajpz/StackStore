@@ -29,9 +29,22 @@ var Address = Promise.promisifyAll(mongoose.model('Address'));
 var MakeAndModels = Promise.promisifyAll(mongoose.model('MakeAndModels'));
 var Review = Promise.promisifyAll(mongoose.model('Review'));
 
-// setting global references to mongoose database ids --once they have
-// been created.
-var address1, address2, category1, category2, make1, make2, model1, model2, reviews1, reviews2, car1, car2, user1, user2;
+var _ = require('lodash');
+var csvParser = require('./csvParser');
+
+var chance = require('chance')(123);
+var numUsers = 50;
+var emails = chance.unique(chance.email, numUsers);
+
+function randPhoto () {
+    var g = chance.pick(['men', 'women']);
+    var n = chance.natural({
+        min: 0,
+        max: 96
+    });
+    return 'http://api.randomuser.me/portraits/thumb/' + g + '/' + n + '.jpg'
+}
+
 
 
 var seedCategories = function() {
@@ -65,40 +78,60 @@ var seedMakeAndModels = function() {
 
 var seedCars = function(makes, categories) {
 
-    var cars = [
-        {
-            make: makes[0]._id, // ID to MakeAndModels
-            model: 'Mustang',
-            year: 1967,
-            color: 'Red',
-            condition: 'Excellent',
-            mileage: 86000,
-            // photos: ,
-            categories: [categories[0]._id],
-            horsePower: 200,
-            acceleration: 5.2,
-            kickassFactor: 5,
-            price: 93000,
-            count: 1,
-        },
-        {
-            make: makes[1]._id,
-            model: 'Aerosport',
-            year: 1934,
-            color: 'Black',
-            condition: 'Good',
-            mileage: 30000,
-            // photos: ,
-            categories: [categories[1]]._id,
-            horsePower: 400,
-            acceleration: 12,
-            kickAssFactor: 4,
-            price: 123500,
-            count: 2
-        }
-    ];
+    console.log(makes);
+    var makeMap = makes.reduce(function(result, MM){
+        console.log(result, MM.make, MM._id);
+        result[MM.make] = MM._id;
+        return result;
+    }, {});
 
-    return Car.createAsync(cars);
+    console.log('makeMap is ', makeMap)
+    csvParser('./cars.csv', function(err, data) {
+        if(err) return console.error(err);
+        console.log('cars: ', data);
+
+        carArray = data.map(function(car){
+            car.make = makeMap[car.make];
+            return car;
+        });
+
+        console.log('mapped cars: ', carArray);
+        return Car.createAsync(carArray);
+    });
+
+    // var cars = [
+    //     {
+    //         make: makes[0]._id, // ID to MakeAndModels
+    //         model: 'Mustang',
+    //         year: 1967,
+    //         color: 'Red',
+    //         condition: 'Excellent',
+    //         mileage: 86000,
+    //         // photos: ,
+    //         categories: [categories[0]._id],
+    //         horsePower: 200,
+    //         acceleration: 5.2,
+    //         kickassFactor: 5,
+    //         price: 93000,
+    //         count: 1,
+    //     },
+    //     {
+    //         make: makes[1]._id,
+    //         model: 'Aerosport',
+    //         year: 1934,
+    //         color: 'Black',
+    //         condition: 'Good',
+    //         mileage: 30000,
+    //         // photos: ,
+    //         categories: [categories[1]]._id,
+    //         horsePower: 400,
+    //         acceleration: 12,
+    //         kickAssFactor: 4,
+    //         price: 123500,
+    //         count: 2
+    //     }
+    // ];
+
 }
 
 var seedAddress = function() {
@@ -125,39 +158,52 @@ var seedAddress = function() {
 
 var seedUsers = function(addresses, categories) {
 
-    var users = [
-        {
-            email: 'admin@gmail.com',
-            password: 'admin',
-            google: 'googleAdmin',
+    function randUser () {
+        return new User({
+            photos: [randPhoto()],
+            email: emails.pop(),
+            password: chance.word(),
+            isAdmin: chance.weighted([true, false], [5, 95]),
             shippingAddress: addresses[0]._id,
             billingAddress: addresses[1]._id,
-            // photos: ,
             categories: categories[0]._id,
-            isAdmin: true
-            // reviews: [reviews2]
-        },
-        {
-            email: 'user@gmail.com',
-            password: 'user',
-            google: 'googleUser',
-            shippingAddress: addresses[1]._id,
-            billingAddress: addresses[0]._id,
-            // photos: ,
-            categories: categories[1]._id,
-            isAdmin: false
-            // reviews: [reviews1]
-        },
-        {
-            email: 'testing@fsa.com',
-            password: 'password'
-        },
-        {
-            email: 'obama@gmail.com',
-            password: 'potus'
-        }
-    ]
+            // reviews: []
+        });
+    }
 
+    var users = _.times(numUsers, randUser);
+
+    users.push(new User({
+        email: 'admin@gmail.com',
+        password: 'admin',
+        google: 'googleAdmin',
+        shippingAddress: addresses[0]._id,
+        billingAddress: addresses[1]._id,
+        // photos: ,
+        categories: categories[0]._id,
+        isAdmin: true
+        // reviews: [reviews2]
+    }));
+
+    users.push(new User({
+        email: 'user@gmail.com',
+        password: 'user',
+        google: 'googleUser',
+        shippingAddress: addresses[1]._id,
+        billingAddress: addresses[0]._id,
+        // photos: ,
+        categories: categories[1]._id,
+        isAdmin: false
+        // reviews: [reviews1]
+    }));
+    users.push(new User({
+        email: 'testing@fsa.com',
+        password: 'password'
+    }));
+    users.push(new User({
+        email: 'obama@gmail.com',
+        password: 'potus'
+    }));
     return User.createAsync(users);
 }
 
