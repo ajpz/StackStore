@@ -5,7 +5,9 @@ module.exports = router;
 
 router.route('/')
     .get(function (req, res, next) {
-        Car.find({}).exec()
+        Car.find({})
+        // .populate('categories')
+        .exec()
         .then(function (cars){
             res.send(cars)
         })
