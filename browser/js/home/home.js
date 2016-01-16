@@ -20,4 +20,4 @@ app.controller('HomeCtrl', function($scope, cars, DataFactory, Selection) {
     $scope.$on('refreshSelection', function() {
         $scope.cars = Selection.display;
     });
-})
+});
