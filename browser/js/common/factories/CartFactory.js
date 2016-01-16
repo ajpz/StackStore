@@ -1,36 +1,66 @@
-app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVENTS) {
+app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVENTS, DataFactory) {
 
-    //need to refresh cart at browser load - either from
-    //local storage or from server depending on User
 
-    var user;
+    // var self = this;
+    var currentUser = null;
+    var shoppingCart = { status: 'Created', car: [] };
 
-    console.log('CART FACTORY INVOKED', user);
-    var cart = { car: [] };
-
-    $rootScope.$on(AUTH_EVENTS.loginSuccess, function(){
-        console.log('HEARD TAHT')
+    var refreshShoppingCart = function(user){
         AuthService.getLoggedInUser()
         .then(function(user) {
-            user = user; //null or user object
-        });
-    })
+            currentUser = user;
+            return DataFactory.fetchOrdersForUser(user._id, 'Created')
+        })
+        .then(function(cart) {
+            if(cart.length > 0) shoppingCart = cart[0];
+            $rootScope.$broadcast('LoadCart', shoppingCart);
+            return shoppingCart;
+        })
+        .then(null, console.error.bind(console));
+
+    };
+
+    var destroyShoppingCart = function(){
+        currentUser = null;
+        shoppingCart = { status: 'Created', car: [] };
+    }
+
+    $rootScope.$on(AUTH_EVENTS.loginSuccess, function(){
+        refreshShoppingCart();
+    });
+    $rootScope.$on(AUTH_EVENTS.logoutSuccess, function() {
+        destroyShoppingCart();
+    });
 
     return {
+        getCurrentCart: function(){
+            return shoppingCart; //synchronous!
+        },
         addToCart: function(car){
 
-            // var user = AuthService.getLoggedInUser();
-            cart.car.push(car._id);
+            shoppingCart.car.push(car._id);
 
             if(AuthService.isAuthenticated()) {
-                // save changes to db
-                console.log('CART FACTORY: USER AUTH AND HTTP')
+
+                var saveShoppingCartToDb = function(cartToSave){
+                    if(cartToSave._id) {
+                        return DataFactory.updateOrder(cartToSave._id, cartToSave);
+                    } else {
+                        return DataFactory.addOrder(cartToSave);
+                    }
+                };
+
+                return $q.when(saveShoppingCartToDb(shoppingCart))
+                .then(function(savedOrder){
+                    console.log("SAVED order: ",  savedOrder);
+                    return shoppingCart = savedOrder;
+                })
+
             } else {
                 // save changes to local storage
-                console.log('CART FACTORY: USER n/a AND SAVE')
+                console.log('order FACTORY: USER n/a AND SAVE');
+                return $q.when(order);
             }
-
-            return $q.when(cart);
         },
         updateCart: function(){},
         deleteCart: function(){}
