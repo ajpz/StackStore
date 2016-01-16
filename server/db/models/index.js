@@ -3,7 +3,7 @@
 // anywhere the User model needs to be used.
 require('./user');
 require('./car');
-require('./makeAndModel');
+require('./makeAndModels');
 require('./address');
 require('./order');
 require('./review');

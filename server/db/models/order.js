@@ -6,7 +6,7 @@ var _ = require('lodash');
 var orderSchema = new mongoose.Schema({
     status: {
         type: String,
-        enum: ['inShoppingCart', 'Created', 'Processing', 'Cancelled', 'Completed'],
+        enum: ['Created', 'Processing', 'Cancelled', 'Completed'],
         required: true
     },
     user: {
@@ -18,7 +18,7 @@ var orderSchema = new mongoose.Schema({
         ref: 'Car'
     }],
     date: {
-        type : Date
+        type: Date
     },
     amount: {
         type: Number,
@@ -26,4 +26,4 @@ var orderSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Order',orderSchema);
+module.exports = mongoose.model('Order', orderSchema);

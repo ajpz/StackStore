@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');
 require('../../../server/db/models');
 var Car = mongoose.model('Car');
-var MakeAndModel = mongoose.model('MakeAndModel');
+var MakeAndModels = mongoose.model('MakeAndModels');
 
 var expect = require('chai').expect;
 
@@ -20,7 +20,7 @@ describe('Cars Route', function() {
     });
 
     beforeEach('Seed sample data', function(done) {
-        MakeAndModel.create({
+        MakeAndModels.create({
             make: 'Ford',
             model: 'Mustang'
         })

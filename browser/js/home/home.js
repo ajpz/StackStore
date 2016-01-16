@@ -11,8 +11,13 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('HomeCtrl', function($scope, cars) {
-
-    $scope.cars = cars;
-
+app.controller('HomeCtrl', function($scope, cars, DataFactory, Selection) {
+    Selection.init({
+        cars: cars,
+        preferences : false
+    });
+    $scope.cars = Selection.display;
+    $scope.$on('refreshSelection', function() {
+        $scope.cars = Selection.display;
+    });
 })

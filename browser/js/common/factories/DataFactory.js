@@ -98,6 +98,30 @@ app.factory('DataFactory', function($http) {
         deleteUser(userId) {
             return $http.delete(`/api/users/${userId}`)
             .then(extractData);
+        },
+        // reviews...
+        // query --> {name: <car/user>, id: <carId/userId> }
+        fetchReviews(queryObj) {
+            var queryString = queryObj.name + queryObj.id;
+            return $http.get('/api/reviews' + '?' + queryString)
+            .then(extractData)
+        },
+        addReview(review) {
+            return $http.post('/api/reviews', review)
+            .then(extractData);
+        },
+        updateCar(reviewId, update) {
+            return $http.put(`/api/reviews/${reviewId}`, update)
+            .then(extractData);
+        },
+        deleteCar(reviewId) {
+            return $http.delete(`/api/reviews/${reviewId}`)
+            .then(extractData);
+        },
+        //makesAndModels
+        fetchMakesAndModels() {
+            return $http.get('/api/makes')
+            .then(extractData);
         }
     };
 });

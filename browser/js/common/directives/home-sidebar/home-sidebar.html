@@ -1,0 +1,73 @@
+<div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav side-nav">
+        <li class="sidebar-search">
+            <div class="input-group custom-search-form">
+                <input type="text" class="form-control" placeholder="Search...">
+                <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+            </div>
+            <!-- /input-group -->
+        </li>
+        <li id="categories" ng-click="toggle('categories')">
+            <a href="">Categories</a>
+        </li>
+        <ul id="subcategories" ng-show="show.categories">
+            <li ng-repeat="category in categories">
+                <a id="categoryName" ng-click="selectCategory(category)">{{category.name}}</a>
+            </li>
+        </ul>
+        <li id="showMakes" ng-click="toggle('makes')">
+            <a href="">Make</a>
+        </li>
+        <ul id="makes" ng-show="show.makes">
+            <li>
+                <select ng-model="select.make" name="make" id="make-select">
+                    <option ng-repeat="make in makes" value="{{make}}">
+                        {{make.make}}
+                    </option>
+                </select>
+                <button ng-click="selectMake()">Select</button>
+            </li>
+            <li id="models">
+                <select ng-model="select.model" name="model" id="model">
+                    <option ng-repeat="model in models" value="{{model}}">{{model}}</option>
+                </select>
+                <button ng-click="selectModel()">Select</button>
+            </li>
+        </ul>
+        <li id="showYear" ng-click="toggle('year')">
+            <a href="">Year</a>
+        </li>
+        <ul ng-show="show.year">
+            <li>
+                <label for="yearMin">Start</label>
+                <input type="number" ng-model="year.min">
+                <label for="yearMax">End</label>
+                <input type="number" ng-model="year.max">
+            </li>
+            <li>
+                <button ng-click="selectYear()">Select</button>
+            </li>
+        </ul>
+        <li id="showColor" ng-click="toggle('color')">
+            <a href="">Color</a>
+        </li>
+        <ul ng-show="show.color">
+            <li>
+                <select ng-model="select.color" name="color" id="color-select">
+                    <option ng-repeat="color in colors" value="{{color}}">
+                        {{color}}
+                    </option>
+                </select>
+            </li>
+            <li>
+                <button ng-click="selectColor()">Select</button>
+            </li>
+        </ul>
+    </ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>

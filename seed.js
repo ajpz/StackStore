@@ -26,7 +26,7 @@ var Car = Promise.promisifyAll(mongoose.model('Car'));
 var Category = Promise.promisifyAll(mongoose.model('Category'));
 var Order = Promise.promisifyAll(mongoose.model('Order'));
 var Address = Promise.promisifyAll(mongoose.model('Address'));
-var MakeAndModel = Promise.promisifyAll(mongoose.model('MakeAndModel'));
+var MakeAndModels = Promise.promisifyAll(mongoose.model('MakeAndModels'));
 var Review = Promise.promisifyAll(mongoose.model('Review'));
 
 // setting global references to mongoose database ids --once they have
@@ -48,33 +48,33 @@ var seedCategories = function() {
     return Category.createAsync(categories);
 }
 
-var seedMakeAndModel = function() {
+var seedMakeAndModels = function() {
 
     var makesAndModels = [
         {
             make: 'Ford',
-            model: ['Mustang', 'Model-T']
+            models: ['Mustang', 'Model-T']
         },
         {
             make: 'Voisin',
-            model: ['Aerosport', 'C28']
+            models: ['Aerosport', 'C28']
         }
     ]
-    return MakeAndModel.createAsync(makesAndModels);
+    return MakeAndModels.createAsync(makesAndModels);
 }
 
 var seedCars = function(makes, categories) {
 
     var cars = [
         {
-            make: makes[0]._id, // ID to MakeAndModel
+            make: makes[0]._id, // ID to MakeAndModels
             model: 'Mustang',
             year: 1967,
             color: 'Red',
             condition: 'Excellent',
             mileage: 86000,
             // photos: ,
-            categoryIds: [categories[0]._id],
+            categories: [categories[0]._id],
             horsePower: 200,
             acceleration: 5.2,
             kickassFactor: 5,
@@ -89,7 +89,7 @@ var seedCars = function(makes, categories) {
             condition: 'Good',
             mileage: 30000,
             // photos: ,
-            categoryIds: [categories[1]]._id,
+            categories: [categories[1]]._id,
             horsePower: 400,
             acceleration: 12,
             kickAssFactor: 4,
@@ -203,7 +203,7 @@ var seedReviews = function(users, cars) {
 
 
 function seed () {
-    var easySeeds = [seedCategories(), seedMakeAndModel(), seedAddress()];
+    var easySeeds = [seedCategories(), seedMakeAndModels(), seedAddress()];
 
     return Promise.all(easySeeds);
 
