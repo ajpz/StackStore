@@ -1,3 +1,4 @@
+<!-- <shopping-cart></shopping-cart> -->
 <section id="home">
     <div class="container">
         <div class="row">
@@ -26,9 +27,16 @@
                 <button class="btn-danger btn" ng-click="addToCart(car)"> Add To Cart </button>
                 <button class="btn-danger btn"> Find Similar </button>
             </div>
-            <div class="col-xs-12" ng-show="cart">
-                <h3>Your cart: {{cart.car}}</h3>
-            </div>
+        </div>
+        <div class="col-xs-12">
+            <ul>
+                <li>_id: {{cart._id}}</li>
+                <li>status: {{cart.status}}</li>
+                <li>user: {{cart.user}}</li>
+                <li>car: {{cart.car}}</li>
+                <li>date: {{cart.date}}</li>
+                <li>amount: {{cart.amount}}</li>
+            </ul>
         </div>
     </div>
 
