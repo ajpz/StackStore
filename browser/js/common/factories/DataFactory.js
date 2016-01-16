@@ -50,8 +50,14 @@ app.factory('DataFactory', function($http) {
             return $http.get('/api/orders/')
             .then(extractData)
         },
-        fetchOrdersForUser(userId) {
-            return $http.get('/api/orders/', { user: userId })
+        fetchOrdersForUser(userId, orderStatus) {
+            console.log('datafactory has ', userId, orderStatus)
+            var query = {
+                user: userId
+            };
+            if(orderStatus) query['status'] = orderStatus;
+            console.log(query);
+            return $http.get('/api/orders/', {params: query})
             .then(extractData)
         },
         fetchOrder(orderId) {
@@ -59,10 +65,12 @@ app.factory('DataFactory', function($http) {
             .then(extractData)
         },
         addOrder(order) {
+            console.log('addOrder called')
             return $http.post('/api/orders/', order)
             .then(extractData)
         },
         updateOrder(orderId, update) {
+            console.log('update order called')
             return $http.put(`/api/orders/${orderId}`, update)
             .then(extractData)
         },
