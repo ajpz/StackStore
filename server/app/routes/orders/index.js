@@ -22,7 +22,7 @@ router.route('/')
 
 router.route('/:orderId')
     .get(function (req, res, next){
-        Order.findById(req.params.orderId).exec()
+        Order.findById(req.params.orderId).populate('car').exec()
         .then(function (order){
             if(!order) return res.status(404).end();
             res.send(order)
