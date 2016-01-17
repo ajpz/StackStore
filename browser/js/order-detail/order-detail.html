@@ -1,0 +1,30 @@
+<section id="home">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row" ng-repeat="car in car">
+                    <div class="col-xs-6">
+                        <img class="img-responsive" src="http://placehold.it/400x300" alt="">
+                        <h5>{{order.status}} {{order.date}}</h5>
+                    </div>
+                    <div class="col-xs-6">
+                           <h5>{{car.name}} {{car.make}} {{car.model}}</h5>
+                            <ul>
+                                <li>Color: {{car.color}}</li>
+                                <li>Condition: {{car.condition}}</li>
+                                <li>Mileage: {{car.mileage}}</li>
+                                <li>Horsepower: {{car.horsepower}}</li>
+                                <li>Acceleration: {{car.acceleration}}</li>
+                                <li>Kickass Factor: {{car.kickassFactor}}</li>
+                                <li>Location: {{car.location}}</li>
+                                <li>Price: {{car.price}}</li>
+                                <li>Categories: {{car.categoryIds}}</li>
+                                <button class="btn-danger btn"> Cancel Order </button>
+                            </ul>
+                    </div>
+                </div>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
