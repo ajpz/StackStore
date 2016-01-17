@@ -34,7 +34,10 @@ var csvParser = require('./csvParser');
 var csvParserAsync = Promise.promisify(csvParser);
 
 var chance = require('chance')(123);
-var numUsers = 50;
+var numUsers = 75;
+var numOrders = 600;
+var numReviews = 300;
+
 var emails = chance.unique(chance.email, numUsers);
 
 function randPhoto () {
@@ -115,7 +118,7 @@ var seedCars = function(makes, categories) {
             car.mileage = Number(car.mileage);
             car.horsePower = Number(car.horsePower)
             car.acceleration = Number(car.acceleration)
-            car.kickAssFactor = Number(car.kickAssFactor)
+            car.kickassFactor = Number(car.kickassFactor)
             car.price = Number(car.price)
             car.count = Number(car.count)
             car.categories = mapCategoryToId(car.categories);
@@ -128,24 +131,34 @@ var seedCars = function(makes, categories) {
     .then(null, console.error.bind(console));
 }
 
-var seedAddress = function() {
+var seedAddresses = function() {
 
-    var addresses = [
-        {
-            street1: '5 Hanover Street',
-            street2: '25th Floor',
-            city: 'New York',
-            state: 'NY',
-            zip: 10038
-        },
-        {
-            street1: '85 Broad Street',
-            street2: '21st Floor',
-            city: 'New York',
-            state: 'NY',
-            zip: 10037
-        },
-    ]
+    function randAddress () {
+        return new Address({
+            street1: chance.address(),
+            street2: '',
+            city: chance.city(),
+            state: chance.state(),
+            zip: chance.zip()
+        })
+    };
+
+    var addresses = _.times(numUsers, randAddress);
+
+    addresses.push(new Address({
+        street1: '5 Hanover Street',
+        street2: '25th Floor',
+        city: 'New York',
+        state: 'NY',
+        zip: 10038
+    }));
+    addresses.push(new Address({
+        street1: '85 Broad Street',
+        street2: '21st Floor',
+        city: 'New York',
+        state: 'NY',
+        zip: 10037
+    }))
 
     return Address.createAsync(addresses);
 }
@@ -158,9 +171,9 @@ var seedUsers = function(addresses, categories) {
             email: emails.pop(),
             password: chance.word(),
             isAdmin: chance.weighted([true, false], [5, 95]),
-            shippingAddress: addresses[0]._id,
-            billingAddress: addresses[1]._id,
-            categories: categories[0]._id,
+            shippingAddress: chance.pick(addresses),
+            billingAddress: chance.pick(addresses),
+            categories: chance.pick(categories),
             // reviews: []
         });
     }
@@ -173,9 +186,9 @@ var seedUsers = function(addresses, categories) {
         google: 'googleAdmin',
         shippingAddress: addresses[0]._id,
         billingAddress: addresses[1]._id,
-        // photos: ,
+        photos: [randPhoto()],
         categories: categories[0]._id,
-        isAdmin: true
+        isAdmin: true,
         // reviews: [reviews2]
     }));
 
@@ -185,9 +198,9 @@ var seedUsers = function(addresses, categories) {
         google: 'googleUser',
         shippingAddress: addresses[1]._id,
         billingAddress: addresses[0]._id,
-        // photos: ,
+        photos: [randPhoto()],
         categories: categories[1]._id,
-        isAdmin: false
+        isAdmin: false,
         // reviews: [reviews1]
     }));
     users.push(new User({
@@ -202,57 +215,105 @@ var seedUsers = function(addresses, categories) {
 }
 
 var seedOrders = function(users, cars) {
+    //not sure why min: 1 doesn't work
+    function randOrder() {
+        var order = new Order({
+            status: chance.pick(['Created', 'Processing', 'Cancelled', 'Completed']),
+            user: chance.pick(users)._id,
+            car: chance.pick(cars, chance.integer({min:2, max:3})),
+            amount: 0,
+            date: chance.birthday({ year: chance.year({min: 2010, max:2015})})
+        })
+        order.car = order.car.map(function(car) {
+            order.amount = order.amount + car.price;
+            return car._id
+        })
+        return order;
+    }
 
-    var orders = [
-        {
-            status: 'Created',
-            user: users[0]._id,
-            car: cars[0]._id,
-            amount: 93000
-        },
-        {
-            status: 'Processing',
-            user: users[1]._id,
-            car: cars[1]._id,
-            date: new Date(2015, 11, 23),
-            amount: 93000
-        }
-    ]
+    var orders = _.times(numOrders, randOrder);
+
+    orders.push(new Order({
+        status: 'Created',
+        user: users[0]._id,
+        car: cars[0]._id,
+        amount: 93000
+    }));
+    orders.push(new Order({
+        status: 'Processing',
+        user: users[1]._id,
+        car: cars[1]._id,
+        date: new Date(2015, 11, 23),
+        amount: 93000
+    }))
+
     return Order.createAsync(orders);
 }
 
 var seedReviews = function(users, cars) {
 
-    var reviews = [
-        {
-            car: cars[0]._id,
-            user: users[0]._id,
-            comment: 'This thing is a classic fantastic!',
-            rating: 5
-        },
-        {
-            car: cars[1]._id,
-            user: users[1]._id,
-            comment: "Wow. Can't say that enough. I mean, wow!",
-            rating: 5
-        }
-    ]
+    var randReview = function() {
+        return new Review({
+            car: chance.pick(cars),
+            user: chance.pick(users),
+            comment: chance.sentence(),
+            rating: chance.integer({min:1, max:5})
+        })
+    }
+
+    var reviews = _.times(numReviews, randReview);
+    reviews.push(new Review({
+        car: cars[0]._id,
+        user: users[0]._id,
+        comment: 'This thing is a classic fantastic!',
+        rating: 5
+    }));
+    reviews.push(new Review({
+        car: cars[1]._id,
+        user: users[1]._id,
+        comment: "Wow. Can't say that enough. I mean, wow!",
+        rating: 5
+    }));
 
     return Review.createAsync(reviews);
 }
 
+function giveUsersReviews() {
+    var reviews = Review.findAsync({}),
+        users = User.findAsync({});
 
-function seed () {
-    var easySeeds = [seedCategories(), seedMakeAndModels(), seedAddress()];
+    return Promise.all([reviews, users])
+    .then(function(results){
 
-    return Promise.all(easySeeds);
+        var remainingReviews = results[0],
+            users = results[1],
+            reviewsPerUser = Math.floor(remainingReviews.length / users.length),
+            toId = review => review._id,
+            addOneReview = () => remainingReviews.pop();
 
-    // var docs = generateAll();
-    // return Promise.map(docs, function (doc) {
-    //     return doc.save();
-    // });
+        users.forEach(function(user){
+            user.reviews = _.times(reviewsPerUser, addOneReview).map(toId);
+            remainingReviews = remainingReviews.filter(function(review){
+                return user.reviews.indexOf(review) === -1;
+            })
+        })
+
+        return users.map(function(user) {
+            return User.findOneAndUpdate({_id: user._id}, {reviews: user.reviews}, {runValidators: true, new: true }).exec()
+        })
+    })
+    .then(function(usersArray) {
+        return Promise.all(usersArray);
+    }).then(null, console.error.bind(console));
 }
 
+function seed () {
+    return Promise.all([
+        seedCategories(),
+        seedMakeAndModels(),
+        seedAddresses()
+    ])
+}
 
 var dbClosure;
 
@@ -262,27 +323,33 @@ var dbClosure;
     })
     .then(function () {
         dbClosure.drop()
+    })
     .then(function(){
         return seed();
     })
-    .then(function(easySeeds){
+    .then(function(seeds){
 
-        var categories = easySeeds[0];
-        console.log('categories array is ', categories)
-        var makes = easySeeds[1];
-        var models = easySeeds[1];
-        var addresses = easySeeds[2];
-        var hardSeeds = [seedUsers(addresses, categories), seedCars(makes, categories)];
+        var categories = seeds[0],
+            makesAndModels = seeds[1],
+            addresses = seeds[2];
 
-        return Promise.all(hardSeeds);
+        return Promise.all([
+            seedUsers(addresses, categories),
+            seedCars(makesAndModels, categories)
+        ]);
     })
-    .then(function(hardSeeds) {
+    .then(function(seeds) {
 
-        var users = hardSeeds[0];
-        var cars = hardSeeds[1];
-        var hardestSeeds = [seedOrders(users, cars), seedReviews(users, cars)]
+        var users = seeds[0],
+            cars = seeds[1];
 
-        return Promise.all(hardestSeeds);
+        return Promise.all([
+            seedOrders(users, cars),
+            seedReviews(users, cars)
+        ]);
+    })
+    .then(function() {
+        return giveUsersReviews();
     })
     .then(function () {
         console.log(chalk.green('Seed successful!'));
@@ -291,4 +358,4 @@ var dbClosure;
         console.error(err);
         process.kill(1);
     });
-});
+// });
