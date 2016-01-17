@@ -6,7 +6,10 @@ module.exports = router;
 router.route('/')
     .get(function (req, res, next) {
         var query = req.query || {};
-        Order.find(query).populate('car').exec()
+        Order.find(query)
+        .populate('car')
+        .populate('user')
+        .exec()
         .then(function (orders){
             res.send(orders)
         })
@@ -22,7 +25,10 @@ router.route('/')
 
 router.route('/:orderId')
     .get(function (req, res, next){
-        Order.findById(req.params.orderId).populate('car').exec()
+        Order.findById(req.params.orderId)
+        .populate('car')
+        .populate('user')
+        .exec()
         .then(function (order){
             if(!order) return res.status(404).end();
             res.send(order)
