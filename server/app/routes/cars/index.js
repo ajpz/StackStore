@@ -7,8 +7,10 @@ router.route('/')
     .get(function (req, res, next) {
         Car.find({})
         .populate('categories')
+        .populate('make')
         .exec()
         .then(function (cars){
+            console.log(cars);
             res.send(cars)
         })
         .then(null, next)
