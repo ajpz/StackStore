@@ -31,6 +31,7 @@ var Review = Promise.promisifyAll(mongoose.model('Review'));
 
 var _ = require('lodash');
 var csvParser = require('./csvParser');
+var csvParserAsync = Promise.promisify(csvParser);
 
 var chance = require('chance')(123);
 var numUsers = 50;
@@ -51,10 +52,16 @@ var seedCategories = function() {
 
     var categories = [
         {
-            name: 'Muscle Cars'
+            name: 'Muscle'
         },
         {
-            name: 'French Cars'
+            name: 'French'
+        },
+        {
+            name: 'Movie'
+        },
+        {
+            name: 'Sports'
         }
     ]
 
@@ -71,6 +78,10 @@ var seedMakeAndModels = function() {
         {
             make: 'Voisin',
             models: ['Aerosport', 'C28']
+        },
+        {
+            make: 'AlfaRomeo',
+            models: ['Spider']
         }
     ]
     return MakeAndModels.createAsync(makesAndModels);
@@ -78,60 +89,43 @@ var seedMakeAndModels = function() {
 
 var seedCars = function(makes, categories) {
 
-    console.log(makes);
     var makeMap = makes.reduce(function(result, MM){
-        console.log(result, MM.make, MM._id);
         result[MM.make] = MM._id;
         return result;
     }, {});
 
-    console.log('makeMap is ', makeMap)
-    csvParser('./cars.csv', function(err, data) {
-        if(err) return console.error(err);
-        console.log('cars: ', data);
+    var categoriesMap = categories.reduce(function(result, category) {
+        result[category.name] = category._id;
+        return result;
+    }, {})
 
-        carArray = data.map(function(car){
+    var mapCategoryToId = function(categoryString) {
+        return JSON.parse(categoryString).map(function(categoryName) {
+            var categoryId = categoriesMap[categoryName];
+            return categoryId;
+        })
+    }
+
+    return csvParserAsync('./cars.csv')
+    .then(function(cars) {
+
+        carArray = cars.map(function(car){
             car.make = makeMap[car.make];
+            car.year = Number(car.year);
+            car.mileage = Number(car.mileage);
+            car.horsePower = Number(car.horsePower)
+            car.acceleration = Number(car.acceleration)
+            car.kickAssFactor = Number(car.kickAssFactor)
+            car.price = Number(car.price)
+            car.count = Number(car.count)
+            car.categories = mapCategoryToId(car.categories);
+            car.photos = JSON.parse(car.photos);
             return car;
         });
 
-        console.log('mapped cars: ', carArray);
-        return Car.createAsync(carArray);
-    });
-
-    // var cars = [
-    //     {
-    //         make: makes[0]._id, // ID to MakeAndModels
-    //         model: 'Mustang',
-    //         year: 1967,
-    //         color: 'Red',
-    //         condition: 'Excellent',
-    //         mileage: 86000,
-    //         // photos: ,
-    //         categories: [categories[0]._id],
-    //         horsePower: 200,
-    //         acceleration: 5.2,
-    //         kickassFactor: 5,
-    //         price: 93000,
-    //         count: 1,
-    //     },
-    //     {
-    //         make: makes[1]._id,
-    //         model: 'Aerosport',
-    //         year: 1934,
-    //         color: 'Black',
-    //         condition: 'Good',
-    //         mileage: 30000,
-    //         // photos: ,
-    //         categories: [categories[1]]._id,
-    //         horsePower: 400,
-    //         acceleration: 12,
-    //         kickAssFactor: 4,
-    //         price: 123500,
-    //         count: 2
-    //     }
-    // ];
-
+        return Car.createAsync(carArray)
+    })
+    .then(null, console.error.bind(console));
 }
 
 var seedAddress = function() {
@@ -274,6 +268,7 @@ var dbClosure;
     .then(function(easySeeds){
 
         var categories = easySeeds[0];
+        console.log('categories array is ', categories)
         var makes = easySeeds[1];
         var models = easySeeds[1];
         var addresses = easySeeds[2];
