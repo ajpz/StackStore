@@ -1,0 +1,20 @@
+<div ng-controller="AdminCtrl">
+  <h4> Create a new car</h4>
+  <form class="entry-form">
+     <input type="text" ng-model="car.name" /><br />
+    Make: <input type="text" ng-model="car.make" /><br />
+    Year: <input type="text" ng-model="car.year"/>
+    <input type="text" ng-model="car.color"/> Color:<br />
+    <input type="text" ng-model="car.condition"/> Condition:<br />
+    <input type="text" ng-model="car.mileage"/> Mileage:<br />
+    <input type="text" ng-model="car.photos"/> Photo Url:<br />
+    <input type="text" ng-model="car.categories"/> Categories:<br />
+    <input type="text" ng-model="car.horsePower"/> Horsepower:<br />
+    <input type="text" ng-model="car.acceleration"/> Acceleration:<br />
+    <input type="text" ng-model="car.kickassFactor"/> Kickass Factor:<br />
+    <input type="text" ng-model="car.count"/> Inventory Count:<br />
+    <input type="text" ng-model="car.price"/> Price:<br />
+    <input type="submit" ng-click="update(car)" value="Save" />
+  </form>
+  <pre>car = {{car | json}}</pre>
+</div>
