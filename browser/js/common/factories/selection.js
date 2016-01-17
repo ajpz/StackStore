@@ -20,7 +20,11 @@ app.factory('Selection', $rootScope => {
         },
         filterOnCategory(categoryId) {
             this.display = this.cars.filter(car => {
-                return car.categories.indexOf(categoryId) > -1;
+                let len = car.categories.length;
+                for (let i = 0; i < len; i++) {
+                    if (car.categories[i]._id === categoryId) return true;
+                };
+                return false;
             });
             $rootScope.$broadcast('refreshSelection');
         },
