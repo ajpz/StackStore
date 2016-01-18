@@ -171,7 +171,6 @@ var seedCars = function(makes, categories) {
     .then(function(cars) {
 
         carArray = cars.map(function(car){
-            counter2++;
             car.make = makeMap[car.make];
             car.year = Number(car.year);
             car.mileage = Number(car.mileage);
