@@ -1,20 +1,23 @@
 app.config( $stateProvider => {
 
     $stateProvider.state('dashboard', {
-        url: '/users/:userId/preferences',
+        url: '/dashboard/:userId',
         controller: 'DashboardCtrl',
         templateUrl: 'js/dashboard/dashboard.html',
         resolve : {
-            user() {
-                return DataFactory.fetchUser();
+            user($stateParams, DataFactory) {
+                return DataFactory.fetchUser($stateParams.userId);
             }
         }
     });
 
 });
 
-app.controller('DashboardCtrl', ($scope, $stateParams, DataFactory, AuthService, user) => {
+app.controller('DashboardCtrl', ($scope, $state, DataFactory, AuthService, user) => {
+
     $scope.user = user;
+    $scope.isAdmin = AuthService.isAdmin;
+
     $scope.goTo = {
         reviews() {
             $state.go('dashboard.reviews');
@@ -34,6 +37,6 @@ app.controller('DashboardCtrl', ($scope, $stateParams, DataFactory, AuthService,
         cars() {
             $state.go('dashboard.cars');
         }
-    }
+    };
 
 });
