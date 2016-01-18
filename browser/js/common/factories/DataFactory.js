@@ -119,6 +119,11 @@ app.factory('DataFactory', function($http) {
         fetchMakesAndModels() {
             return $http.get('/api/makes')
             .then(extractData);
+        },
+        //address...
+        updateAddress(addressId, update) {
+            return $http.put(`/api/addresses/${addressId}`, update)
+            .then(extractData);
         }
     };
 });
