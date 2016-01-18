@@ -29,6 +29,7 @@ app.controller('AccountCtrl', function($scope, user, categories, DataFactory) {
     $scope.user = user;
     $scope.shippingAddress = user.shippingAddress;
     $scope.billingAddress = user.billingAddress;
+
     $scope.categoryPicks = user.categories;
     $scope.categoryPicksByName = $scope.categoryPicks.map(category=> category.name);
     $scope.categories = categories
@@ -68,7 +69,22 @@ app.controller('AccountCtrl', function($scope, user, categories, DataFactory) {
         })
     }
 
-    $scope.category
+    $scope.updateCategories = function() {
+
+        var update = { categories: $scope.categoryPicks.map(category => category._id)  },
+            userId = $scope.user._id;
+
+        console.log('array to send is ', update);
+
+        DataFactory.updateUser(userId, update)
+        .then(function(user){
+            console.log('got user: ', user)
+            $scope.user = user;
+            updateArray.categories = true;
+            $scope.categoryPicks = user.categories;
+            $scope.categoryPicksByName = $scope.categoryPicks.map(category=> category.name);
+        })
+    }
 
 
 })

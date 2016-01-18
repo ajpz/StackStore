@@ -108,7 +108,7 @@
 
 
 
-    <form role="form" name="categoryForm" ng-submit="submitMethod()">
+    <form role="form" name="categoryForm" ng-submit="updateCategories()">
         <legend>Your car preferences: </legend>
         <h5>You currently follow the categories: {{categoryPicksByName}}</h5>
         <div>
@@ -119,6 +119,7 @@
             <h5 ng-show="wasUpdated('category')">Your category selections were updated</h5>
             <button type="submit" class="btn btn-success pull-right" ng-disabled="categoryForm.$invalid">Save changes</button>
         </div>
+        <pre>{{categoryPicks}}</pre>
     </form>
 
 
