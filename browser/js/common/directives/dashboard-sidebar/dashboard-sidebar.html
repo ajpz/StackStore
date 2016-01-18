@@ -1,0 +1,15 @@
+<div class="col-md-2">
+    <nav>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav side-nav">
+                <li id="reviews" ng-click="goTo.reviews()">Reviews</li>
+                <li id="orders" ng-click="goTo.orders()">Orders</li>
+                <li id="acct-details" ng-click="goTo.acctDetails()">Account Details</li>
+                <li id="users" ng-if="isAdmin()" ng-click="goTo.users()">Users</li>
+                <li id="cars" ng-if="isAdmin()" ng-click="goTo.cars()">Cars</li>
+                <li id="categories" ng-if="isAdmin()" ng-click="goTo.categories()">Categories</li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </nav>
+</div>
