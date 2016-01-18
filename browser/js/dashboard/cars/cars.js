@@ -33,16 +33,19 @@ app.controller('CarsCtrl', ($scope, DataFactory, cars) => {
     };
 
     $scope.removeCar = carId => {
-        let len = $scope.cars.length;
-        let indexOfSelected;
-        for (let i = 0; i < len; i++) {
-            if ($scope.cars[i]._id === carId) {
-                indexOfSelected = i;
-                break;
+        DataFactory.deleteCar(carId)
+        .then(car => {
+            let len = $scope.cars.length;
+            let indexOfSelected;
+            for (let i = 0; i < len; i++) {
+                if ($scope.cars[i]._id === car._id) {
+                    indexOfSelected = i;
+                    break;
+                }
             }
-        }
-        $scope.cars.splice(indexOfSelected, 1);
-        return DataFactory.deleteCar(carId);
+            $scope.cars.splice(indexOfSelected, 1);
+        })
+
     }
 
     DataFactory.fetchMakesAndModels()
@@ -57,14 +60,14 @@ app.controller('CarsCtrl', ($scope, DataFactory, cars) => {
 
     $scope.addCar = () => {
         let car = {
-            make: (() => $scope.newCar.make._id)(),
+            make: $scope.newCar.make._id,
             model: $scope.newCar.model,
             year: $scope.newCar.year,
             color: $scope.newCar.color,
             condition: $scope.newCar.condition,
             mileage: $scope.newCar.mileage,
-            photos: (() => $scope.newCar.rawUrls.trim().split(","))(),
-            categories: (() => [$scope.newCar.categories._id])(),
+            photos: $scope.newCar.rawUrls.trim().split(","),
+            categories: [$scope.newCar.categories._id],
             horsepower: $scope.newCar.horsepower,
             acceleration: $scope.newCar.acceleration,
             price: $scope.newCar.price,
