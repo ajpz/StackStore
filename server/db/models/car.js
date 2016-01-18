@@ -1,7 +1,6 @@
 'use strict';
 
 var mongoose = require('mongoose');
-var MakeAndModels = mongoose.model('MakeAndModels');
 
 var carSchema = new mongoose.Schema({
         make: {
@@ -75,13 +74,6 @@ carSchema.post("init", function(carDoc){
     carDoc.save(function(err) {
         console.error(err);
     });
-});
-
-carSchema.virtual('displayName').get(function() {
-    return MakeAndModels.find({_id: this.make}).exec()
-    .then(function(MM) {
-        return MM.make + ' ' + this.model + ' ' + this.year;
-    })
 });
 
 module.exports = mongoose.model('Car', carSchema)

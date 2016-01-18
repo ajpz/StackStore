@@ -8,8 +8,8 @@ var mongoose = require('mongoose');
 // Require in all models.
 require('../../../server/db/models');
 
-var Car = mongoose.model('Car');
 var MakeAndModels = mongoose.model('MakeAndModels');
+var Car = mongoose.model('Car');
 
 describe('Car model', function () {
 
