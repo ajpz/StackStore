@@ -1,9 +1,12 @@
 navbar {
 
   display: block;
-  background: white;
+  background: black;
   border-bottom: 1px solid black;
   box-shadow: 1px 1px 14px -3px black;
+  font-family: 'Century Gothic';
+  color: black;
+
 
   .container {
     width: 91%;
@@ -11,15 +14,20 @@ navbar {
     padding-top: 20px;
   }
 
-  fullstack-logo {
+  .container > .navbar-header {
     margin-top: 5px;
-    margin-right: 20px;
-    width: 40px;
+    margin-right: 5px;
+    margin-left: -20px;
+
+    width: 110px;
+    color: #f31214;
+    font-size: 20px;
   }
 
   a {
     color: black;
-    font-size: 16px;
+    font-size: 24px;
+    font-family: 'Century Gothic';
   }
 
   .nav > li > a {
