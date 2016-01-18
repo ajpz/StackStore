@@ -12,7 +12,7 @@ router.route('/')
         .then(null, next)
     })
     .post(function (req, res, next) {
-        MakeAndModels.create(req.body).exec()
+        MakeAndModels.create(req.body)
         .then(function (makeAndModels){
             res.status(201).send(makeAndModels)
         })
