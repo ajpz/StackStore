@@ -4,6 +4,11 @@ var mongoose = require('mongoose');
 var MakeAndModels = mongoose.model('MakeAndModels');
 
 var carSchema = new mongoose.Schema({
+        make: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'MakeAndModel',
+            required: true
+        },
         model: {
             type: String
         },
