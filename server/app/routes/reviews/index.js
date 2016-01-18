@@ -17,7 +17,7 @@ router.route('/')
         .then(null, next)
     })
     .post(function (req, res, next){
-        Review.create(req.body).exec()
+        Review.create(req.body)
         .then(function (savedReview) {
             res.status(201).send(savedReview)
         }).then(null, next)

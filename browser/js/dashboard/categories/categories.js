@@ -31,4 +31,12 @@ app.controller('CategoriesCtrl', ($scope, DataFactory) => {
             .then(null, console.error);
     }
 
+    $scope.addCategory = () => {
+        DataFactory.addCategory($scope.newCategory)
+            .then(category => {
+                $scope.categories.push(category);
+            })
+            .then(null, console.error);
+    }
+
 });
