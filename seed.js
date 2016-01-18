@@ -55,21 +55,47 @@ var seedCategories = function() {
 
     var categories = [
         {
+            name: 'French'
+        },
+        {
+            name: 'Foreign'
+        },
+        {
+            name: 'Classic'
+        },
+        {
+            name: 'USA'
+        },
+        {
             name: 'Muscle'
         },
         {
-            name: 'French'
+            name: 'Italian'
         },
         {
             name: 'Movie'
         },
         {
             name: 'Sports'
+        },
+        {
+            name: 'German'
+        },
+        {
+            name: 'Supercar'
+        },
+        {
+            name: 'British'
+        },
+        {
+            name: 'Villain'
+        },
+        {
+            name: 'Hero'
         }
-    ]
-
+    ];
     return Category.createAsync(categories);
-}
+};
 
 var seedMakeAndModels = function() {
 
@@ -85,10 +111,42 @@ var seedMakeAndModels = function() {
         {
             make: 'AlfaRomeo',
             models: ['Spider']
+        },
+        {
+            make: 'Pontiac',
+            models: ['GTO']
+        },
+        {
+            make: 'Plymouth',
+            models: ['Road Runner Hemi']
+        },
+        {
+            make: 'Porsche',
+            models: ['911']
+        },
+        {
+            make: 'Chevrolet',
+            models: ['Corvette', 'Impala']
+        },
+        {
+            make: 'Mercedes-Benz',
+            models: ['SLS AMG']
+        },
+        {
+            make: 'BMW',
+            models: ['M3']
+        },
+        {
+            make: 'Jaguar',
+            models: ['C-X75']
+        },
+        {
+            make: 'Aston Martin',
+            models: ['DB10']
         }
-    ]
+    ];
     return MakeAndModels.createAsync(makesAndModels);
-}
+};
 
 var seedCars = function(makes, categories) {
 
