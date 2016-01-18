@@ -1,0 +1,10 @@
+<div class="col-md-10 col-md-offset-2">
+<h2>Reviews</h2>
+    <div class="row" ng-repeat="review in reviews">
+        <div class="col-md-8">
+            <h4><a ui-sref="car({carId: review.car._id})">Car: {{ review.car.year }} {{ review.car.model }}</a></h4>
+            <h5>{{review.rating}} Stars</h5>
+            <p>{{review.comment}}</p>
+        </div>
+    </div>
+</div>
