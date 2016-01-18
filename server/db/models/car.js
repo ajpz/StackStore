@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var carSchema = new mongoose.Schema({
         make: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'MakeAndModel',
+            ref: 'MakeAndModels',
             required: true
         },
         model: {
