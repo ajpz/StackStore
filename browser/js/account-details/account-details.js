@@ -68,5 +68,7 @@ app.controller('AccountCtrl', function($scope, user, categories, DataFactory) {
         })
     }
 
+    $scope.category
+
 
 })
