@@ -71,14 +71,16 @@ app.controller('AccountCtrl', function($scope, user, categories, DataFactory) {
 
     $scope.updateCategories = function() {
 
-        var update = { categories: $scope.categoryPicks.map(category => category._id)  },
+        var update = {
+                categories: $scope.categoryPicks.map(category => category._id)
+            },
             userId = $scope.user._id;
-
-        console.log('array to send is ', update);
 
         DataFactory.updateUser(userId, update)
         .then(function(user){
-            console.log('got user: ', user)
+            return DataFactory.fetchUser(userId);
+        })
+        .then(function(user){
             $scope.user = user;
             updateArray.categories = true;
             $scope.categoryPicks = user.categories;

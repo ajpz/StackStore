@@ -109,17 +109,16 @@
 
 
     <form role="form" name="categoryForm" ng-submit="updateCategories()">
-        <legend>Your car preferences: </legend>
-        <h5>You currently follow the categories: {{categoryPicksByName}}</h5>
-        <div>
-            <select name="categorySelector" ng-model="categoryPicks" ng-options="category.name for category in categories" data-ng-attr-size="{{categories.length}}" multiple></select>
+        <legend>Your car preferences: <span ng-repeat="name in categoryPicksByName"> {{name}} </span></legend>
+
+        <div class="col-sm-12">
+            <select name="categorySelector" ng-model="categoryPicks" ng-options="category.name for category in categories" data-ng-attr-size="{{categories.length}}" style="width: 400px" class="pull-right" multiple></select>
         </div>
 
         <div class="col-sm-12">
             <h5 ng-show="wasUpdated('category')">Your category selections were updated</h5>
             <button type="submit" class="btn btn-success pull-right" ng-disabled="categoryForm.$invalid">Save changes</button>
         </div>
-        <pre>{{categoryPicks}}</pre>
     </form>
 
 
