@@ -7,24 +7,24 @@
         </li>
     </ul>
     <h3>Add a car:</h3>
-    <form novalidate>
+    <form name="newCarForm" novalidate>
         <div class="row">
             <div class="col-sm-2">
                 <fieldset class="form-group">
                     <label for="year">Year</label>
-                    <input type="number" class="form-control" id="year" placeholder="1969" ng-model="newCar.year">
+                    <input type="number" class="form-control" id="year" placeholder="1969" ng-model="newCar.year" required>
                 </fieldset>
             </div>
             <div class="col-sm-3">
                 <fieldset class="form-group">
                     <label for="make">Make</label>
-                    <select id="make" ng-model="newCar.make" ng-options="make as make.make for make in makes" class="form-control"></select>
+                    <select id="make" ng-model="newCar.make" ng-options="make as make.make for make in makes" class="form-control"></select required>
                 </fieldset>
             </div>
             <div class="col-sm-4">
                 <fieldset class="form-group">
                     <label for="model">Model</label>
-                    <select ng-options="model for model in newCar.make.models" ng-model="newCar.model" class="form-control"></select>
+                    <select ng-options="model for model in newCar.make.models" ng-model="newCar.model" class="form-control" required></select>
                 </fieldset>
             </div>
         </div>
@@ -32,7 +32,7 @@
             <div class="col-sm-3">
                 <fieldset class="form-group">
                     <label for="color">Color</label>
-                    <select class="form-control" id="color-select" ng-model="newCar.color">
+                    <select class="form-control" id="color-select" ng-model="newCar.color" required>
                         <option value="Black">Black</option>
                         <option value="White">White</option>
                         <option value="Silver">Silver</option>
@@ -45,7 +45,7 @@
             <div class="col-sm-3">
                 <fieldset class="form-group">
                     <label for="condition">Condition</label>
-                    <select id="condition-select" class="form-control" ng-model="newCar.condition">
+                    <select id="condition-select" class="form-control" ng-model="newCar.condition" required>
                         <option value="Poor">Poor</option>
                         <option value="Good">Good</option>
                         <option value="Excellent">Excellent</option>
@@ -55,7 +55,7 @@
             <div class="col-sm-3">
                 <fieldset class="form-group">
                     <label for="mileage">Mileage</label>
-                    <input type="number" class="form-control" id="mileage" ng-model="newCar.mileage">
+                    <input type="number" class="form-control" id="mileage" ng-model="newCar.mileage" required>
                 </fieldset>
             </div>
         </div>
@@ -63,20 +63,20 @@
             <div class="col-md-5">
                 <fieldset class="form-group">
                     <label for="photos">Photo Urls</label>
-                    <input type="text" class="form-control" id="photos" ng-model="newCar.rawUrls">
+                    <input type="text" class="form-control" id="photos" ng-model="newCar.rawUrls" required>
                     <small class="text-muted">Seperate multiple URL's with commas.</small>
                 </fieldset>
             </div>
             <div class="col-md-2">
                 <fieldset class="form-group">
                     <label for="horsepower">Horsepower</label>
-                    <input type="number" class="form-control" id="horsepower" ng-model="newCar.horsepower">
+                    <input type="number" class="form-control" id="horsepower" ng-model="newCar.horsepower" required>
                 </fieldset>
             </div>
             <div class="col-md-2">
                 <fieldset class="form-group">
                     <label for="acceleration">Acceleration</label>
-                    <input type="number" class="form-control" id="acceleration" ng-model="newCar.acceleration">
+                    <input type="number" class="form-control" id="acceleration" ng-model="newCar.acceleration" required>
                 </fieldset>
             </div>
         </div>
@@ -84,22 +84,22 @@
             <div class="col-md-2">
                 <fieldset class="form-group">
                     <label for="price">Price</label>
-                    <input type="number" class="form-control" id="price" ng-model="newCar.price">
+                    <input type="number" class="form-control" id="price" ng-model="newCar.price" required>
                 </fieldset>
             </div>
             <div class="col-md-2">
                 <fieldset class="form-group">
                     <label for="quantity">Quantity</label>
-                    <input type="number" class="form-control" id="quantity" ng-model="newCar.count">
+                    <input type="number" class="form-control" id="quantity" ng-model="newCar.count" required>
                 </fieldset>
             </div>
             <div class="col-md-5">
                 <fieldset class="form-group">
                     <label for="category">Category</label>
-                    <select ng-options="category as category.name for category in categories" class="form-control" ng-model="newCar.categories"></select>
+                    <select ng-options="category as category.name for category in categories" class="form-control" ng-model="newCar.categories" required></select>
                 </fieldset>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary" ng-click="addCar()">Add Car</button>
+        <button type="submit" class="btn btn-primary" ng-click="addCar()" ng-disabled="newCarForm.$invalid">Add Car</button>
     </form>
 </div>
