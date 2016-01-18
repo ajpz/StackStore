@@ -25,7 +25,10 @@ router.route('/')
 
 router.route('/:carId')
     .get(function (req, res, next){
-        Car.findById(req.params.carId).exec()
+        Car.findById(req.params.carId)
+        .populate('categories')
+        .populate('make')
+        .exec()
         .then(function (car){
             if(!car) return res.status(404).end();
             res.send(car)
