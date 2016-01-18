@@ -2,19 +2,31 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div class="row">
-                    <p>Past Orders</p>
-                    <div class="row" ng-repeat="order in orders">
-                        <ul>
-                        {{order.carId}}
-                        {{order.status}}
-                        {{order.date}}
-                        </ul>
-                    </div>
-                    <div class="col-xs-6">
-                           <ul>Maybe include order shipped date here</ul>
-                    </div>
-                </div>
+                <p>Past Orders</p>
+                    <table class="table">
+                      <tr>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>
+                            <order-selector
+                                option-chosen="filterCriteria"
+                                option-values="emails"
+                                option-name="email">
+                            </<order-selector></th>
+                        <th>Car Count</th>
+                        <th>Total Invoice</th>
+                        <th>Invoice Number</th>
+                      </tr>
+                      <tr ng-repeat="order in orders | orderFilter:filterCriteria | orderBy: '-date'">
+                        <td>{{order.date | date}}</td>
+                        <td>{{order.status}}</td>
+                        <td><a ui-sref="user({userId: order.user._id})">{{order.user.email}}</a></td>
+                        <td>{{order.car.length}}</td>
+                        <td>{{order.amount | currency}}</td>
+                        <td><a ui-sref="order({orderId: order._id})">{{order._id}}</a></td>
+                      </tr>
+                    </table>
+
             </div>
         </div>
     </div>

@@ -6,12 +6,15 @@ app.config(function($stateProvider) {
         resolve: {
             car: function(DataFactory, $stateParams, CartFactory){
                 return DataFactory.fetchCar($stateParams.carId)
+            },
+            reviews: function(DataFactory, $stateParams, CartFactory){
+                return DataFactory.fetchReviews({name: "car", id: $stateParams.carId})
             }
         }
     })
 })
 
-app.controller('CarCtrl', function($scope, car, CartFactory) {
+app.controller('CarCtrl', function($scope, car, reviews, CartFactory) {
 
     //ASK MARK: scope of shopping-cart is inside the scope of this template.
     //Does it make sense that the rendered cart borrows from shopping cart
@@ -19,6 +22,7 @@ app.controller('CarCtrl', function($scope, car, CartFactory) {
     //to be populated early.
 
     $scope.car = car;
+    $scope.reviews = reviews.slice(0,5);
 
     $scope.addToCart = function(car) {
 

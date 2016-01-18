@@ -1,8 +1,8 @@
 // Instantiate all models
 var mongoose = require('mongoose');
 require('../../../server/db/models');
-var Car = mongoose.model('Car');
 var MakeAndModels = mongoose.model('MakeAndModels');
+var Car = mongoose.model('Car');
 
 var expect = require('chai').expect;
 
