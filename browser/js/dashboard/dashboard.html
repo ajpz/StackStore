@@ -1,31 +1,7 @@
 <section id="user-preferences">
     <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <p>Account Preferences: {{user.email}}</p>
-                <ul>
-                    <li ng-click="toggle('acctDetails')"><a href="">Account Details</a></li>
-                    <li ng-click="toggle('orderHistory')"><a href="">Order History</a></li>
-                    <li ng-if="user.isAdmin" ng-click="toggle('admin')"><a href="">Admin</a></li><!-- only if admin -->
-                </ul>
-            </div>
-        </div>
-        <div class="row" ng-show="show.acctDetails">
-            <div class="col-md-6">
-            ACCT DETAILS
-            </div>
-            <div class="col-md-6">
-            </div>
-        </div>
-        <div class="row" ng-show="show.orderHistory">
-            <div class="col-md-6"></div>
-            ORDER HISTOR
-            <div class="col-md-6"></div>
-        </div>
-        <div class="row" ng-if="user.isAdmin" ng-show="show.admin">
-            <div class="col-md-6">
-                 ADMIN
-            </div>
-        </div>
+        <dashboard-sidebar></dashboard-sidebar>
+        <ui-view></ui-view>
     </div>
 </section>
+
