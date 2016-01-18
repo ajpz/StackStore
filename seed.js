@@ -118,19 +118,19 @@ var seedMakeAndModels = function() {
         },
         {
             make: 'Plymouth',
-            models: ['Road Runner Hemi']
+            models: ['RoadRunnerHemi']
         },
         {
             make: 'Porsche',
-            models: ['911']
+            models: ['nine']
         },
         {
             make: 'Chevrolet',
             models: ['Corvette', 'Impala']
         },
         {
-            make: 'Mercedes-Benz',
-            models: ['SLS AMG']
+            make: 'MercedesBenz',
+            models: ['SLSAMG']
         },
         {
             make: 'BMW',
@@ -138,10 +138,10 @@ var seedMakeAndModels = function() {
         },
         {
             make: 'Jaguar',
-            models: ['C-X75']
+            models: ['CX75']
         },
         {
-            make: 'Aston Martin',
+            make: 'AstonMartin',
             models: ['DB10']
         }
     ];
@@ -183,7 +183,6 @@ var seedCars = function(makes, categories) {
             car.photos = JSON.parse(car.photos);
             return car;
         });
-
         return Car.createAsync(carArray)
     })
     .then(null, console.error.bind(console));
