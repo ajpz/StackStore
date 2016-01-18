@@ -24,5 +24,4 @@ app.config( $stateProvider => {
 
 app.controller('ReviewsCtrl', ($scope, reviews) => {
     $scope.reviews = reviews;
-    console.log($scope.reviews);
 })
