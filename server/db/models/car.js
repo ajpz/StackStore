@@ -4,11 +4,6 @@ var mongoose = require('mongoose');
 var MakeAndModels = mongoose.model('MakeAndModels');
 
 var carSchema = new mongoose.Schema({
-    make: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'MakeAndModels',
-            required: true
-        },
         model: {
             type: String
         },
@@ -55,6 +50,9 @@ var carSchema = new mongoose.Schema({
         count: {
             type: Number,
             default: 0
+        },
+        tags: {
+            type: [String]
         }
     },
     {
@@ -65,14 +63,20 @@ var carSchema = new mongoose.Schema({
             virtuals: true
         }
     }
-)
+);
+
+carSchema.post("init", function(carDoc){
+    carDoc.tags = [ carDoc.model, carDoc.color, carDoc.year.toString() ]
+    carDoc.save(function(err) {
+        console.error(err);
+    });
+});
 
 carSchema.virtual('displayName').get(function() {
     return MakeAndModels.find({_id: this.make}).exec()
     .then(function(MM) {
         return MM.make + ' ' + this.model + ' ' + this.year;
     })
-})
-
+});
 
 module.exports = mongoose.model('Car', carSchema)
