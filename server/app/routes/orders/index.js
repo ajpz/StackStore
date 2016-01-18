@@ -15,7 +15,7 @@ router.route('/')
         })
         .then(null, next)
     })
-    .post(function(req, res, next) {
+    .post(function (req, res, next) {
         Order.create(req.body)
         .then(function (order){
             res.status(201).send(order)
