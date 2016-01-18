@@ -1,21 +1,15 @@
-app.config(function($stateProvider, DataFactory) {
-    $stateProvider.state('order', {
+app.config(function($stateProvider) {
+    $stateProvider.state('admin-entry', {
         url: '/admin-entry/',
         controller: 'AdminEntryCtrl',
-        templateUrl: 'js/admin-entry/admin-entry.html',
-        scope: {
-            car: "="
-        },
-        link: function(scope) {
-            scope.submit = DataFactory.addCar
-        }
+        templateUrl: 'js/admin-entry/admin-entry.html'
     })
 })
 
 app.controller('AdminEntryCtrl', function($scope, $stateParams, DataFactory) {
-        DataFactory.addCar($scope.car)
-        .then(function(){
-            window.location.reload()
-        })
 
+        $scope.submit = function() {
+            return DataFactory.addCar($scope.car)
+        }
 })
+
