@@ -1,18 +1,18 @@
 app.config( $stateProvider => {
 
     $stateProvider.state('dashboard.', {
-        url: '/users',
-        controller: 'UsersCtrl',
-        templateUrl: 'js/dashboard/users/users.html',
-        resolve : {
-            users(DataFactory) {
-                return DataFactory.fetchUsers();
-            }
-        }
+        url: '/categories',
+        controller: 'CategoriesCtrl',
+        templateUrl: 'js/dashboard/categories/categories.html'
     });
 
 });
 
-app.controller('UsersCtrl', ($scope, users) => {
-    $scope.users = users;
-})
+app.controller('CategoriesCtrl', ($scope, DataFactory) => {
+    $scope.categories;
+    DataFactory.fetchCategories()
+        .then(categories => {
+            $scope.categories = categories;
+        });
+
+});
