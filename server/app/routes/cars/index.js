@@ -7,7 +7,7 @@ router.route('/')
     .get(function (req, res, next) {
         Car.find({})
         .populate('categories')
-        .populate('make')
+        .populate('make', 'make')
         .exec()
         .then(function (cars){
             console.log(cars);
@@ -27,7 +27,7 @@ router.route('/:carId')
     .get(function (req, res, next){
         Car.findById(req.params.carId)
         .populate('categories')
-        .populate('make')
+        .populate('make', 'make')
         .exec()
         .then(function (car){
             if(!car) return res.status(404).end();
