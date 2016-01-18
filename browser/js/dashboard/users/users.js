@@ -1,11 +1,11 @@
 app.config( $stateProvider => {
 
     $stateProvider.state('dashboard.users', {
-        url: '/dashboard/:userId/users',
+        url: '/users',
         controller: 'UsersCtrl',
         templateUrl: 'js/dashboard/users/users.html',
         resolve : {
-            users() {
+            users(DataFactory) {
                 return DataFactory.fetchUsers();
             }
         }
@@ -13,6 +13,6 @@ app.config( $stateProvider => {
 
 });
 
-app.controller('UsersCtrl', (users) => {
+app.controller('UsersCtrl', ($scope, users) => {
     $scope.users = users;
 })
