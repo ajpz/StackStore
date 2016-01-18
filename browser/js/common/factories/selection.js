@@ -20,20 +20,24 @@ app.factory('Selection', $rootScope => {
         },
         filterOnCategory(categoryId) {
             this.display = this.cars.filter(car => {
-                return car.categories.indexOf(categoryId) > -1;
+                let len = car.categories.length;
+                for (let i = 0; i < len; i++) {
+                    if (car.categories[i]._id === categoryId) return true;
+                };
+                return false;
             });
             $rootScope.$broadcast('refreshSelection');
         },
         filterOnMake(make) {
             this.currentMake = JSON.parse(make);
             this.display = this.cars.filter(car => {
-                return car.make === this.currentMake._id;
+                return car.make._id === this.currentMake._id;
             });
             $rootScope.$broadcast('refreshSelection');
         },
         filterOnModel(model) {
             this.display = this.cars.filter(car => {
-                return car.make === this.currentMake._id && car.model === model;
+                return car.make._id === this.currentMake._id && car.model === model;
             });
             $rootScope.$broadcast('refreshSelection');
         },

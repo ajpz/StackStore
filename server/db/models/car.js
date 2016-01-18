@@ -54,9 +54,17 @@ var carSchema = new mongoose.Schema({
     count: {
         type: Number,
         default: 0
+    },
+    tags: {
+        type: [String]
     }
-
 })
 
+carSchema.post("init", function(carDoc){
+    carDoc.tags = [ carDoc.model, carDoc.color, carDoc.year.toString() ]
+    carDoc.save(function(err) {
+        console.error(err);
+    });
+});
 
 module.exports = mongoose.model('Car', carSchema)
