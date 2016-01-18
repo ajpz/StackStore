@@ -98,7 +98,8 @@ app.factory('DataFactory', function($http) {
         // reviews...
         // query --> {name: <car/user>, id: <carId/userId> }
         fetchReviews(queryObj) {
-            var queryString = queryObj.name + queryObj.id;
+            var queryString = queryObj.name + '=' + queryObj.id;
+            console.log('dtaFactory ', queryString)
             return $http.get('/api/reviews' + '?' + queryString)
             .then(extractData)
         },

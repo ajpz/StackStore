@@ -6,16 +6,16 @@ app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVE
     //loaded upon refresh, and the state won't ahve access
     //to the refreshed cart. Better way to handle this?
 
-    var localStorageCart = JSON.parse(localStorage.getItem('visitingUserCart'));
-    var shoppingCart = localStorageCart ?
-            localStorageCart :
+    var cartFromLocal = JSON.parse(localStorage.getItem('visitingUserCart'));
+    var shoppingCart = cartFromLocal ?
+            cartFromLocal :
             { status: 'Created', car: [] };
 
-    var saveShoppingCartToDb = function(cartToSave){
-        if(cartToSave._id) {
-            return DataFactory.updateOrder(cartToSave._id, cartToSave);
+    var saveToDb = function(cart){
+        if(cart._id) {
+            return DataFactory.updateOrder(cart._id, cart);
         } else {
-            return DataFactory.addOrder(cartToSave)
+            return DataFactory.addOrder(cart)
             .then(function(savedCart) {
                 shoppingCart = savedCart;
                 return shoppingCart;
@@ -23,22 +23,35 @@ app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVE
         }
     };
 
-    var refreshShoppingCart = function(){
+    var saveToLocal = function(cart){
+        localStorage.setItem('visitingUserCart', JSON.stringify(cart));
+        return $q.when(cart);
+    }
 
+    var saveLocalOrDb = function(cart) {
+        if(AuthService.isAuthenticated()) {
+            return $q.when(saveToDb(cart))
+        } else {
+            return saveToLocal(cart); //NEED TO PROMISIFY?
+        }
+    };
+
+    var refresh = function(){
+        // used to refresh upon browser restart, and to reset user
         AuthService.getLoggedInUser()
         .then(function(user) {
-            //gets user's db cart, ie. where orderStatus === 'Created'
+            //gets user's db cart
             shoppingCart.user = user._id;
             return DataFactory.fetchOrdersForUser(user._id, 'Created')
         })
-        .then(function(databaseCartArr) {
+        .then(function(dbCartArr) {
             //merges local cart into db cart
-            var dbCart = databaseCartArr[0];
+            var dbCart = dbCartArr[0];
             if(dbCart) {
                 dbCart.car = dbCart.car.concat(shoppingCart.car);
                 shoppingCart = dbCart;
             }
-            return saveShoppingCartToDb(shoppingCart);
+            return saveToDb(shoppingCart);
         })
         .then(function(databaseCart) {
             //saves merged cart to db
@@ -51,23 +64,21 @@ app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVE
 
     };
 
-    var destroyShoppingCart = function(){
-        shoppingCart = { status: 'Created', car: [] };
-        $rootScope.$broadcast('LoadCart', shoppingCart);
-    }
-
-    var updateLocalOrDbStorage = function(shoppingCart) {
+    var deleteLocalOrDb = function(shoppingCart) {
         if(AuthService.isAuthenticated()) {
-            return $q.when(saveShoppingCartToDb(shoppingCart))
+            return DataFactory.deleteOrder(shoppingCart._id);
         } else {
-            localStorage.setItem('visitingUserCart', JSON.stringify(shoppingCart));
-            return $q.when(shoppingCart);
+            return $q.when(localStorage.removeItem('visitingUserCart'));
         }
     };
 
+    var destroy = function(){
+        shoppingCart = { status: 'Created', car: [] };
+        $rootScope.$broadcast('LoadCart', shoppingCart);
+    };
 
-    $rootScope.$on(AUTH_EVENTS.loginSuccess, refreshShoppingCart);
-    $rootScope.$on(AUTH_EVENTS.logoutSuccess, destroyShoppingCart);
+    $rootScope.$on(AUTH_EVENTS.loginSuccess, refresh);
+    $rootScope.$on(AUTH_EVENTS.logoutSuccess, destroy);
 
     return {
         getCurrentCart: function(){
@@ -75,36 +86,29 @@ app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVE
         },
         addToCart: function(car){
             shoppingCart.car.push(car._id);
-            return updateLocalOrDbStorage(shoppingCart);
+            return saveLocalOrDb(shoppingCart);
         },
         updateCart: function(carId){
             var indexToRemove = shoppingCart.car.indexOf(carId);
             shoppingCart.car.splice(indexToRemove, 1);
-            return updateLocalOrDbStorage(shoppingCart);
+            return saveLocalOrDb(shoppingCart);
         },
         deleteCart: function(){
-            if(shoppingCart.user) return $q.when(localStorage.removeItem('visitingUserCart'));
-            else return DataFactory.deleteOrder(shoppingCart._id);
+            return deleteLocalOrDb(shoppingCart)
+            .then(function() {
+                destroy();
+                return refresh();
+            })
+        },
+        purchaseCart: function() {
+            shoppingCart.status = 'Processing';
+
+            return saveToDb(shoppingCart)
+            .then(function(){
+                destroy();
+                return refresh();
+            })
         }
     }
 });
 
-
-/*
-
-Shared functionality
-
--- can create new order
--- can add to existing order
--- can update order
--- can delete order
-
-displays as shopping cart, when created
-displays as purchase page
-converts to firm order and sends/sets auto-emails
-
-Order Routes:
-- need to populate user/car(s) on GET routes
-- need
-
-*/

@@ -218,7 +218,7 @@ var seedOrders = function(users, cars) {
     //not sure why min: 1 doesn't work
     function randOrder() {
         var order = new Order({
-            status: chance.pick(['Created', 'Processing', 'Cancelled', 'Completed']),
+            status: chance.weighted(['Processing', 'Cancelled', 'Completed'], [20,5,75]),
             user: chance.pick(users)._id,
             car: chance.pick(cars, chance.integer({min:2, max:3})),
             amount: 0,

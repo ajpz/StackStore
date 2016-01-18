@@ -9,10 +9,10 @@ var Promise = require('bluebird');
 // Require in all models.
 require('../../../server/db/models');
 
+var MakeAndModels = mongoose.model('MakeAndModels');
 var Review = mongoose.model('Review');
 var Car = mongoose.model('Car');
 var User = mongoose.model('User');
-var MakeAndModels = mongoose.model('MakeAndModels');
 
 describe('Review model', function () {
 
