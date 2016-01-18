@@ -3,7 +3,9 @@
 }
 
 body {
-  background: #fdfdfd;
+  background: url(http://static1.squarespace.com/static/52f32f69e4b0b5c2c646e433/t/52f4468ee4b045fae90ee8ae/1391740561985/Bugatti.jpg) no-repeat center center fixed;
+  opacity: 0.8;
+  background-size: cover;
 }
 
 @mixin clearfix {
