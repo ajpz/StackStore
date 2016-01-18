@@ -22,7 +22,7 @@
                         <td>{{order.status}}</td>
                         <td><a ui-sref="user({userId: order.user._id})">{{order.user.email}}</a></td>
                         <td>{{order.car.length}}</td>
-                        <td>{{order.amount}}</td>
+                        <td>{{order.amount | currency}}</td>
                         <td><a ui-sref="order({orderId: order._id})">{{order._id}}</a></td>
                       </tr>
                     </table>
