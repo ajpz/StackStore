@@ -5,7 +5,7 @@ app.config(function($stateProvider, DataFactory) {
         templateUrl: 'js/admin-entry/admin-entry.html',
         scope: {
             car: "="
-        }
+        },
         link: function(scope) {
             scope.submit = DataFactory.addCar
         }
@@ -13,10 +13,9 @@ app.config(function($stateProvider, DataFactory) {
 })
 
 app.controller('AdminEntryCtrl', function($scope, $stateParams, DataFactory) {
-        DataFactory.fetchOrder($stateParams.orderId)
-        .then(function(order){
-            $scope.order = order;
-            $scope.car = order.car;
+        DataFactory.addCar($scope.car)
+        .then(function(){
+            window.location.reload()
         })
 
 })
