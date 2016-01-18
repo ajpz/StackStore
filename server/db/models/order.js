@@ -6,7 +6,7 @@ var _ = require('lodash');
 var orderSchema = new mongoose.Schema({
     status: {
         type: String,
-        enum: ['Created', 'Processing', 'Cancelled', 'Completed'],
+        enum: ['In Wish List', 'Created', 'Processing', 'Cancelled', 'Completed'],
         required: true
     },
     user: {
