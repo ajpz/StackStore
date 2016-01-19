@@ -55,8 +55,8 @@ app.controller('CarCtrl', function($scope, car, reviews, user, CartFactory, Wish
             .then(null, console.error.bind(console));
     };
     $scope.addToWishList = function(car) {
-        CartFactory.addToWishList(car)
-        .then(function(cart) {
+        WishListFactory.addToWishList(car)
+        .then(function(wishlist) {
             $scope.wishlist = wishlist;
         });
     };

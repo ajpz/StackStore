@@ -19,7 +19,8 @@
                             <img class="img-responsive" ng-src="{{car.photos[0]}}" alt="">
                             <h5>{{car.year}} {{car.make.make}} {{car.model}}</h5>
                         </a>
-                        <button ng-click="addToCart(car)">Add to Cart</button>
+                        <button ng-click="addToWishList(car)">Add to Wish List<a class="glyphicon glyphicon-heart"></a></button>
+                        <button ng-click="addToCart(car)">Add to Cart<a class="glyphicon glyphicon-shopping-cart"></a></button>
                     </div>
                 </div>
             </div>
