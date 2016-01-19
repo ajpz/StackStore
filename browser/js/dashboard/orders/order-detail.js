@@ -14,10 +14,7 @@ app.controller('OrderDetailCtrl', function ($scope, $stateParams, $state, DataFa
         .then(function (order) {
             $scope.order = order;
             $scope.car = order.car;
-            console.log('the order status is ', $scope.order.status);
-            // orderIsACart = $scope.order.status === 'Created';
             status = $scope.order.status;
-            console.log('the order is ', order);
             $scope.subtotal = order.car.reduce(function(sum, car) {
                 return sum + car.price;
             }, 0);
@@ -34,23 +31,21 @@ app.controller('OrderDetailCtrl', function ($scope, $stateParams, $state, DataFa
     $scope.purchaseCart = function() {
         CartFactory.purchaseCart()
             .then(function () {
-                $state.go('orders');
+                $state.go('dashboard.orders');
             });
     };
 
     $scope.deleteCart = function() {
         CartFactory.deleteCart()
             .then(function () {
-                $state.go('orders');
+                $state.go('dashboard.orders');
             });
     };
 
     $scope.removeFromCart = function(carId) {
-        console.log('removed invoked with: ', carId);
         CartFactory.updateCart(carId)
             .then(function (updatedOrder) {
-                console.log('in promise return', updatedOrder);
-                $state.go('order', {
+                $state.go('dashboard.order', {
                     orderId: updatedOrder._id
                 }, {
                     reload: true
@@ -63,7 +58,7 @@ app.controller('OrderDetailCtrl', function ($scope, $stateParams, $state, DataFa
                 status: 'Cancelled'
             })
             .then(function () {
-                $state.go('orders');
+                $state.go('dashboard.orders');
             });
     };
 
@@ -72,7 +67,7 @@ app.controller('OrderDetailCtrl', function ($scope, $stateParams, $state, DataFa
                 status: 'Completed'
             })
             .then(function () {
-                $state.go('orders');
+                $state.go('dashboard.orders');
             });
     };
 
