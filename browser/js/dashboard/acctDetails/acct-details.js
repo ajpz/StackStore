@@ -43,8 +43,8 @@ app.controller('AccountCtrl', function($scope, user, categories, DataFactory) {
             userId = $scope.user._id;
 
         DataFactory.updateUser(userId, update)
-        .then(function(user){
-            $scope.user = user;
+        .then(function(updatedUser){
+            $scope.user = updatedUser;
             updateArray.email = true;
         })
     }
@@ -77,13 +77,13 @@ app.controller('AccountCtrl', function($scope, user, categories, DataFactory) {
             userId = $scope.user._id;
 
         DataFactory.updateUser(userId, update)
-        .then(function(user){
+        .then(function(){
             return DataFactory.fetchUser(userId);
         })
-        .then(function(user){
-            $scope.user = user;
+        .then(function(updatedUser){
+            $scope.user = updatedUser;
             updateArray.categories = true;
-            $scope.categoryPicks = user.categories;
+            $scope.categoryPicks = updatedUser.categories;
             $scope.categoryPicksByName = $scope.categoryPicks.map(category=> category.name);
         })
     }

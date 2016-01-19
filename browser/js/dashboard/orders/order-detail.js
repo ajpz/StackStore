@@ -33,14 +33,14 @@ app.controller('OrderDetailCtrl', function ($scope, $stateParams, $state, DataFa
 
     $scope.purchaseCart = function() {
         CartFactory.purchaseCart()
-            .then(function (response) {
+            .then(function () {
                 $state.go('orders');
             });
     };
 
     $scope.deleteCart = function() {
         CartFactory.deleteCart()
-            .then(function (response) {
+            .then(function () {
                 $state.go('orders');
             });
     };
@@ -62,7 +62,7 @@ app.controller('OrderDetailCtrl', function ($scope, $stateParams, $state, DataFa
         DataFactory.updateOrder(orderId, {
                 status: 'Cancelled'
             })
-            .then(function (response) {
+            .then(function () {
                 $state.go('orders');
             });
     };
@@ -71,7 +71,7 @@ app.controller('OrderDetailCtrl', function ($scope, $stateParams, $state, DataFa
         DataFactory.updateOrder(orderId, {
                 status: 'Completed'
             })
-            .then(function (response) {
+            .then(function () {
                 $state.go('orders');
             });
     };

@@ -41,7 +41,7 @@ router.route('/:userId')
     })
     .delete(function (req, res, next) {
         User.findByIdAndRemove(req.params.userId).exec()
-        .then(function (user){
+        .then(function (){
             res.status(204).end()
         }).then(null, next)
     });
