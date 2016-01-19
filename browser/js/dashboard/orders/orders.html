@@ -5,23 +5,24 @@
                 <p>Past Orders</p>
                 <table class="table table-hover">
                     <tr>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>
-                            <order-selector
+                        <th><a href="#" ng-click="orderByField='date'; reverseSort = !reverseSort">Date</a></th>
+                        <th><a href="#" ng-click="orderByField='status'; reverseSort = !reverseSort">Status</a></th>
+                        <th><a href="#" ng-click="orderByField='email'; reverseSort = !reverseSort">Email
+<!--                             <order-selector
                                 option-chosen="filterCriteria"
                                 option-values="emails"
                                 option-name="email">
-                            </<order-selector>
-                        </th>
+                            </<order-selector> -->
+                        <th></a></th>
                         <th>Car Count</th>
-                        <th>Total Invoice</th>
+                        <th><a href="#" ng-click="orderByField='invoice'; reverseSort = !reverseSort">Total Invoice</a></th>
                         <th>Invoice Number</th>
                     </tr>
-                    <tr ng-repeat="order in orders | orderFilter:filterCriteria | orderBy: '-date'">
+                    <!-- | orderFilter:filterCriteria  -->
+                    <tr ng-repeat="order in orders | orderBy: orderByField:reverseSort">
                         <td>{{order.date | date}}</td>
                         <td>{{order.status}}</td>
-                        <td><a ui-sref="dashboard.user({userId: order.user._id})">{{order.user.email}}</a></td>
+                        <td><a ui-sref="dashboard({userId: order.user._id})">{{order.user.email}}</a></td>
                         <td>{{order.car.length}}</td>
                         <td>{{order.amount | currency}}</td>
                         <td><a ui-sref="dashboard.order({orderId: order._id})">{{order._id}}</a></td>

@@ -12,6 +12,8 @@ app.config(function($stateProvider) {
 
 app.controller('OrderCtrl', function($scope, DataFactory, AuthService) {
 
+    $scope.orderByField = '-date';
+    $scope.reverseSort = false;
     $scope.filterCriteria = {};
 
     var getAppropriateOrders = function() {
