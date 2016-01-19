@@ -1,6 +1,7 @@
 'use strict';
 var router = require('express').Router();
 var Order = require("mongoose").model('Order');
+var createAndSendEmail = require('../../../mailer/mailer');
 module.exports = router;
 
 router.route('/')
@@ -47,3 +48,11 @@ router.route('/:orderId')
             res.status(204).end()
         }).then(null, next)
     });
+
+router.post('/sendEmail', function(req, res, next) {
+    console.log('hit route with ', req.body);
+    var order = req.body.order,
+        emailText = req.body.emailObj;
+    createAndSendEmail(order, emailText);
+    res.status(200).end();
+})

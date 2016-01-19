@@ -8,7 +8,7 @@
     <p>Your recent order for: </p>
     <ul>
       <% for(var i=0; i<order.car.length; i++) {%>
-        <li><=%order.car[i].make%> <%=order.car[i].model%> <%=order.car[i].year%></li>
+        <li><%=order.car[i].make%> <%=order.car[i].model%> <%=order.car[i].year%></li>
       <% } %>
     </ul>
     <p><%=message%></p>
