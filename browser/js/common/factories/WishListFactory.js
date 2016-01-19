@@ -1,40 +1,34 @@
-app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVENTS, DataFactory) {
+app.factory('WishListFactory', function($http, AuthService, $q, $rootScope, AUTH_EVENTS, DataFactory) {
 
-    //SUPER IMPORTANT: to have CartFactory actually
-    //register listeners on loginSuccess, CartFactory
-    //must be injected into a state. If not, it won't be
-    //loaded upon refresh, and the state won't ahve access
-    //to the refreshed cart. Better way to handle this?
-
-    var cartFromLocal = JSON.parse(localStorage.getItem('visitingUserCart'));
-    var shoppingCart = cartFromLocal ?
-        cartFromLocal : {
-            status: 'Created',
+    var wishListFromLocal = JSON.parse(localStorage.getItem('visitingUserWishList'));
+    var wishList = wishListFromLocal ?
+        wishListFromLocal : {
+            status: 'In Wish List',
             car: []
         };
 
-    var saveToDb = function(cart) {
-        if (cart._id) {
-            return DataFactory.updateOrder(cart._id, cart);
+    var saveToDb = function(wishlist) {
+        if (wishlist._id) {
+            return DataFactory.updateOrder(wishlist._id, wishlist);
         } else {
-            return DataFactory.addOrder(cart)
-                .then(function(savedCart) {
-                    shoppingCart = savedCart;
-                    return shoppingCart;
+            return DataFactory.addOrder(wishlist)
+                .then(function(savedWishList) {
+                    wishList = savedWishList;
+                    return wishList;
                 });
         }
     };
 
-    var saveToLocal = function(cart) {
-        localStorage.setItem('visitingUserCart', JSON.stringify(cart));
-        return $q.when(cart);
+    var saveToLocal = function(wishlist) {
+        localStorage.setItem('visitingUserWishList', JSON.stringify(wishlist));
+        return $q.when(wishlist);
     };
 
-    var saveLocalOrDb = function(cart) {
+    var saveLocalOrDb = function(wishlist) {
         if (AuthService.isAuthenticated()) {
-            return $q.when(saveToDb(cart));
+            return $q.when(saveToDb(wishlist));
         } else {
-            return saveToLocal(cart); //NEED TO PROMISIFY?
+            return saveToLocal(wishlist);
         }
     };
 
@@ -42,73 +36,73 @@ app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVE
         // used to refresh upon browser restart, and to reset user
         AuthService.getLoggedInUser()
             .then(function(user) {
-                //gets user's db cart
-                shoppingCart.user = user._id;
-                return DataFactory.fetchOrdersForUser(user._id, 'Created');
+                //gets user's db wishlist
+                wishList.user = user._id;
+                return DataFactory.fetchOrdersForUser(user._id, 'In Wish List');
             })
-            .then(function(dbCartArr) {
-                //merges local cart into db cart
-                var dbCart = dbCartArr[0];
-                if (dbCart) {
-                    dbCart.car = dbCart.car.concat(shoppingCart.car);
-                    shoppingCart = dbCart;
+            .then(function(dbWLArr) {
+                //merges local wish list into db wish list
+                var dbWL = dbWLArr[0];
+                if (dbWL) {
+                    dbWL.car = dbWL.car.concat(wishList.car);
+                    wishList = dbWL;
                 }
-                return saveToDb(shoppingCart);
+                return saveToDb(wishList);
             })
-            .then(function(databaseCart) {
-                //saves merged cart to db
-                shoppingCart = databaseCart;
-                localStorage.removeItem('visitingUserCart');
-                $rootScope.$broadcast('LoadCart', shoppingCart);
+            .then(function(databaseWishList) {
+                //saves merged wish list to db
+                wishList = databaseWishList;
+                localStorage.removeItem('visitingUserWishList');
+                $rootScope.$broadcast('LoadWishList', wishList);
                 return;
             })
             .then(null, console.error.bind(console));
 
     };
 
-    var deleteLocalOrDb = function(shoppingCart) {
+    var deleteLocalOrDb = function(wishList) {
         if (AuthService.isAuthenticated()) {
-            return DataFactory.deleteOrder(shoppingCart._id);
+            return DataFactory.deleteOrder(wishList._id);
         } else {
-            return $q.when(localStorage.removeItem('visitingUserCart'));
+            return $q.when(localStorage.removeItem('visitingUserWishList'));
         }
     };
 
     var destroy = function() {
-        shoppingCart = {
-            status: 'Created',
+        wishList = {
+            status: 'In Wish List',
             car: []
         };
-        $rootScope.$broadcast('LoadCart', shoppingCart);
+        $rootScope.$broadcast('LoadWishList', wishList);
     };
 
     $rootScope.$on(AUTH_EVENTS.loginSuccess, refresh);
     $rootScope.$on(AUTH_EVENTS.logoutSuccess, destroy);
 
     return {
-        getCurrentCart: function() {
-            return shoppingCart; //synchronous!
+        getCurrentWishList: function() {
+            return wishList; //synchronous!
         },
-        addToCart: function(car) {
-            shoppingCart.car.push(car._id);
-            return saveLocalOrDb(shoppingCart);
+        addToWishList: function(car) {
+            wishList.car.push(car._id);
+            return saveLocalOrDb(wishList);
         },
-        updateCart: function(carId) {
-            var indexToRemove = shoppingCart.car.indexOf(carId);
-            shoppingCart.car.splice(indexToRemove, 1);
-            return saveLocalOrDb(shoppingCart);
+        updateWishList: function(carId) {
+            var indexToRemove = wishList.car.indexOf(carId);
+            wishList.car.splice(indexToRemove, 1);
+            return saveLocalOrDb(wishList);
         },
-        deleteCart: function() {
-            return deleteLocalOrDb(shoppingCart)
+        deleteWishList: function() {
+            return deleteLocalOrDb(wishList)
                 .then(function() {
                     destroy();
                     return refresh();
                 });
         },
-        purchaseCart: function() {
-            shoppingCart.status = 'Processing';
+        purchaseWishList: function() {
+            wishList.status = 'Processing';
 
-            return saveToDb(shoppingCart)
+            return saveToDb(wishList)
                 .then(function() {
                     destroy();
                     return refresh();
