@@ -29,12 +29,12 @@
         </div>
         <div class="row">
             <div class="col-sm-8">
-                <p ng-repeat="review in reviews"> {{review.comment}} {{review.rating}} stars </p>
+                <p ng-repeat="review in reviews"> {{review.comment}} {{review.rating}} stars<a class="glyphicon glyphicon-star"></a></p>
             </div>
             <div class="col-sm-4">
-                <button class="btn-danger btn" ng-click="addToCart(car)"> Add To Cart </button>
-                <button class="btn-danger btn" ui-sref="home"> Find Similar </button>
-                <button class="btn-danger btn" ng-click="addToWishList(car)" ui-sref="home"> Add to Wish List </button>
+                <button class="btn-danger btn" ui-sref="home"> Find Similar <a class="glyphicon glyphicon-search"></a></button>
+                <button class="btn-danger btn" ng-click="addToWishList(car)" ui-sref="home"> Add to Wish List <a class="glyphicon glyphicon-heart"></a></button>
+                <button class="btn-danger btn" ng-click="addToCart(car)"> Add To Cart <a class="glyphicon glyphicon-shopping-cart"></a></button>
             </div>
         </div>
         </div>
