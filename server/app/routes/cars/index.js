@@ -42,7 +42,7 @@ router.route('/:carId')
     })
     .delete(function (req, res, next) {
         Car.findByIdAndRemove(req.params.carId).exec()
-        .then(function (car){
+        .then(function (){
             res.status(204).end()
         }).then(null, next)
     });

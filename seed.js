@@ -118,11 +118,11 @@ var seedMakeAndModels = function() {
         },
         {
             make: 'Plymouth',
-            models: ['RoadRunnerHemi']
+            models: ['RoadRunner']
         },
         {
             make: 'Porsche',
-            models: ['nine']
+            models: ['911']
         },
         {
             make: 'Chevrolet',

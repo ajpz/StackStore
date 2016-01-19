@@ -1,0 +1,35 @@
+<section>
+    <div>
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Past Orders</p>
+                <table class="table table-hover">
+                    <tr>
+                        <th><a href="#" ng-click="orderByField='date'; reverseSort = !reverseSort">Date</a></th>
+                        <th><a href="#" ng-click="orderByField='status'; reverseSort = !reverseSort">Status</a></th>
+                        <th><a href="#" ng-click="orderByField='email'; reverseSort = !reverseSort">Email
+<!--                             <order-selector
+                                option-chosen="filterCriteria"
+                                option-values="emails"
+                                option-name="email">
+                            </<order-selector> -->
+                        <th></a></th>
+                        <th>Car Count</th>
+                        <th><a href="#" ng-click="orderByField='invoice'; reverseSort = !reverseSort">Total Invoice</a></th>
+                        <th>Invoice Number</th>
+                    </tr>
+                    <!-- | orderFilter:filterCriteria  -->
+                    <tr ng-repeat="order in orders | orderBy: orderByField:reverseSort">
+                        <td>{{order.date | date}}</td>
+                        <td>{{order.status}}</td>
+                        <td><a ui-sref="dashboard({userId: order.user._id})">{{order.user.email}}</a></td>
+                        <td>{{order.car.length}}</td>
+                        <td>{{order.amount | currency}}</td>
+                        <td><a ui-sref="dashboard.order({orderId: order._id})">{{order._id}}</a></td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</section>

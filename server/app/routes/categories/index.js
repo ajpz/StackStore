@@ -36,7 +36,7 @@ router.route('/:categoryId')
     })
     .delete(function (req, res, next) {
         Category.findByIdAndRemove(req.params.categoryId).exec()
-        .then(function (category){
+        .then(function (){
             res.status(204).end()
         }).then(null, next)
     });
