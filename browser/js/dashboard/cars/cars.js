@@ -17,6 +17,9 @@ app.controller('CarsCtrl', ($scope, DataFactory, cars) => {
     $scope.cars = cars;
     $scope.makes;
     $scope.models;
+    let currentCarId;
+    //Store the make object because the put request returns just an ID number
+    let currentMake;
     $scope.newCar = {
         make: null,
         model: null,
@@ -105,14 +108,15 @@ app.controller('CarsCtrl', ($scope, DataFactory, cars) => {
                 $scope.show.edit = false;
             });
     }
-
     $scope.editCurrentCar = (car) => {
         $scope.showEditForm();
         $scope.show.add = false;
         $scope.show.edit = true;
+        currentCarId = car._id;
+        currentMake = car.make;
         $scope.editCar = {
-            make: car.make.make,
-            model: car.model,
+            make : car.make._id,
+            model : car.model,
             year: car.year,
             color: car.color,
             condition: car.condition,
@@ -124,6 +128,24 @@ app.controller('CarsCtrl', ($scope, DataFactory, cars) => {
             count: car.count,
             photos: car.photos.join(", ")
         };
+    }
+
+    $scope.submitEdit = () => {
+        DataFactory.updateCar(currentCarId, $scope.editCar)
+            .then(car => {
+                let len = $scope.cars.length;
+                let indexOfSelected;
+                for (let i=0; i<len; i++) {
+                    if ($scope.cars[i]._id === car._id)
+                        indexOfSelected = i;
+                    break;
+                }
+                car.make = currentMake;
+                $scope.cars.splice(indexOfSelected, 1, car)
+                $scope.show.add = false;
+                $scope.show.edit = false;
+            });
+
     }
 
 })
