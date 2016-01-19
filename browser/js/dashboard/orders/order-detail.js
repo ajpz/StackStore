@@ -2,7 +2,10 @@ app.config(function ($stateProvider) {
     $stateProvider.state('dashboard.order', {
         url: '/orders/:orderId',
         controller: 'OrderDetailCtrl',
-        templateUrl: 'js/dashboard/orders/order-detail.html'
+        templateUrl: 'js/dashboard/orders/order-detail.html',
+        data: {
+            authenticate: true
+        }
     });
 });
 

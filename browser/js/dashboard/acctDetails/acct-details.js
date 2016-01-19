@@ -10,7 +10,10 @@ app.config(function($stateProvider){
                 return DataFactory.fetchCategories();
             }
         },
-        controller: 'AccountCtrl'
+        controller: 'AccountCtrl',
+        data: {
+            autheticate: true
+        }
     })
 })
 
