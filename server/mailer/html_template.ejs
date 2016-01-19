@@ -1,0 +1,22 @@
+<html>
+<head><meta charset='utf-8'></head>
+<body>
+  <p><%=greeting%></p>
+  <br>
+  <p><%=body%>
+    <p>Thank you for being a loyal customer of fsMotors.</p>
+    <p>Your recent order for: </p>
+    <ul>
+      <% for(var i=0; i<order.car.length; i++) {%>
+        <li><=%order.car[i].make%> <%=order.car[i].model%> <%=order.car[i].year%></li>
+      <% } %>
+    </ul>
+    <p><%=message%></p>
+  </p>
+
+  <p>
+    <%=goodbye%><br>
+    fsMotors
+  </p>
+</body>
+</html>
