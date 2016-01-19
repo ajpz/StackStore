@@ -1,105 +1,215 @@
 <div class="col-md-10 col-md-offset-2">
-    <h2>Cars</h2>
-    <ul>
-        <li ng-repeat="car in cars">
-            <a ui-sref="car({carId: car._id})">{{car.year}} {{car.model}}</a>
-            <button class="btn btn-danger btn-sm" ng-click="removeCar(car._id)">X</button>
-        </li>
-    </ul>
-    <h3>Add a car:</h3>
-    <form name="newCarForm" novalidate>
-        <div class="row">
-            <div class="col-sm-2">
-                <fieldset class="form-group">
-                    <label for="year">Year</label>
-                    <input type="number" class="form-control" id="year" placeholder="1969" ng-model="newCar.year" required>
-                </fieldset>
+    <button class="btn btn-success" ng-click="showAddForm()" ng-show="!show.add && !show.edit">Add a car</button>
+    <button class="btn btn-success" ng-click="showAddForm()" ng-show="show.add">Show inventory</button>
+    <button class="btn btn-success" ng-click="showEditForm()" ng-show="show.edit">Show inventory</button>
+    <h2 ng-hide="show.add || show.edit">Current inventory</h2>
+    <table class="table table-condensed table-hover" ng-hide="show.add || show.edit">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="car in cars">
+                <td>{{car.year}}</td>
+                <td>{{car.make.make}}</td>
+                <td>{{car.model}}</td>
+                <td>
+                    <a ui-sref="car({carId: car._id})">
+                        <button class="btn btn-primary btn-sm">Details</button>
+                    </a>
+                    <button class="btn btn-success btn-sm" ng-click="editCurrentCar(car)">Edit</button>
+                    <button class="btn btn-danger btn-sm" ng-click="removeCar(car._id)">X</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div ng-show="show.add">
+        <h3>Add a car:</h3>
+        <form name="newCarForm" novalidate>
+            <div class="row">
+                <div class="col-sm-2">
+                    <fieldset class="form-group">
+                        <label for="year">Year</label>
+                        <input type="number" class="form-control" id="year" placeholder="1969" ng-model="newCar.year" required>
+                    </fieldset>
+                </div>
+                <div class="col-sm-3">
+                    <fieldset class="form-group">
+                        <label for="make">Make</label>
+                        <select id="make" ng-model="newCar.make" ng-options="make as make.make for make in makes" class="form-control"></select required>
+                    </fieldset>
+                </div>
+                <div class="col-sm-4">
+                    <fieldset class="form-group">
+                        <label for="model">Model</label>
+                        <select ng-options="model for model in newCar.make.models" ng-model="newCar.model" class="form-control" required></select>
+                    </fieldset>
+                </div>
             </div>
-            <div class="col-sm-3">
-                <fieldset class="form-group">
-                    <label for="make">Make</label>
-                    <select id="make" ng-model="newCar.make" ng-options="make as make.make for make in makes" class="form-control"></select required>
-                </fieldset>
+            <div class="row">
+                <div class="col-sm-3">
+                    <fieldset class="form-group">
+                        <label for="color">Color</label>
+                        <select class="form-control" id="color-select" ng-model="newCar.color" required>
+                            <option value="Black">Black</option>
+                            <option value="White">White</option>
+                            <option value="Silver">Silver</option>
+                            <option value="Grey">Grey</option>
+                            <option value="Red">Red</option>
+                            <option value="Blue">Blue</option>
+                        </select>
+                    </fieldset>
+                </div>
+                <div class="col-sm-3">
+                    <fieldset class="form-group">
+                        <label for="condition">Condition</label>
+                        <select id="condition-select" class="form-control" ng-model="newCar.condition" required>
+                            <option value="Poor">Poor</option>
+                            <option value="Good">Good</option>
+                            <option value="Excellent">Excellent</option>
+                        </select>
+                    </fieldset>
+                </div>
+                <div class="col-sm-3">
+                    <fieldset class="form-group">
+                        <label for="mileage">Mileage</label>
+                        <input type="number" class="form-control" id="mileage" ng-model="newCar.mileage" required>
+                    </fieldset>
+                </div>
             </div>
-            <div class="col-sm-4">
-                <fieldset class="form-group">
-                    <label for="model">Model</label>
-                    <select ng-options="model for model in newCar.make.models" ng-model="newCar.model" class="form-control" required></select>
-                </fieldset>
+            <div class="row">
+                <div class="col-md-5">
+                    <fieldset class="form-group">
+                        <label for="photos">Photo Urls</label>
+                        <input type="text" class="form-control" id="photos" ng-model="newCar.rawUrls" required>
+                        <small class="text-muted">Seperate multiple URL's with commas.</small>
+                    </fieldset>
+                </div>
+                <div class="col-md-2">
+                    <fieldset class="form-group">
+                        <label for="horsepower">Horsepower</label>
+                        <input type="number" class="form-control" id="horsepower" ng-model="newCar.horsepower" required>
+                    </fieldset>
+                </div>
+                <div class="col-md-2">
+                    <fieldset class="form-group">
+                        <label for="acceleration">Acceleration</label>
+                        <input type="number" class="form-control" id="acceleration" ng-model="newCar.acceleration" required>
+                    </fieldset>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">
-                <fieldset class="form-group">
-                    <label for="color">Color</label>
-                    <select class="form-control" id="color-select" ng-model="newCar.color" required>
-                        <option value="Black">Black</option>
-                        <option value="White">White</option>
-                        <option value="Silver">Silver</option>
-                        <option value="Grey">Grey</option>
-                        <option value="Red">Red</option>
-                        <option value="Blue">Blue</option>
-                    </select>
-                </fieldset>
+            <div class="row">
+                <div class="col-md-2">
+                    <fieldset class="form-group">
+                        <label for="price">Price</label>
+                        <input type="number" class="form-control" id="price" ng-model="newCar.price" required>
+                    </fieldset>
+                </div>
+                <div class="col-md-2">
+                    <fieldset class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" class="form-control" id="quantity" ng-model="newCar.count" required>
+                    </fieldset>
+                </div>
+                <div class="col-md-5">
+                    <fieldset class="form-group">
+                        <label for="category">Category</label>
+                        <select ng-options="category as category.name for category in categories" class="form-control" ng-model="newCar.categories" required></select>
+                    </fieldset>
+                </div>
             </div>
-            <div class="col-sm-3">
-                <fieldset class="form-group">
-                    <label for="condition">Condition</label>
-                    <select id="condition-select" class="form-control" ng-model="newCar.condition" required>
-                        <option value="Poor">Poor</option>
-                        <option value="Good">Good</option>
-                        <option value="Excellent">Excellent</option>
-                    </select>
-                </fieldset>
+            <button type="submit" class="btn btn-primary" ng-click="addCar()" ng-disabled="newCarForm.$invalid">Add Car</button>
+        </form>
+    </div><!--/add form -->
+    <!-- edit form -->
+    <div ng-show="show.edit">
+        <h3>Edit car:</h3>
+        <form name="editCarForm" novalidate>
+            <div class="row">
+                <div class="col-sm-2">
+                    <fieldset class="form-group">
+                        <label for="year">Year</label>
+                        <input type="number" class="form-control" id="year" ng-model="editCar.year" required>
+                    </fieldset>
+                </div>
             </div>
-            <div class="col-sm-3">
-                <fieldset class="form-group">
-                    <label for="mileage">Mileage</label>
-                    <input type="number" class="form-control" id="mileage" ng-model="newCar.mileage" required>
-                </fieldset>
+            <div class="row">
+                <div class="col-sm-3">
+                    <fieldset class="form-group">
+                        <label for="color">Color</label>
+                        <select class="form-control" id="color-select" ng-model="editCar.color" required>
+                            <option value="Black">Black</option>
+                            <option value="White">White</option>
+                            <option value="Silver">Silver</option>
+                            <option value="Grey">Grey</option>
+                            <option value="Red">Red</option>
+                            <option value="Blue">Blue</option>
+                        </select>
+                    </fieldset>
+                </div>
+                <div class="col-sm-3">
+                    <fieldset class="form-group">
+                        <label for="condition">Condition</label>
+                        <select id="condition-select" class="form-control" ng-model="editCar.condition" required>
+                            <option value="Poor">Poor</option>
+                            <option value="Good">Good</option>
+                            <option value="Excellent">Excellent</option>
+                        </select>
+                    </fieldset>
+                </div>
+                <div class="col-sm-3">
+                    <fieldset class="form-group">
+                        <label for="mileage">Mileage</label>
+                        <input type="number" class="form-control" id="mileage" ng-model="editCar.mileage" required>
+                    </fieldset>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-5">
-                <fieldset class="form-group">
-                    <label for="photos">Photo Urls</label>
-                    <input type="text" class="form-control" id="photos" ng-model="newCar.rawUrls" required>
-                    <small class="text-muted">Seperate multiple URL's with commas.</small>
-                </fieldset>
+            <div class="row">
+                <div class="col-md-5">
+                    <fieldset class="form-group">
+                        <label for="photos">Photo Urls</label>
+                        <input type="text" class="form-control" id="photos" ng-model="editCar.rawUrls" required>
+                        <small class="text-muted">Seperate multiple URL's with commas.</small>
+                    </fieldset>
+                </div>
+                <div class="col-md-2">
+                    <fieldset class="form-group">
+                        <label for="horsepower">Horsepower</label>
+                        <input type="number" class="form-control" id="horsepower" ng-model="editCar.horsepower" required>
+                    </fieldset>
+                </div>
+                <div class="col-md-2">
+                    <fieldset class="form-group">
+                        <label for="acceleration">Acceleration</label>
+                        <input type="number" class="form-control" id="acceleration" ng-model="editCar.acceleration" required>
+                    </fieldset>
+                </div>
             </div>
-            <div class="col-md-2">
-                <fieldset class="form-group">
-                    <label for="horsepower">Horsepower</label>
-                    <input type="number" class="form-control" id="horsepower" ng-model="newCar.horsepower" required>
-                </fieldset>
+            <div class="row">
+                <div class="col-md-2">
+                    <fieldset class="form-group">
+                        <label for="price">Price</label>
+                        <input type="number" class="form-control" id="price" ng-model="editCar.price" required>
+                    </fieldset>
+                </div>
+                <div class="col-md-2">
+                    <fieldset class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" class="form-control" id="quantity" ng-model="editCar.count" required>
+                    </fieldset>
+                </div>
+                <div class="col-md-5">
+                    <fieldset class="form-group">
+                        <label for="category">Category</label>
+                        <select ng-options="category as category.name for category in categories" class="form-control" ng-model="editCar.categories" required></select>
+                    </fieldset>
+                </div>
             </div>
-            <div class="col-md-2">
-                <fieldset class="form-group">
-                    <label for="acceleration">Acceleration</label>
-                    <input type="number" class="form-control" id="acceleration" ng-model="newCar.acceleration" required>
-                </fieldset>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-2">
-                <fieldset class="form-group">
-                    <label for="price">Price</label>
-                    <input type="number" class="form-control" id="price" ng-model="newCar.price" required>
-                </fieldset>
-            </div>
-            <div class="col-md-2">
-                <fieldset class="form-group">
-                    <label for="quantity">Quantity</label>
-                    <input type="number" class="form-control" id="quantity" ng-model="newCar.count" required>
-                </fieldset>
-            </div>
-            <div class="col-md-5">
-                <fieldset class="form-group">
-                    <label for="category">Category</label>
-                    <select ng-options="category as category.name for category in categories" class="form-control" ng-model="newCar.categories" required></select>
-                </fieldset>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary" ng-click="addCar()" ng-disabled="newCarForm.$invalid">Add Car</button>
-    </form>
+            <button type="submit" class="btn btn-primary" ng-click="submitEdit()">Edit Car</button>
+        </form>
+    </div>
 </div>
