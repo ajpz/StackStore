@@ -40,6 +40,10 @@ app.controller('CarCtrl', function($scope, car, reviews, user, CartFactory, Wish
     };
 
     $scope.submitReview = function() {
+        if (!user) {
+            alert("Sorry, you must be logged in to leave a review!");
+            return;
+        }
         $scope.newReview.user = user._id;
         $scope.newReview.car = $scope.car._id
         DataFactory.addReview($scope.newReview)
