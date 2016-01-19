@@ -38,8 +38,7 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
                 { label: 'Home', state: 'home' },
                 { label: 'About', state: 'about' },
                 { label: 'Documentation', state: 'docs' },
-                { label: 'Members Only', state: 'membersOnly', auth: true },
-                { label: 'My Order History', state: 'orders', auth: true }
+                { label: 'Members Only', state: 'membersOnly', auth: true }
             ];
 
             $rootScope.$on(AUTH_EVENTS.loginSuccess, setUser);
