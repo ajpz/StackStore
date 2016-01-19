@@ -11,10 +11,10 @@ app.config(function($stateProvider) {
                 return DataFactory.fetchReviews({name: "car", id: $stateParams.carId})
             }
         }
-    })
-})
+    });
+});
 
-app.controller('CarCtrl', function($scope, car, reviews, CartFactory) {
+app.controller('CarCtrl', function($scope, car, reviews, CartFactory, WishListFactory) {
 
     //ASK MARK: scope of shopping-cart is inside the scope of this template.
     //Does it make sense that the rendered cart borrows from shopping cart
@@ -25,12 +25,16 @@ app.controller('CarCtrl', function($scope, car, reviews, CartFactory) {
     $scope.reviews = reviews.slice(0,5);
 
     $scope.addToCart = function(car) {
-
         CartFactory.addToCart(car)
         .then(function(cart) {
             $scope.cart = cart;
-        })
+        });
+    };
 
-    }
-
-})
+    $scope.addToWishList = function(car) {
+        CartFactory.addToWishList(car)
+        .then(function(cart) {
+            $scope.wishlist = wishlist;
+        });
+    };
+});
