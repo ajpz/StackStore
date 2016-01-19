@@ -21,6 +21,7 @@ app.controller('CarCtrl', function($scope, car, reviews, CartFactory) {
     //scope, before the addToCart method is ever invoked. This allows for cart
     //to be populated early.
 
+    $scope.message;
     $scope.car = car;
     $scope.reviews = reviews.slice(0,5);
 
@@ -29,8 +30,12 @@ app.controller('CarCtrl', function($scope, car, reviews, CartFactory) {
         CartFactory.addToCart(car)
         .then(function(cart) {
             $scope.cart = cart;
+        }).then(null, function(err) {
+            $scope.message = err.message;
         })
 
     }
+
+    $scope.messageExists = function() {return $scope.message; };
 
 })

@@ -1,6 +1,5 @@
 app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVENTS, DataFactory) {
 
-    console.log('GOT TO CART FACTORY')
     //SUPER IMPORTANT: to have CartFactory actually
     //register listeners on loginSuccess, CartFactory
     //must be injected into a state. If not, it won't be
@@ -91,9 +90,22 @@ app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVE
             return shoppingCart; //synchronous!
         },
         addToCart: function(car) {
-            shoppingCart.car.push(car._id);
-            return saveLocalOrDb(shoppingCart);
+            return $q(function(resolve, reject) {
+                if(shoppingCart.car.indexOf(car._id) > -1) {
+                    reject(new Error('You already have this car in your cart'));
+                } else {
+                    shoppingCart.car.push(car._id);
+                    resolve(saveLocalOrDb(shoppingCart));
+                }
+            })
         },
+
+
+
+        //     if(shoppingCart.car.indexOf(car._id) > -1) return $q.when(new Error('You already have this car in your cart'));
+        //     shoppingCart.car.push(car._id);
+        //     return saveLocalOrDb(shoppingCart);
+        // },
         updateCart: function(carId) {
             var indexToRemove = shoppingCart.car.indexOf(carId);
             shoppingCart.car.splice(indexToRemove, 1);
