@@ -115,7 +115,7 @@ app.controller('CarsCtrl', ($scope, DataFactory, cars) => {
             model: car.model,
             year: car.year,
             color: car.color,
-            condition: car.color,
+            condition: car.condition,
             mileage: car.mileage,
             categories: car.categories,
             horespower: car.horespower,
