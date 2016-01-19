@@ -34,8 +34,8 @@ app.controller('DashboardCtrl', ($scope, $state, DataFactory, AuthService, user)
         cars() {
             $state.go('dashboard.cars');
         },
-        cars() {
-            $state.go('dashboard.cars');
+        categories() {
+            $state.go('dashboard.categories');
         }
     };
 

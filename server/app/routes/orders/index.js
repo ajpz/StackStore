@@ -43,7 +43,7 @@ router.route('/:orderId')
     })
     .delete(function (req, res, next) {
         Order.findByIdAndRemove(req.params.orderId).exec()
-        .then(function (order){
+        .then(function (){
             res.status(204).end()
         }).then(null, next)
     });

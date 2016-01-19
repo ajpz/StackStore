@@ -12,7 +12,7 @@ router.route('/')
         .then(null, next)
     })
     .post(function (req, res, next) {
-        MakeAndModels.create(req.body).exec()
+        MakeAndModels.create(req.body)
         .then(function (makeAndModels){
             res.status(201).send(makeAndModels)
         })
@@ -36,7 +36,7 @@ router.route('/:makeAndModelsID')
     })
     .delete(function (req, res, next) {
         MakeAndModels.findByIdAndRemove(req.params.makeAndModelsID).exec()
-        .then(function (makeAndModels){
+        .then(function (){
             res.status(204).end()
         }).then(null, next)
     });

@@ -1,0 +1,24 @@
+<div class="col-md-10 col-md-offset-2">
+    <h2>Categories</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12" ng-repeat="category in categories">
+                    <h4>{{category.name}}</h4>
+                    <button class="btn btn-danger btn-sm" ng-click="removeCategory(category._id)">Remove</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+        <h4>Add Category</h4>
+                <form name="categoryForm">
+                    <fieldset class="form-group">
+                        <label for="name">Category Name</label>
+                        <input type="text" class="form-control" ng-model="newCategory.name" required>
+                    </fieldset>
+                    <button type="submit" class="btn btn-primary" ng-click="addCategory()" ng-disabled="categoryForm.$invalid">Add Category</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

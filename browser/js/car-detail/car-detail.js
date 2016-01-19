@@ -4,10 +4,10 @@ app.config(function($stateProvider) {
         controller: 'CarCtrl',
         templateUrl: 'js/car-detail/car-detail.html',
         resolve: {
-            car: function(DataFactory, $stateParams, CartFactory){
+            car: function(DataFactory, $stateParams){
                 return DataFactory.fetchCar($stateParams.carId)
             },
-            reviews: function(DataFactory, $stateParams, CartFactory){
+            reviews: function(DataFactory, $stateParams){
                 return DataFactory.fetchReviews({name: "car", id: $stateParams.carId})
             }
         }

@@ -12,7 +12,7 @@ router.route('/')
         .then(null, next)
     })
     .post(function (req, res, next) {
-        Category.create(req.body).exec()
+        Category.create(req.body)
         .then(function (category){
             res.status(201).send(category)
         })
@@ -36,7 +36,7 @@ router.route('/:categoryId')
     })
     .delete(function (req, res, next) {
         Category.findByIdAndRemove(req.params.categoryId).exec()
-        .then(function (category){
+        .then(function (){
             res.status(204).end()
         }).then(null, next)
     });

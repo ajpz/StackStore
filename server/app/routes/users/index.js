@@ -12,7 +12,7 @@ router.route('/')
         .then(null, next)
     })
     .post(function (req, res, next) {
-        User.create(req.body).exec()
+        User.create(req.body)
         .then(function (user){
             res.status(201).send(user)
         })
@@ -21,7 +21,12 @@ router.route('/')
 
 router.route('/:userId')
     .get(function (req, res, next){
-        User.findById(req.params.userId).exec()
+        User.findById(req.params.userId)
+        .populate('shippingAddress')
+        .populate('billingAddress')
+        .populate('categories')
+        .populate('reviews')
+        .exec()
         .then(function (user){
             if(!user) return res.status(404).end();
             res.send(user)
@@ -36,7 +41,7 @@ router.route('/:userId')
     })
     .delete(function (req, res, next) {
         User.findByIdAndRemove(req.params.userId).exec()
-        .then(function (user){
+        .then(function (){
             res.status(204).end()
         }).then(null, next)
     });
