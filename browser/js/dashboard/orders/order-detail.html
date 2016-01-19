@@ -4,6 +4,7 @@
             <div class="col-xs-5">
                 <h3>Order Summary: {{order.status}}</h3>
                 <h4>Date submitted: {{order.date | date}}</h4>
+                <h4 ng-show="messageExists()">{{message}}</h4>
                 <shopping-cart></shopping-cart>
             </div>
             <div class="col-xs-7">
