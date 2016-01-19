@@ -11,8 +11,9 @@ app.directive('shoppingCart', function() {
             $scope.cart = CartFactory.getCurrentCart();
 
             $scope.goToOrderDetail = function(cartId) {
-                console.log('id is ', cartId)
-                if(!cartId) $state.go('login');
+                if(!cartId) {
+                    return $state.go('login');
+                }
                 $state.go('dashboard.order', {cartId: cartId})
             }
         }

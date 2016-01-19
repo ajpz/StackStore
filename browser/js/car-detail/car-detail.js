@@ -30,7 +30,9 @@ app.controller('CarCtrl', function($scope, car, reviews, CartFactory) {
         CartFactory.addToCart(car)
         .then(function(cart) {
             $scope.cart = cart;
-        }).then(null, function(err) {
+        })
+        .then(null, function(err) {
+            console.log('caught error here!')
             $scope.message = err.message;
         })
 
