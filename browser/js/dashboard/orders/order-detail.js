@@ -1,8 +1,8 @@
 app.config(function ($stateProvider) {
-    $stateProvider.state('order', {
+    $stateProvider.state('dashboard.order', {
         url: '/orders/:orderId',
         controller: 'OrderDetailCtrl',
-        templateUrl: 'js/order-detail/order-detail.html'
+        templateUrl: 'js/dashboard/orders/order-detail.html'
     });
 });
 
@@ -14,10 +14,7 @@ app.controller('OrderDetailCtrl', function ($scope, $stateParams, $state, DataFa
         .then(function (order) {
             $scope.order = order;
             $scope.car = order.car;
-            console.log('the order status is ', $scope.order.status);
-            // orderIsACart = $scope.order.status === 'Created';
             status = $scope.order.status;
-            console.log('the order is ', order);
             $scope.subtotal = order.car.reduce(function(sum, car) {
                 return sum + car.price;
             }, 0);
@@ -33,24 +30,22 @@ app.controller('OrderDetailCtrl', function ($scope, $stateParams, $state, DataFa
 
     $scope.purchaseCart = function() {
         CartFactory.purchaseCart()
-            .then(function (response) {
-                $state.go('orders');
+            .then(function () {
+                $state.go('dashboard.orders');
             });
     };
 
     $scope.deleteCart = function() {
         CartFactory.deleteCart()
-            .then(function (response) {
-                $state.go('orders');
+            .then(function () {
+                $state.go('dashboard.orders');
             });
     };
 
     $scope.removeFromCart = function(carId) {
-        console.log('removed invoked with: ', carId);
         CartFactory.updateCart(carId)
             .then(function (updatedOrder) {
-                console.log('in promise return', updatedOrder);
-                $state.go('order', {
+                $state.go('dashboard.order', {
                     orderId: updatedOrder._id
                 }, {
                     reload: true
@@ -62,8 +57,8 @@ app.controller('OrderDetailCtrl', function ($scope, $stateParams, $state, DataFa
         DataFactory.updateOrder(orderId, {
                 status: 'Cancelled'
             })
-            .then(function (response) {
-                $state.go('orders');
+            .then(function () {
+                $state.go('dashboard.orders');
             });
     };
 
@@ -71,8 +66,8 @@ app.controller('OrderDetailCtrl', function ($scope, $stateParams, $state, DataFa
         DataFactory.updateOrder(orderId, {
                 status: 'Completed'
             })
-            .then(function (response) {
-                $state.go('orders');
+            .then(function () {
+                $state.go('dashboard.orders');
             });
     };
 

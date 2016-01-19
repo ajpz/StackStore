@@ -42,7 +42,7 @@ router.route('/:reviewId')
     })
     .delete(function (req, res, next) {
         Review.findByIdAndRemove(req.params.reviewId).exec()
-        .then(function(review){
+        .then(function(){
             res.status(204).end()
         }).then(null, next)
     });

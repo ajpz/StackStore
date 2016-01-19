@@ -36,7 +36,7 @@ router.route('/:makeAndModelsID')
     })
     .delete(function (req, res, next) {
         MakeAndModels.findByIdAndRemove(req.params.makeAndModelsID).exec()
-        .then(function (makeAndModels){
+        .then(function (){
             res.status(204).end()
         }).then(null, next)
     });

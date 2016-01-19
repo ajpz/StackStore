@@ -5,10 +5,12 @@ app.filter('orderFilter', function() {
     var filteredOrders = orders;
     var filterTypes = Object.keys(filterCriteria);
 
+    var compare = function(order, i){
+        return order.user[filterTypes[i]] === filterCriteria[filterTypes[i]];
+    }
+
     for(var i = 0; i < filterTypes.length; i++) {
-        filteredOrders = filteredOrders.filter(function(order){
-            return order.user[filterTypes[i]] === filterCriteria[filterTypes[i]];
-        })
+        filteredOrders = filteredOrders.filter(compare);
     }
 
     return filteredOrders;
