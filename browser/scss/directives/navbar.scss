@@ -6,12 +6,15 @@ navbar {
   box-shadow: 1px 1px 14px -3px black;
   font-family: 'Century Gothic';
   color: red;
+  position: fixed-top;
+
 
 
   .container {
     width: 91%;
     max-width: 1340px;
     padding-top: 20px;
+
   }
 
 
