@@ -2,15 +2,27 @@ app.config(function ($stateProvider) {
     $stateProvider.state('dashboard.order', {
         url: '/orders/:orderId',
         controller: 'OrderDetailCtrl',
-        templateUrl: 'js/dashboard/orders/order-detail.html'
+        templateUrl: 'js/dashboard/orders/order-detail.html',
+        data: {
+            authenticate: true
+        }
     });
 });
 
 app.controller('OrderDetailCtrl', function ($scope, $stateParams, $state, DataFactory, CartFactory, AuthService) {
 
     var status;
+    $scope.message;
+    $scope.order = {};// replace with shopping cart
 
-    DataFactory.fetchOrder($stateParams.orderId)
+    if (!$stateParams.orderId) {
+        $scope.order = CartFactory.getCurrentCart();
+        $scope.car = $scope.order.car;
+        status = $scope.order.status;
+        $scope.message = "This is a shopping cart!"
+
+    } else {
+        DataFactory.fetchOrder($stateParams.orderId)
         .then(function (order) {
             $scope.order = order;
             $scope.car = order.car;
@@ -19,6 +31,9 @@ app.controller('OrderDetailCtrl', function ($scope, $stateParams, $state, DataFa
                 return sum + car.price;
             }, 0);
         });
+    }
+
+    $scope.messageExists = function() {return $scope.message; };
 
     $scope.isCart = function() {
         return status === 'Created';
@@ -29,17 +44,17 @@ app.controller('OrderDetailCtrl', function ($scope, $stateParams, $state, DataFa
     };
 
     $scope.purchaseCart = function() {
-        CartFactory.purchaseCart()
+        return CartFactory.purchaseCart()
             .then(function () {
                 $state.go('dashboard.orders');
-            });
+            })
     };
 
     $scope.deleteCart = function() {
         CartFactory.deleteCart()
             .then(function () {
                 $state.go('dashboard.orders');
-            });
+            })
     };
 
     $scope.removeFromCart = function(carId) {

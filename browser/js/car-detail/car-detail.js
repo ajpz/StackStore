@@ -24,6 +24,7 @@ app.controller('CarCtrl', function($scope, car, reviews, user, CartFactory, Wish
     //scope, before the addToCart method is ever invoked. This allows for cart
     //to be populated early.
 
+    $scope.message;
     $scope.car = car;
     $scope.reviews = reviews.slice(0,5);
     $scope.showForm = false;
@@ -32,12 +33,19 @@ app.controller('CarCtrl', function($scope, car, reviews, user, CartFactory, Wish
         CartFactory.addToCart(car)
         .then(function(cart) {
             $scope.cart = cart;
-        });
+        })
+        .then(null, function(err) {
+            console.log('caught error here!')
+            $scope.message = err.message;
+        })
     };
+
 
     $scope.toggleForm = function() {
         $scope.showForm === true ? $scope.showForm = false : $scope.showForm = true;
     };
+
+    $scope.messageExists = function() {return $scope.message; };
 
     $scope.submitReview = function() {
         if (!user) {

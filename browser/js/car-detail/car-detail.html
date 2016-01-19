@@ -1,6 +1,7 @@
 <section>
     <div class="container">
         <div class="row">
+            <h3 ng-show="messageExists()">{{message}}</h3>
             <div class="col-xs-9">
                 <img class="img-responsive" ng-src="{{car.photos[0]}}" alt="">
                 <h5>{{car.year}} {{car.make.make}} {{car.model}}</h5>
