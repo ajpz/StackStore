@@ -1,4 +1,4 @@
-app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVENTS, DataFactory) {
+app.factory('WishListFactory', function($http, AuthService, $q, $rootScope, AUTH_EVENTS, DataFactory) {
 
     //SUPER IMPORTANT: to have CartFactory actually
     //register listeners on loginSuccess, CartFactory

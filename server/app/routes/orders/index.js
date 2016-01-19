@@ -30,6 +30,12 @@ router.route('/:orderId')
         .populate('car')
         .populate('user')
         .exec()
+        .then(function(popOrders) {
+            return Order.populate(popOrders, {
+                path: 'car.make',
+                model: 'MakeAndModels'
+            })
+        })
         .then(function (order){
             if(!order) return res.status(404).end();
             res.send(order)
@@ -50,7 +56,6 @@ router.route('/:orderId')
     });
 
 router.post('/sendEmail', function(req, res, next) {
-    console.log('hit route with ', req.body);
     var order = req.body.order,
         emailText = req.body.emailObj;
     createAndSendEmail(order, emailText);

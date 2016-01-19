@@ -12,23 +12,18 @@ app.controller('OrderDetailCtrl', function ($scope, $stateParams, $state, DataFa
     $scope.message;
     $scope.order = {};// replace with shopping cart
 
-    console.log('state params is : ', $stateParams.orderId)
     if (!$stateParams.orderId) {
-        console.log('in if')
         $scope.order = CartFactory.getCurrentCart();
         $scope.car = $scope.order.car;
         status = $scope.order.status;
         $scope.message = "This is a shopping cart!"
 
     } else {
-        console.log('in else')
         DataFactory.fetchOrder($stateParams.orderId)
         .then(function (order) {
-            console.log('got db order:', order)
             $scope.order = order;
             $scope.car = order.car;
             status = $scope.order.status;
-            if($scope.car)
             $scope.subtotal = order.car.reduce(function(sum, car) {
                 return sum + car.price;
             }, 0);
@@ -46,11 +41,8 @@ app.controller('OrderDetailCtrl', function ($scope, $stateParams, $state, DataFa
     };
 
     $scope.purchaseCart = function() {
-        console.log('purhcase cart running')
         return CartFactory.purchaseCart()
-            .then(function (result) {
-                console.log('the result is ', result)
-                console.log('redirecting to orders')
+            .then(function () {
                 $state.go('dashboard.orders');
             })
     };

@@ -15,7 +15,6 @@ app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVE
         };
 
     var saveToDb = function(cart) {
-        console.log('save to db invoked')
         if (cart._id) {
             return DataFactory.updateOrder(cart._id, cart);
         } else {
@@ -108,25 +107,20 @@ app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVE
                 });
         },
         purchaseCart: function() {
-            console.log('Got here!!!!!!!!!!!!!!!!!!!!')
-            alert("blah");
             shoppingCart.status = 'Processing';
-            console.log('about to update to processing', shoppingCart);
             return saveToDb(shoppingCart)
                 .then(function(order){
-                    console.log('aboout to fetch');
                     return DataFactory.fetchOrder(order._id)
                 })
-                // .then(function(populatedOrder){
-                //     console.log('about to send email');
-                //     var emailText = {
-                //         greeting: 'Hello!',
-                //         body: 'Thank you for your recent purchase!',
-                //         goodbye: "You'll hear from us again once the order is complete",
-                //         message: 'Is now in process'
-                //     }
-                //     return DataFactory.sendEmail(order, emailText);
-                // })
+                .then(function(populatedOrder){
+                    var emailText = {
+                        greeting: 'Hello!',
+                        body: 'Thank you for your recent purchase!',
+                        goodbye: "You'll hear from us again once the order is complete",
+                        message: 'Is now in process'
+                    }
+                    return DataFactory.sendEmail(populatedOrder, emailText);
+                })
                 .then(function() {
                     destroy();
                     return refresh();

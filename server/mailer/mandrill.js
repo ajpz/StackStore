@@ -27,7 +27,7 @@ module.exports = function sendEmail(to_name, to_email, from_name, from_email, su
     };
     var async = false;
     var ip_pool = "Main Pool";
-    mandrill_client.messages.send({"message": message, "async": async, "ip_pool": ip_pool}, function(result) {
+    mandrill_client.messages.send({"message": message, "async": async, "ip_pool": ip_pool}, function(result) { console.log('sent was successful in mandrill.js')
     }, function(e) {
         // Mandrill returns the error as an object with name and message keys
         console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
