@@ -131,58 +131,59 @@ describe('Cars Route', function() {
         // });
 
 
-        it('POST should make a new car', function(done) {
-            console.log('Car to make in POST is ', newCar);
-            guestAgent.post('/api/cars')
-            .send(newCar)
-            .expect(201)
-            .then(function() {
-                guestAgent.get('/api/cars')
-                .expect(200)
-                .end(function(err, res) {
-                    if(err) return done(err);
-                    console.log("GET GOT: ", res.body);
-                    done();
-                })
-            })
-
-        })
-
         // it('POST should make a new car', function(done) {
         //     console.log('Car to make in POST is ', newCar);
         //     guestAgent.post('/api/cars')
         //     .send(newCar)
         //     .expect(201)
-        //     .end(function(err, res) {
-        //         if(err) return done(err);
-        //         expect(res.body.condition).to.equal('Poor')
-        //         Car.findOne({'condition': 'Poor'}).exec()
-        //         .then(function(car) {
-        //             console.log('FOUND THE CAR', car)
-        //             carId = car._id;
-        //             expect(car.year).to.equal(1970);
-        //             done();
-        //         }).then(null, done);
-        //     })
-        // })
-
-        // it('GET should return the car that was made', function(done) {
-        //     Car.find({}).exec()
-        //     .then(function(cars) {
-        //         console.log('IN TEST FOUND CARS: ', cars);
-        //         return;
-        //     }).then(function(){
-        //         console.log('\n\n\n carId: ', carId)
-        //         guestAgent.get('/api/cars/' + carId)
+        //     .then(function() {
+        //         guestAgent.get('/api/cars')
         //         .expect(200)
-        //         .end(function(err, response) {
-        //             console.log("HEREL: ", response.body, response.data)
+        //         .end(function(err, res) {
         //             if(err) return done(err);
-        //             // expect(response.body.year).to.equal(1970);
+        //             console.log("GET GOT: ", res.body);
         //             done();
         //         })
-
         //     })
+
         // })
+
+        it('POST should make a new car', function(done) {
+            console.log('Car to make in POST is ', newCar);
+            guestAgent.post('/api/cars')
+            .send(newCar)
+            .expect(201)
+            .end(function(err, res) {
+                if(err) return done(err);
+                expect(res.body.condition).to.equal('Poor')
+                Car.findOne({'condition': 'Poor'}).exec()
+                .then(function(car) {
+                    console.log('FOUND THE CAR', car)
+                    carId = car._id;
+                    expect(car.year).to.equal(1970);
+                    done();
+                }).then(null, done);
+            })
+        })
+
+        it('GET should return the car that was made', function(done) {
+
+            Car.find({}).exec()
+            .then(function(cars) {
+                console.log('IN TEST FOUND CARS: ', cars);
+                return;
+            }).then(function(){
+                console.log('\n\n\n carId: ', carId)
+                guestAgent.get('/api/cars/' + carId)
+                .expect(200)
+                .end(function(err, response) {
+                    console.log("HEREL: ", response.body, response.data)
+                    if(err) return done(err);
+                    // expect(response.body.year).to.equal(1970);
+                    done();
+                })
+
+            })
+        })
     })
 })
