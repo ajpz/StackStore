@@ -33,8 +33,12 @@ router.route('/:userId')
         }).then(null, next)
     })
     .put(function (req, res, next) {
-        User.findByIdAndUpdate(req.params.userId, req.body, {new: true, runValidators: true})
-        .exec()
+        User.findById(req.params.userId).exec()
+        .then(function(doc){
+            doc.email = req.body.email;
+            doc.password = req.body.password;
+            return doc.save();
+        })
         .then(function (updatedUser){
             res.status(200).send(updatedUser)
         }).then(null, next)
