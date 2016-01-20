@@ -65,11 +65,24 @@ app.controller('AccountCtrl', function($scope, user, categories, DataFactory) {
             },
             addressId = $scope[form]._id;
 
-        DataFactory.updateAddress(addressId, update)
-        .then(function(address){
-            $scope.address = address;
-            updateArray[form] = true;
-        })
+        if(addressId) {
+            DataFactory.updateAddress(addressId, update)
+            .then(function(address){
+                $scope.address = address;
+                updateArray[form] = true;
+            })
+        } else {
+            DataFactory.addAddress(update)
+            .then(function(address){
+                $scope[form] = address;
+                var update = {};
+                update[form] = address._id;
+                return DataFactory.updateUser($scope.user._id, update)
+            })
+            .then(function(user){
+                updateArray[form] = true;
+            })
+        }
     }
 
     $scope.updateCategories = function() {

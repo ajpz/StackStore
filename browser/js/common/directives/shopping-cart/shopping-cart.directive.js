@@ -14,7 +14,7 @@ app.directive('shoppingCart', function() {
                 if(!cartId) {
                     return $state.go('login');
                 }
-                $state.go('dashboard.order', {cartId: cartId})
+                $state.go('dashboard.order', {orderId: cartId})
             }
         }
     };

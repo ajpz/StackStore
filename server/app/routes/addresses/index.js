@@ -13,7 +13,7 @@ router.route('/')
         .then(null, next);
     })
     .post(function (req, res, next) {
-        Address.create(req.body).exec()
+        Address.create(req.body)
         .then(function (address){
             res.status(201).send(address);
         })

@@ -25,11 +25,11 @@ app.controller('HomeCtrl', function($scope, cars, DataFactory, Selection, CartFa
 
     $scope.addToCart = function(car){
         CartFactory.addToCart(car._id)
-        .then(function(){
+        .then(function(cart){
             $scope.message = 'You added the ' + car.year + ' ' + car.make.make + ' ' + car.model + ' to your cart!';
-            return;
+            console.log('cart updated to: ', cart)
         }).then(null, function (err) {
-            $scope.message = 'Ooops! We are sorry, your cart was not updated.';
+            $scope.message = err.message;
         });
     };
 
@@ -39,7 +39,7 @@ app.controller('HomeCtrl', function($scope, cars, DataFactory, Selection, CartFa
             $scope.message = 'You added the ' + car.year + ' ' + car.make.make + ' ' + car.model + ' to your Wish List!';
             return;
         }).then(null, function (err) {
-            $scope.message = 'Ooops! We are sorry, your Wish List was not updated.';
+            $scope.message = err.message;
         });
     };
 });
