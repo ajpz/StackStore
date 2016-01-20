@@ -3,6 +3,10 @@ app.factory('DataFactory', function($http) {
     var extractData = res => res.data;
 
     return {
+        checkEmailIsValid(email) {
+            return $http.get('/api/users/validEmail', {params: {"email" : email}})
+            .then(extractData);
+        },
         // cars....
         fetchCars() {
             return $http.get('/api/cars')

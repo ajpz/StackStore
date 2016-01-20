@@ -6,6 +6,9 @@
         <wish-list></wish-list>
         <shopping-cart></shopping-cart>
         <button ng-show="!user" ui-sref="login" class="btn login-button">Login <a class="glyphicon glyphicon-user"></a></button>
+        <button ng-show="!user" ui-sref="signup" class="btn login-button">Sign Up<a class="glyphicon glyphicon-user"></a></button>
+
+
         <div ng-show="user" class="welcome">
             <span>Welcome, <a ui-sref="dashboard({userId:user._id})">{{ user.email }} </a>!</span>
             <a ng-click="logout()">Logout</a>
