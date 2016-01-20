@@ -88,6 +88,11 @@ app.factory('DataFactory', function($http) {
             return $http.get(`/api/users/${userId}`)
             .then(extractData);
         },
+        checkUser(userEmail) {
+            if (userEmail) query.user = userEmail;
+            return $http.get('/api/users/', {params: query})
+            .then(extractData)
+        },
         addUser(user) {
             return $http.post('/api/users/', user)
             .then(extractData);
@@ -128,6 +133,10 @@ app.factory('DataFactory', function($http) {
         //address...
         updateAddress(addressId, update) {
             return $http.put(`/api/addresses/${addressId}`, update)
+            .then(extractData);
+        },
+        addAddress(update) {
+            return $http.post('/api/addresses/', update)
             .then(extractData);
         }
     };

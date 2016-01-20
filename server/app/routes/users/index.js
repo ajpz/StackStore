@@ -19,6 +19,17 @@ router.route('/')
         .then(null, next)
     });
 
+router.route('/signup/')
+    .get(function (req, res, next) {
+        var query = req.query || {};
+        User.find(query).exec()
+        .then (function (user) {
+            if (user.length !== 0) res.send({ exists: true})
+            else res.send({ exists: false})
+        })
+        .then(null, next)
+    });
+
 router.route('/:userId')
     .get(function (req, res, next){
         User.findById(req.params.userId)
@@ -33,8 +44,12 @@ router.route('/:userId')
         }).then(null, next)
     })
     .put(function (req, res, next) {
-        User.findByIdAndUpdate(req.params.userId, req.body, {new: true, runValidators: true})
-        .exec()
+        User.findById(req.params.userId).exec()
+        .then(function(doc){
+            doc.email = req.body.email;
+            doc.password = req.body.password;
+            return doc.save();
+        })
         .then(function (updatedUser){
             res.status(200).send(updatedUser)
         }).then(null, next)

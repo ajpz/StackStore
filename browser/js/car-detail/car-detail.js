@@ -30,12 +30,11 @@ app.controller('CarCtrl', function($scope, car, reviews, user, CartFactory, Wish
     $scope.showForm = false;
     $scope.newReview;
     $scope.addToCart = function(car) {
-        CartFactory.addToCart(car)
+        CartFactory.addToCart(car._id)
         .then(function(cart) {
             $scope.cart = cart;
         })
         .then(null, function(err) {
-            console.log('caught error here!')
             $scope.message = err.message;
         })
     };
@@ -63,9 +62,12 @@ app.controller('CarCtrl', function($scope, car, reviews, user, CartFactory, Wish
             .then(null, console.error.bind(console));
     };
     $scope.addToWishList = function(car) {
-        WishListFactory.addToWishList(car)
+        WishListFactory.addToWishList(car._id)
         .then(function(wishlist) {
             $scope.wishlist = wishlist;
-        });
+        })
+        .then(null, function(err) {
+            $scope.message = err.message;
+        })
     };
 });

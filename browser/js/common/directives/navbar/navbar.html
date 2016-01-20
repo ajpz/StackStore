@@ -1,13 +1,8 @@
 <nav class="navbar navbar-static-top">
     <div class="container">
         <div class="navbar-header">
-            Fullstack Motors
+        <a ui-sref-active="active" ui-sref="home">Fullstack Motors</a>
         </div>
-        <ul class="nav navbar-nav">
-            <li ng-repeat="item in items" ng-show="!item.auth || isLoggedIn()">
-                <a ui-sref-active="active" ui-sref="{{ item.state }}">{{ item.label }}</a>
-            </li>
-        </ul>
         <wish-list></wish-list>
         <shopping-cart></shopping-cart>
         <button ng-show="!user" ui-sref="login" class="btn login-button">Login <a class="glyphicon glyphicon-user"></a></button>

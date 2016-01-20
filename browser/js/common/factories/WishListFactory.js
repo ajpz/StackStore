@@ -83,9 +83,15 @@ app.factory('WishListFactory', function($http, AuthService, $q, $rootScope, AUTH
         getCurrentWishList: function() {
             return wishList; //synchronous!
         },
-        addToWishList: function(car) {
-            wishList.car.push(car._id);
-            return saveLocalOrDb(wishList);
+        addToWishList: function(carId) {
+            return $q(function(resolve, reject) {
+                if(wishList.car.indexOf(carId) > -1) {
+                    reject(new Error('You already have this car in your wish list'));
+                } else {
+                    wishList.car.push(carId);
+                    resolve(saveLocalOrDb(wishList));
+                }
+            })
         },
         updateWishList: function(carId) {
             var indexToRemove = wishList.car.indexOf(carId);
