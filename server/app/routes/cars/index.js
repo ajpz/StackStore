@@ -12,7 +12,6 @@ router.route('/')
         }).then(null, next)
     })
     .post(function(req, res, next) {
-        console.log('\n\n\nhit the post route', req.body);
         Car.create(req.body)
         .then(function(car){
             res.status(201).send(car)
@@ -21,17 +20,14 @@ router.route('/')
 
 router.route('/:carId')
     .get(function(req, res, next){
-        console.log('ROUTE HIT with : ', req.params.carId)
         Car.find({}).exec()
         .then(function(cars) {
-            console.log("first search finds: ", cars);
             return;
         })
         .then(function() {
             return Car.findOne({_id:req.params.carId}).exec();
         })
         .then(function(car){
-            console.log('\n\n\nFOUND THE CAR: ', car)
             if(!car) return res.status(404).end()
             res.status(200).send(car)
         }).then(null, next)

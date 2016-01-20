@@ -18,46 +18,50 @@ var makeId;
 var guestAgent = supertest.agent(app);
 
 describe('Cars Route', function() {
+    var newCar;
+    var carId;
+
     before('Establish DB connection', function(done){
         if(!mongoose.connection.db) return mongoose.connect(dbURI, function(err, data) {
             if(err) return done(err);
-            console.log('\n\nBEFORE 1')
             done()
         });
-        console.log('\n\nBEFORE 1')
         done()
     });
 
-    // beforeEach('Seed sample data', function(done) {
-    //     MakeAndModel.create({
-    //         make: 'Ford',
-    //         model: 'Mustang'
-    //     })
-    //     .then(function(mAndm) {
-    //         // makeId = mAndm._id;
-    //         return Car.create({
-    //             make: mAndm._id,
-    //             model: 'Mustang',
-    //             year: 1967,
-    //             color: 'Red',
-    //             condition: 'Excellent',
-    //             mileage: 86000,
-    //             horsePower: 200,
-    //             acceleration: 5.2,
-    //             kickassFactor: 5,
-    //             price: 93000,
-    //             count: 1
-    //         })
-    //     })
-    //     .then(function() {
-    //         done();
-    //     })
-    //     .then(null, done);
-    // });
+    beforeEach('Seed sample data', function(done) {
 
-    // afterEach('Clear test database', function(done) {
-    //   clearDB(done);
-    // });
+        MakeAndModel.create({
+            make: 'Ford',
+            model: 'Mustang'
+        })
+        .then(function(MM) {
+            makeId = MM._id;
+            return Car.create({
+                make: makeId,
+                model: 'Mustang',
+                year: 1967,
+                color: 'Red',
+                condition: 'Excellent',
+                mileage: 86000,
+                horsePower: 200,
+                acceleration: 5.2,
+                kickassFactor: 5,
+                price: 93000,
+                count: 1
+            })
+        })
+        .then(function(car) {
+            carId = car._id;
+            newCar = car;
+            done();
+        })
+        .then(null, done);
+    });
+
+    afterEach('Clear test database', function(done) {
+      clearDB(done);
+    });
 
     after('Clear test database', function(done) {
         Car.find({}).exec()
@@ -68,61 +72,7 @@ describe('Cars Route', function() {
         clearDB(done);
     });
 
-    // describe('Get /cars', function() {
-    //     var guestAgent;
-
-    //     beforeEach('Create guest agent', function() {
-    //         guestAgent = supertest.agent(app);
-    //     });
-
-    //     xit('should get a 200 response', function(done) {
-    //         guestAgent.get('/api/cars/')
-    //         .expect(200)
-    //         .end(done);
-    //     });
-
-    //     xit('should find a car', function(done) {
-    //         guestAgent.get('/api/cars/').expect(200)
-    //         .end(function(err, response) {
-    //             if(err) return done(err);
-    //             expect(response.body.length).to.equal(1)
-    //             done()
-    //         });
-    //     });
-    // });
-
     describe('Cars have full CRUD capabilities', function() {
-        // var guestAgent;
-        var newCar;
-        var carId;
-
-        before('Get id for the "make" seeded above', function(done) {
-            console.log('\n\nBEFORE 2')
-
-            MakeAndModel.create({
-                make: 'Ford',
-                model: 'Mustang'
-            })
-            .then(function(MM){
-                console.log('\n\n\n MM is ', MM);
-                makeId = MM._id;
-                newCar = {
-                    make: makeId,
-                    model: 'Mustang',
-                    year: 1970,
-                    color: 'Black',
-                    condition: 'Poor',
-                    mileage: 1000,
-                    horsePower: 500,
-                    acceleration: 4.2,
-                    kickassFactor: 1,
-                    price: 50000,
-                    count: 1
-                };
-                console.log('New car to be made is ', newCar);
-                done();
-            }).then(null, done);
-        });
 
         // beforeEach('Create guest agent', function() {
         //     console.log('\n\nBEFOREEACH 1')
@@ -130,59 +80,91 @@ describe('Cars Route', function() {
         //     guestAgent = supertest.agent(app);
         // });
 
+        it('GET should return the car that was made', function(done) {
 
-        // it('POST should make a new car', function(done) {
-        //     console.log('Car to make in POST is ', newCar);
-        //     guestAgent.post('/api/cars')
-        //     .send(newCar)
-        //     .expect(201)
-        //     .then(function() {
-        //         guestAgent.get('/api/cars')
-        //         .expect(200)
-        //         .end(function(err, res) {
-        //             if(err) return done(err);
-        //             console.log("GET GOT: ", res.body);
-        //             done();
-        //         })
-        //     })
-
-        // })
+            guestAgent.get('/api/cars/' + carId)
+                .expect(200)
+                .end(function(err, response) {
+                    if(err) return done(err);
+                    expect(response.body.year).to.equal(1967);
+                    done();
+                })
+        })
 
         it('POST should make a new car', function(done) {
-            console.log('Car to make in POST is ', newCar);
-            guestAgent.post('/api/cars')
-            .send(newCar)
-            .expect(201)
+
+            var carToPost;
+
+            MakeAndModel.create({
+                make: 'Ford',
+                model: 'Mustang'
+            })
+            .then(function(MM) {
+                var makeId = MM._id;
+                var carToPost = ({
+                    make: makeId,
+                    model: 'Mustang',
+                    year: 1970,
+                    color: 'Black',
+                    condition: 'Poor',
+                    mileage: 86000,
+                    horsePower: 200,
+                    acceleration: 5.2,
+                    kickassFactor: 5,
+                    price: 93000,
+                    count: 1
+                })
+
+                guestAgent.post('/api/cars')
+                .send(carToPost)
+                .expect(201)
+                .end(function(err, res) {
+                    if(err) return done(err);
+                    expect(res.body.condition).to.equal('Poor')
+                    Car.findOne({'condition': 'Poor'}).exec()
+                    .then(function(car) {
+                        carId = car._id;
+                        expect(car.year).to.equal(1970);
+                        done();
+                    }).then(null, done);
+                })
+            })
+
+        })
+
+        it('PUT should update a car', function(done) {
+
+            var updateCar = {
+                condition: 'Good',
+                color: 'White'
+            }
+
+            guestAgent.put('/api/cars/' + carId)
+            .send(updateCar)
+            .expect(200)
             .end(function(err, res) {
                 if(err) return done(err);
-                expect(res.body.condition).to.equal('Poor')
-                Car.findOne({'condition': 'Poor'}).exec()
+                expect(res.body.condition).to.equal('Good')
+                Car.findOne({'condition': 'Good'}).exec()
                 .then(function(car) {
-                    console.log('FOUND THE CAR', car)
                     carId = car._id;
-                    expect(car.year).to.equal(1970);
+                    expect(car.color).to.equal('White');
                     done();
                 }).then(null, done);
             })
         })
 
-        it('GET should return the car that was made', function(done) {
+        it('DELETE should delete a car', function(done) {
 
-            Car.find({}).exec()
-            .then(function(cars) {
-                console.log('IN TEST FOUND CARS: ', cars);
-                return;
-            }).then(function(){
-                console.log('\n\n\n carId: ', carId)
-                guestAgent.get('/api/cars/' + carId)
-                .expect(200)
-                .end(function(err, response) {
-                    console.log("HEREL: ", response.body, response.data)
-                    if(err) return done(err);
-                    // expect(response.body.year).to.equal(1970);
+            guestAgent.delete('/api/cars/' + carId)
+            .expect(204)
+            .end(function(err, res) {
+                if(err) return done(err);
+                Car.findOne({'condition': 'Excellent'}).exec()
+                .then(function(car) {
+                    expect(car).to.equal(null);
                     done();
-                })
-
+                }).then(null, done);
             })
         })
     })
