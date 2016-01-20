@@ -1,0 +1,20 @@
+<div>
+  <h4> Create a new car</h4>
+  <form class="entry-form">
+    Name: <input type="text" ng-model="car.name" /><br />
+    Make: <input type="text" ng-model="car.make" /><br />
+    Year: <input type="text" ng-model="car.year"/> <br/>
+    Color:<input type="text" ng-model="car.color"/> <br />
+    Condition:<input type="text" ng-model="car.condition"/> <br />
+    Mileage:<input type="text" ng-model="car.mileage"/> <br />
+    Photo Url:<input type="text" ng-model="car.photos"/> <br />
+    Categories:<input type="text" ng-model="car.categories"/> <br />
+    Horsepower:<input type="text" ng-model="car.horsePower"/> <br />
+    Acceleration:<input type="text" ng-model="car.acceleration"/> <br />
+    Kickass Factor:<input type="text" ng-model="car.kickassFactor"/> <br />
+    Inventory Count:<input type="text" ng-model="car.count"/> <br />
+    Price: <input type="text" ng-model="car.price"/> <br />
+    <input type="submit" ng-click="submit()" value="Save" />
+  </form>
+  <pre>car = {{car | json}}</pre>
+</div>

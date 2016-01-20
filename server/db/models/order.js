@@ -1,24 +1,22 @@
 'use strict';
-var crypto = require('crypto');
 var mongoose = require('mongoose');
-var _ = require('lodash');
 
 var orderSchema = new mongoose.Schema({
     status: {
         type: String,
-        enum: ['inShoppingCart', 'Created', 'Processing', 'Cancelled', 'Completed'],
+        enum: ['In Wish List', 'Created', 'Processing', 'Cancelled', 'Completed'],
         required: true
     },
-    userId: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    carId: [{
+    car: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Car'
     }],
-    orderDate: {
-        type : Date
+    date: {
+        type: Date
     },
     amount: {
         type: Number,
@@ -26,4 +24,4 @@ var orderSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Order',orderSchema);
+module.exports = mongoose.model('Order', orderSchema);

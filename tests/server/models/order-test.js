@@ -27,11 +27,11 @@ describe('Order model', function () {
 
     it('should make an order document in the database', function (done) {
         Order.create({
-            status: "inShoppingCart",
+            status: "Created",
             amount: 5
         })
         .then(function(order) {
-            expect(order.status).to.equal("inShoppingCart");
+            expect(order.status).to.equal("Created");
             expect(order.amount).to.equal(5);
             done();
         })

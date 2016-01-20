@@ -2,8 +2,10 @@
   box-sizing: border-box;
 }
 
-body {
-  background: #fdfdfd;
+html {
+  background: url(http://hdwallpaperslovely.com/wp-content/gallery/classic-cars-wallpapers/chrysler%20thomas%20concept%201920x1080%20wallpaper%203850.jpg) no-repeat center center fixed;
+  opacity: 0.8;
+  background-size: cover;
 }
 
 @mixin clearfix {
@@ -24,3 +26,5 @@ body {
 @import 'about/main';
 @import 'tutorial/main';
 @import 'login/main';
+@import 'dashboard/main';
+@import 'dashboard/orders/main';

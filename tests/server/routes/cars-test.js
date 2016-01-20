@@ -1,8 +1,8 @@
 // Instantiate all models
 var mongoose = require('mongoose');
 require('../../../server/db/models');
+var MakeAndModels = mongoose.model('MakeAndModels');
 var Car = mongoose.model('Car');
-var MakeAndModel = mongoose.model('MakeAndModel');
 
 var expect = require('chai').expect;
 
@@ -30,8 +30,7 @@ describe('Cars Route', function() {
     });
 
     beforeEach('Seed sample data', function(done) {
-
-        MakeAndModel.create({
+        MakeAndModels.create({
             make: 'Ford',
             model: 'Mustang'
         })

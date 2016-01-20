@@ -12,12 +12,15 @@ var reviewSchema = new mongoose.Schema({
         ref: "User"
     },
     comment: {
-        type: String
+        type: String,
+        required: true
     },
     rating: {
-        type: Number
+        type: Number,
+        min: 0,
+        max: 5,
+        required: true
     }
 });
-
 
 module.exports = mongoose.model('Review', reviewSchema);

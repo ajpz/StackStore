@@ -1,41 +1,62 @@
+'use strict';
 var router = require('express').Router();
-var mongoose = require('mongoose');
-var User = mongoose.model('User');
+var User = require("mongoose").model('User');
 module.exports = router;
 
-
 router.route('/')
-    .get(function(req, res, next) {
+    .get(function (req, res, next) {
         User.find({}).exec()
-        .then(function(users){
-            res.status(200).send(users)
-        }).then(null, next)
+        .then(function (users){
+            res.send(users)
+        })
+        .then(null, next)
     })
-    .post(function(req, res, next) {
+    .post(function (req, res, next) {
         User.create(req.body)
-        .then(function(user){
+        .then(function (user){
             res.status(201).send(user)
-        }).then(null, next)
-    })
+        })
+        .then(null, next)
+    });
+
+router.route('/signup/')
+    .get(function (req, res, next) {
+        var query = req.query || {};
+        User.find(query).exec()
+        .then (function (user) {
+            if (user.length !== 0) res.send({ exists: true})
+            else res.send({ exists: false})
+        })
+        .then(null, next)
+    });
 
 router.route('/:userId')
-    .get(function(req, res, next){
-        User.findOne({_id:req.params.userId}).exec()
-        .then(function(user){
-            if(!user) return res.status(404).end()
-            res.status(200).send(user)
+    .get(function (req, res, next){
+        User.findById(req.params.userId)
+        .populate('shippingAddress')
+        .populate('billingAddress')
+        .populate('categories')
+        .populate('reviews')
+        .exec()
+        .then(function (user){
+            if(!user) return res.status(404).end();
+            res.send(user)
         }).then(null, next)
     })
-    .put(function(req, res, next) {
-        User.findOneAndUpdate({_id:req.params.userId}, req.body, {new: true, runValidators: true})
-        .exec()
-        .then(function(updatedUser){
+    .put(function (req, res, next) {
+        User.findById(req.params.userId).exec()
+        .then(function(doc){
+            doc.email = req.body.email;
+            doc.password = req.body.password;
+            return doc.save();
+        })
+        .then(function (updatedUser){
             res.status(200).send(updatedUser)
         }).then(null, next)
     })
-    .delete(function(req, res, next) {
-        User.remove({_id: req.params.userId}).exec()
-        .then(function(user){
+    .delete(function (req, res, next) {
+        User.findByIdAndRemove(req.params.userId).exec()
+        .then(function (){
             res.status(204).end()
         }).then(null, next)
-    })
+    });

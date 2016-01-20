@@ -1,16 +1,13 @@
 <nav class="navbar navbar-static-top">
     <div class="container">
         <div class="navbar-header">
-            <fullstack-logo></fullstack-logo>
+        <a ui-sref-active="active" ui-sref="home">Fullstack Motors</a>
         </div>
-        <ul class="nav navbar-nav">
-            <li ng-repeat="item in items" ng-show="!item.auth || isLoggedIn()">
-                <a ui-sref-active="active" ui-sref="{{ item.state }}">{{ item.label }}</a>
-            </li>
-        </ul>
-        <button ng-show="!user" ui-sref="login" class="btn login-button">Login</button>
+        <wish-list></wish-list>
+        <shopping-cart></shopping-cart>
+        <button ng-show="!user" ui-sref="login" class="btn login-button">Login <a class="glyphicon glyphicon-user"></a></button>
         <div ng-show="user" class="welcome">
-            <span>Welcome, {{ user.email }}!</span>
+            <span>Welcome, <a ui-sref="dashboard({userId:user._id})">{{ user.email }} </a>!</span>
             <a ng-click="logout()">Logout</a>
         </div>
     </div>

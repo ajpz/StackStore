@@ -1,0 +1,36 @@
+<div class="col-md-10 col-md-offset-2">
+    <div ng-hide="showEditForm">
+        <h2>Reviews</h2>
+        <div class="row" ng-repeat="review in reviews">
+            <div class="col-md-8">
+                <h4><a ui-sref="car({carId: review.car._id})">Car: {{ review.car.year }} {{ review.car.model }}</a></h4>
+                <h5>{{review.rating}} Stars</h5>
+                <p>{{review.comment}}</p>
+            </div>
+            <button class="btn btn-success btn-sm" ng-click="editReview(review)">Edit</button>
+            <button class="btn btn-danger btn-sm" ng-click="deleteReview(review._id)">Delete</button>
+        </div>
+    </div>
+    <div ng-show="showEditForm">
+        <h3>Edit Review</h3>
+        <form name="reviewForm" novalidate>
+            <div class="row">
+                <div class="col-md-5">
+                    <fieldset class="form-group">
+                        <label for="comment">Comment</label>
+                        <textarea class="form-control" rows="4" ng-model="reviewToEdit.comment"></textarea>
+                    </fieldset>
+                </div>
+                <div class="col-md-2">
+                    <fieldset class="form-group">
+                        <label for="rating">Rating</label>
+                        <input type="number" class="form-control" id="rating" ng-model="reviewToEdit.rating" required>
+                    </fieldset>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success" ng-click="submitEdit()">Submit Edit</button>
+            <button type="submit" class="btn btn-primary" ng-click="showReviews()">Back</button>
+        </form>
+    </div>
+    <!--/add form -->
+</div>

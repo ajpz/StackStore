@@ -1,0 +1,71 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <h3 ng-show="messageExists()">{{message}}</h3>
+            <div class="col-xs-9">
+                <img class="img-responsive" ng-src="{{car.photos[0]}}" alt="">
+                <h5>{{car.year}} {{car.make.make}} {{car.model}}</h5>
+            </div>
+            <div class="col-xs-3">
+                <h5>{{car.year}} {{car.make.make}} {{car.model}}</h5>
+                <ul>
+                    <li>Color: {{car.color}}</li>
+                    <li>Condition: {{car.condition}}</li>
+                    <li>Mileage: {{car.mileage}}</li>
+                    <li>Horsepower: {{car.horsePower}}</li>
+                    <li>Acceleration: {{car.acceleration}}</li>
+                    <li>Kickass Factor: {{car.kickassFactor}}</li>
+                    <li>Location: {{car.location}}</li>
+                    <li>Price: {{car.price}}</li>
+                    <li>Categories:
+                        <ul>
+                            <li ng-repeat="category in car.categories">
+                                {{category.name}}
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <h3>Reviews</h3>
+            <div class="col-sm-8">
+                <button ng-click="toggleForm()" class="btn btn-success" ng-hide="showForm" >Add Review</button>
+                <div ng-hide="showForm" class="row" ng-repeat="review in reviews">
+                    <div class="col-md-8">
+                        <p>{{review.comment}}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p>{{review.rating}}</p>
+                    </div>
+                </div>
+                <div ng-show="showForm">
+                    <form name="reviewForm" novalidate>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <fieldset class="form-group">
+                                    <label for="comment">Comment</label>
+                                    <textarea class="form-control" rows="4" ng-model="newReview.comment"></textarea>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-2">
+                                <fieldset class="form-group">
+                                    <label for="rating">Rating</label>
+                                    <input type="number" class="form-control" id="rating" ng-model="newReview.rating" required>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success" ng-click="submitReview()" ng-disabled="reviewForm.$invalid">Submit</button>
+                        <button type="submit" class="btn btn-primary" ng-click="toggleForm()">Back</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <button class="btn-danger btn" ui-sref="home"> Find Similar <a class="glyphicon glyphicon-search"></a></button>
+                <button class="btn-danger btn" ng-click="addToWishList(car)" ui-sref="home"> Add to Wish List <a class="glyphicon glyphicon-heart"></a></button>
+                <button class="btn-danger btn" ng-click="addToCart(car)"> Add To Cart <a class="glyphicon glyphicon-shopping-cart"></a></button>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>

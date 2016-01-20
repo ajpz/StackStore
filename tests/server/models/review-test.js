@@ -9,10 +9,10 @@ var Promise = require('bluebird');
 // Require in all models.
 require('../../../server/db/models');
 
+var MakeAndModels = mongoose.model('MakeAndModels');
 var Review = mongoose.model('Review');
 var Car = mongoose.model('Car');
 var User = mongoose.model('User');
-var MakeAndModel = mongoose.model('MakeAndModel');
 
 describe('Review model', function () {
 
@@ -31,7 +31,7 @@ describe('Review model', function () {
 
     it('should make a review document in the database', function (done) {
 
-        var car = MakeAndModel.create({
+        var car = MakeAndModels.create({
             make: 'Ford',
             model: ['Fiesta']
         })

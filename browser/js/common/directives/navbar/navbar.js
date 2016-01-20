@@ -6,14 +6,9 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
         templateUrl: 'js/common/directives/navbar/navbar.html',
         link: function (scope) {
 
-            scope.items = [
-                { label: 'Home', state: 'home' },
-                { label: 'About', state: 'about' },
-                { label: 'Documentation', state: 'docs' },
-                { label: 'Members Only', state: 'membersOnly', auth: true }
-            ];
 
             scope.user = null;
+
 
             scope.isLoggedIn = function () {
                 return AuthService.isAuthenticated();
@@ -28,6 +23,7 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
             var setUser = function () {
                 AuthService.getLoggedInUser().then(function (user) {
                     scope.user = user;
+                    scope.userId = scope.user ? '({_id :'+ scope.user._id + '})' : '';
                 });
             };
 
@@ -36,6 +32,14 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
             };
 
             setUser();
+            // scope.userId = scope.user ? '({_id :' + scope.user._id + '})' : '';
+
+            scope.items = [
+                // { label: 'Home', state: 'home' },
+                // { label: 'About', state: 'about' },
+                // { label: 'Documentation', state: 'docs' },
+                // { label: 'Members Only', state: 'membersOnly', auth: true }
+            ];
 
             $rootScope.$on(AUTH_EVENTS.loginSuccess, setUser);
             $rootScope.$on(AUTH_EVENTS.logoutSuccess, removeUser);
