@@ -8,11 +8,6 @@ html {
   background-size: cover;
 }
 
-body {
-    opacity: 1;
-}
-
-
 @mixin clearfix {
   &:after {
     content: "";
