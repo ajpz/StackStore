@@ -1,4 +1,5 @@
-app.config(function ($stateProvider) {
+
+app.config($stateProvider => {
 
     $stateProvider.state('signup', {
         url: '/signup',
@@ -8,32 +9,26 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('SignupCtrl', function ($scope, AuthService, DataFactory, $state) {
+app.controller('SignupCtrl', ($scope, AuthService, $state, DataFactory) => {
 
-    $scope.login = {};
+    $scope.newUser = {
+        email : null,
+        password : null,
+        confirmPassword : null
+    }
+    $scope.validEmail = true;
     $scope.error = null;
-
-    $scope.sendSignup = function (login) {
-
-        $scope.error = null;
-
-        DataFactory.checkUser(login.email)
-        .then(function(user) {
-            if (user.exists === true) throw new Error
-            if (user.exists === false) {
-                DataFactory.addUser(login)
-            }
-        }).then(function(newUser) {
-            var loginInfo = {}
-            loginInfo.email = newUser.email
-            loginInfo.name = newUser.name
-            AuthService.login(loginInfo)
-        }).then(function () {
-            $state.go('home');
-        }).catch(function () {
-            $scope.error = 'Invalid login credentials.';
-        });
-
-    };
+    $scope.validPassword = true;
+    $scope.createUser = () => {
+        let userData = {
+            email : $scope.newUser.email,
+            password : $scope.newUser.password
+        }
+        DataFactory.addUser(userData)
+            .then(user => {
+                $state.go('login');
+            })
+            .then(null, console.error.bind(console));
+    }
 
 });

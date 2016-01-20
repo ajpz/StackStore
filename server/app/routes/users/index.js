@@ -19,6 +19,20 @@ router.route('/')
         .then(null, next)
     });
 
+
+router.route('/validEmail')
+    .get(function (req, res, next) {
+        User.find(req.query)
+        .exec()
+        .then(function(user) {
+            if (user.length > 0) {
+                res.json({"validEmail" : false });
+            }
+            else {
+                res.json({"validEmail" : true });
+            }
+        })
+        .then(null, next);
 router.route('/signup/')
     .get(function (req, res, next) {
         var query = req.query || {};
@@ -28,6 +42,7 @@ router.route('/signup/')
             else res.send({ exists: false})
         })
         .then(null, next)
+
     });
 
 router.route('/:userId')
