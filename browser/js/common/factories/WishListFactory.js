@@ -91,7 +91,7 @@ app.factory('WishListFactory', function($http, AuthService, $q, $rootScope, AUTH
                     wishList.car.push(carId);
                     resolve(saveLocalOrDb(wishList));
                 }
-            })
+            });
         },
         updateWishList: function(carId) {
             var indexToRemove = wishList.car.indexOf(carId);
