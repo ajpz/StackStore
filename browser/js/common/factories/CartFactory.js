@@ -32,7 +32,8 @@ app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVE
 
     var saveLocalOrDb = function(cart) {
         if (AuthService.isAuthenticated()) {
-            return $q.when(saveToDb(cart));
+            // return $q.when(saveToDb(cart));
+            return saveToDb(cart);
         } else {
             return saveToLocal(cart); //NEED TO PROMISIFY?
         }

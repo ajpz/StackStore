@@ -1,3 +1,4 @@
+
 app.config($stateProvider => {
 
     $stateProvider.state('signup', {
@@ -29,7 +30,5 @@ app.controller('SignupCtrl', ($scope, AuthService, $state, DataFactory) => {
             })
             .then(null, console.error.bind(console));
     }
-
-
 
 });

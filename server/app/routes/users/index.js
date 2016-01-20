@@ -19,6 +19,7 @@ router.route('/')
         .then(null, next)
     });
 
+
 router.route('/validEmail')
     .get(function (req, res, next) {
         User.find(req.query)
@@ -32,6 +33,16 @@ router.route('/validEmail')
             }
         })
         .then(null, next);
+router.route('/signup/')
+    .get(function (req, res, next) {
+        var query = req.query || {};
+        User.find(query).exec()
+        .then (function (user) {
+            if (user.length !== 0) res.send({ exists: true})
+            else res.send({ exists: false})
+        })
+        .then(null, next)
+
     });
 
 router.route('/:userId')
