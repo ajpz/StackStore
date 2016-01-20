@@ -1,4 +1,4 @@
-<!-- incomplete -->
-<div>
-  <h3><a ui-sref=" ">Wish List: {{wishlist.car.length}}</a></h3>
+<div class="nav navbar-nav">
+ <!--  <a class="glyphicon glyphicon-heart" ui-sref="dashboard.order({orderId: wishList._id})">{{wishlist.car.length}}</a> -->
+  <a class="glyphicon glyphicon-heart" ng-click="goToOrderDetail(wishList._id)">{{wishlist.car.length}}</a>
 </div>

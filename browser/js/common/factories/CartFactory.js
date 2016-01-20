@@ -60,7 +60,7 @@ app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVE
                 shoppingCart = databaseCart;
                 localStorage.removeItem('visitingUserCart');
                 $rootScope.$broadcast('LoadCart', shoppingCart);
-                return;
+                return 'bob';
             })
             .then(null, console.error.bind(console));
 
@@ -89,9 +89,15 @@ app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVE
         getCurrentCart: function() {
             return shoppingCart; //synchronous!
         },
-        addToCart: function(car) {
-            shoppingCart.car.push(car._id);
-            return saveLocalOrDb(shoppingCart);
+        addToCart: function(carId) {
+            return $q(function(resolve, reject) {
+                if(shoppingCart.car.indexOf(carId) > -1) {
+                    reject(new Error('You already have this car in your cart'));
+                } else {
+                    shoppingCart.car.push(carId);
+                    resolve(saveLocalOrDb(shoppingCart));
+                }
+            })
         },
         updateCart: function(carId) {
             var indexToRemove = shoppingCart.car.indexOf(carId);
@@ -107,12 +113,23 @@ app.factory('CartFactory', function($http, AuthService, $q, $rootScope, AUTH_EVE
         },
         purchaseCart: function() {
             shoppingCart.status = 'Processing';
-
             return saveToDb(shoppingCart)
+                .then(function(order){
+                    return DataFactory.fetchOrder(order._id)
+                })
+                .then(function(populatedOrder){
+                    var emailText = {
+                        greeting: 'Hello!',
+                        body: 'Thank you for your recent purchase!',
+                        goodbye: "You'll hear from us again once the order is complete",
+                        message: 'Is now in process'
+                    }
+                    return DataFactory.sendEmail(populatedOrder, emailText);
+                })
                 .then(function() {
                     destroy();
                     return refresh();
-                });
+                }).then(null, console.error.bind(console));
         }
     };
 });

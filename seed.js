@@ -268,6 +268,10 @@ var seedUsers = function(addresses, categories) {
         email: 'obama@gmail.com',
         password: 'potus'
     }));
+    users.push(new User({
+        email: 'perez.jonathan@gmail.com',
+        password: 'password'
+    }));
     return User.createAsync(users);
 }
 
