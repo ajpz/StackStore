@@ -94,7 +94,7 @@ describe('Cars Route', function() {
 
             var carToPost;
 
-            MakeAndModel.create({
+            MakeAndModels.create({
                 make: 'Ford',
                 model: 'Mustang'
             })
