@@ -129,6 +129,10 @@ app.factory('DataFactory', function($http) {
         updateAddress(addressId, update) {
             return $http.put(`/api/addresses/${addressId}`, update)
             .then(extractData);
+        },
+        addAddress(update) {
+            return $http.post('/api/addresses/', update)
+            .then(extractData);
         }
     };
 });

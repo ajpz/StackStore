@@ -1,3 +1,4 @@
 <div class="nav navbar-nav">
-  <a class="glyphicon glyphicon-heart" ui-sref="dashboard.order({orderId: cart._id})">{{wishlist.car.length}}</a>
+ <!--  <a class="glyphicon glyphicon-heart" ui-sref="dashboard.order({orderId: wishList._id})">{{wishlist.car.length}}</a> -->
+  <a class="glyphicon glyphicon-heart" ng-click="goToOrderDetail(wishList._id)">{{wishlist.car.length}}</a>
 </div>
